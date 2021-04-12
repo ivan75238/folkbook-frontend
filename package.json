@@ -1,0 +1,78 @@
+{
+  "name": "orion-web",
+  "version": "1.0.0",
+  "description": "node 10.15.2",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --max-old-space-size=4096 --open --chrome --eval --mode development",
+    "build": "webpack --mode production"
+  },
+  "author": "Ivan Fontosh",
+  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "ie 11",
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.6.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.4.0",
+    "eslint": "^6.5.1",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-react": "^7.16.0",
+    "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.13.0",
+    "raw-loader": "^4.0.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "@svgr/webpack": "^4.3.3",
+    "axios": "^0.19.0",
+    "date-fns": "^2.14.0",
+    "fbjs": "^1.0.0",
+    "keymirror": "^0.1.1",
+    "lodash": "^4.17.15",
+    "mobile-device-detect": "^0.3.3",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.10.2",
+    "react-app-polyfill": "^1.0.5",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-datepicker": "^3.0.0",
+    "react-datetime": "^2.16.3",
+    "react-dom": "^16.10.2",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-select": "^3.1.0",
+    "react-toastify": "^5.5.0",
+    "react-tooltip": "3.11.1",
+    "redux": "^4.0.4",
+    "redux-modal": "^3.0.2",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.4.0"
+  }
+}
