@@ -1,7 +1,8 @@
 import {booksActions} from "./actions";
 
 const initial = {
-    new_books: []
+    new_books: [],
+    active_books: [],
 };
 
 export function books(state = initial, action) {
@@ -11,6 +12,12 @@ export function books(state = initial, action) {
             return {
                 ...state,
                 new_books: action.new_books
+            };
+        }
+        case booksActions.SET_ACTIVE_BOOKS: {
+            return {
+                ...state,
+                active_books: action.active_books
             };
         }
 

@@ -10,4 +10,5 @@ export const appActions = keyMirror({
 
 export const booksActions = keyMirror({
     SET_NEW_BOOKS: undefined,
+    SET_ACTIVE_BOOKS: undefined,
 });
