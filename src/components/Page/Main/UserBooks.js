@@ -4,7 +4,6 @@ import connect from "react-redux/es/connect/connect";
 import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
 import {get_active_books} from "../../../functions/books";
-import {translateStatusBook} from "components/utils";
 import moment from "moment";
 
 @connect(state => ({
