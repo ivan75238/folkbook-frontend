@@ -1,4 +1,4 @@
-const apiUrl = "https://folkbook.ru:19180/";
+const apiUrl = "http://folkbook.ru:19180/";
 
 export const URLS = {
     USER: {
