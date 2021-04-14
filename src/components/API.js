@@ -14,6 +14,9 @@ const API = {
         LOGIN(username, password) {
             return axios.post(URLS.USER.LOGIN, {username, password})
         },
+        REGISTRATION(username, password) {
+            return axios.post(URLS.USER.REGISTRATION, {username, password})
+        },
         LOGOUT() {
             return axios.post(URLS.USER.LOGOUT)
         },

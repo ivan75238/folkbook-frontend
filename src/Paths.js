@@ -3,5 +3,13 @@ export const Paths = {
         list : {
             path : () => `/`,
         }
+    },
+    auth: {
+        auth: {
+            path: () => '/'
+        },
+        registration: {
+            path: () => '/registration'
+        }
     }
 };

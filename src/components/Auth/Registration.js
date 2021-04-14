@@ -4,9 +4,9 @@ import Input from "components/Elements/Input";
 import Button from "components/Elements/Button";
 import {toast} from "react-toastify";
 import PropTypes from "prop-types";
-import {appActions} from "reducers/actions";
 import connect from "react-redux/es/connect/connect";
 import {API} from "components/API";
+import {validateEmail} from "components/utils";
 import {Paths} from "../../Paths";
 
 const ContentWrapper = styled.div`
@@ -42,15 +42,6 @@ const Title = styled.p`
     font-weight: 600;
 `;
 
-const InputWrapper = styled.div`
-    width: 100%;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
 const LinkText = styled.p`
     font-size: 12px; 
     margin-top: 8px;
@@ -60,39 +51,26 @@ const LinkText = styled.p`
     cursor: pointer;
 `;
 
+const InputWrapper = styled.div`
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
 @connect(() => ({}))
-class Auth extends PureComponent {
+class Registration extends PureComponent {
     state = {
         username: "",
         pass: "",
-        disabled: true
+        pass_repeat: ""
     };
 
-    constructor(props) {
-        super(props);
-        this.checkAuth();
-    }
-
-    checkAuth = () => {
-        const {dispatch} = this.props;
-        API.USER.GET_USER()
-            .then(response => {
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
-            })
-            .catch(() => {
-                this.setState({disabled: false});
-            });
-    };
-
-    openRegistration = () => {
+    registration = () => {
+        const {username, pass, pass_repeat} = this.state;
         const {history} = this.props;
-        history.push(Paths.auth.registration.path());
-    };
-
-    login = () => {
-        const {username, pass} = this.state;
-        const {dispatch} = this.props;
         if (username === "") {
             toast.warn("Введите имя пользователя");
             return;
@@ -101,56 +79,75 @@ class Auth extends PureComponent {
             toast.warn("Введите пароль");
             return;
         }
+        if (pass_repeat === "") {
+            toast.warn("Введите повтор пароля");
+            return;
+        }
+        if (pass.length < 8) {
+            toast.warn("Пароль должен быть минимум 8 символов");
+            return;
+        }
+        if (pass_repeat !== pass) {
+            toast.warn("Введенные пароли не совпадают");
+            return;
+        }
+        if (!validateEmail(username)) {
+            toast.warn("Некорректный email");
+            return;
+        }
 
-        API.USER.LOGIN(username, pass)
+        API.USER.REGISTRATION(username, pass)
             .then(response => {
-                if (response.data.result === false){
-                    toast.error(response.data.msgUser);
-                }
-                else {
-                    dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
-                    dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-                }
+                toast.success(response.data.msgUser);
+                history.push(Paths.auth.auth.path());
             })
             .catch(error => {
                 toast.error(error.response.data.msgUser);
             });
     };
 
-    render() {
-        const {username, pass, disabled} = this.state;
+    openAuth = () => {
+        const {history} = this.props;
+        history.push(Paths.auth.auth.path());
+    };
 
-        if (disabled) return null;
+    render() {
+        const {username, pass, pass_repeat} = this.state;
 
         return (
             <ContentWrapper>
                 <Container>
                     <TitleWrapper>
-                        <Title>Авторизация</Title>
+                        <Title>Регистрация</Title>
                     </TitleWrapper>
                     <InputWrapper>
                         <Input width="100%"
                                value={username}
                                onChange={val => this.setState({username: val})}
-                               disabled={disabled}
                                title="Почта"
                                height="40px"
                                padding="8px 0"/>
                         <Input width="100%"
                                value={pass}
-                               disabled={disabled}
                                onChange={val => this.setState({pass: val})}
                                title="Пароль"
                                height="40px"
                                type={"password"}
                                margin="16px 0 0 0"
                                padding="8px 0"/>
-                        <Button title={"Войти"}
+                        <Input width="100%"
+                               value={pass_repeat}
+                               onChange={val => this.setState({pass_repeat: val})}
+                               title="Подтвердите пароль"
+                               height="40px"
+                               type={"password"}
+                               margin="16px 0 0 0"
+                               padding="8px 0"/>
+                        <Button title={"Зарегистрироваться"}
                                 height="40px"
-                                disabled={disabled}
-                                onClick={this.login}
+                                onClick={this.registration}
                                 margin="16px 0 0 0"/>
-                        <LinkText onClick={this.openRegistration}>Регистрация</LinkText>
+                        <LinkText onClick={this.openAuth}>Войти в существующий аккаунт</LinkText>
                     </InputWrapper>
                 </Container>
             </ContentWrapper>
@@ -158,10 +155,9 @@ class Auth extends PureComponent {
     }
 }
 
-Auth.propTypes = {
-    updateSession: PropTypes.func,
+Registration.propTypes = {
     dispatch: PropTypes.func,
     history: PropTypes.object,
 };
 
-export default Auth;
+export default Registration;

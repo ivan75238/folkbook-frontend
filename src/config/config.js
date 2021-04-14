@@ -8,6 +8,7 @@ export const URLS = {
     USER: {
         LOGIN: apiUrl + "user/login",
         LOGOUT: apiUrl + "user/logout",
+        REGISTRATION: apiUrl + "user/registration",
         GET_USER: apiUrl + "user/",
         GET_ACTIVE_BOOKS: apiUrl + "user/get_active_books",
     },

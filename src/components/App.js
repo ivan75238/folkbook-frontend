@@ -11,6 +11,8 @@ import Auth from "components/Auth/Auth";
 import Main from "components/Main";
 import {registerLocale, setDefaultLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
+import {Paths} from "../Paths";
+import Registration from "components/Auth/Registration";
 registerLocale('ru', ru);
 
 const MainWrapper = styled.div`
@@ -74,7 +76,8 @@ class App extends PureComponent {
                                     <Main/>
                                 :
                                     <Switch>
-                                        <Route exact path='/' render={props => <Auth {...props}/>}/>
+                                        <Route exact path={Paths.auth.auth.path()} render={props => <Auth {...props}/>}/>
+                                        <Route exact path={Paths.auth.registration.path()} render={props => <Registration {...props}/>}/>
                                     </Switch>
                             }
                         </MainWrapperInner>
