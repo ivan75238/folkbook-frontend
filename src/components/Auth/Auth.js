@@ -89,8 +89,13 @@ class Auth extends PureComponent {
 
         API.USER.LOGIN(username, pass)
             .then(response => {
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                if (response.data.result === false){
+                    toast.error(response.data.msgUser);
+                }
+                else {
+                    dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                    dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                }
             })
             .catch(error => {
                 toast.error(error.response.data.msgUser);

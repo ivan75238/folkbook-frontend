@@ -1,4 +1,8 @@
-const apiUrl = "https://api.folkbook.ru/";
+const apiUrlProd = "https://api.folkbook.ru/";
+const apiUrlDev = "http://127.0.0.1:19180/";
+
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+const apiUrl = process.env.NODE_ENV !== 'production' ? apiUrlDev : apiUrlProd;
 
 export const URLS = {
     USER: {
