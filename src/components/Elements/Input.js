@@ -55,6 +55,14 @@ class Input extends PureComponent {
             onChange(value)
     };
 
+    onKeyPress(event) {
+        const {onEnterPress} = this.props;
+        if (onEnterPress && event.charCode === 13){
+            onEnterPress(event);
+        }
+    }
+
+
     render() {
         const {value, type, title, disabled, width, margin, height, hideTitle, padding, onClick} = this.props;
         return (
@@ -66,6 +74,7 @@ class Input extends PureComponent {
                         <Label>{title}</Label>
                 }
                 <InputStyled onChange={e => this.onChange(e.target.value)}
+                             onKeyPress={e => this.onKeyPress(e)}
                              type={type}
                              height={height}
                              padding={padding}
@@ -90,6 +99,7 @@ Input.propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
     disabled: PropTypes.bool,
+    onEnterPress: PropTypes.func,
     margin: PropTypes.string,
 };
 

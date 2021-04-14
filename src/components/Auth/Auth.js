@@ -112,8 +112,8 @@ class Auth extends PureComponent {
                     dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
                 }
             })
-            .catch(error => {
-                toast.error(error.response.data.msgUser);
+            .catch(() => {
+                toast.error("Неправилный email или пароль");
             });
     };
 
@@ -133,12 +133,14 @@ class Auth extends PureComponent {
                                value={username}
                                onChange={val => this.setState({username: val})}
                                disabled={disabled}
+                               onEnterPress={this.login}
                                title="Почта"
                                height="40px"
                                padding="8px 0"/>
                         <Input width="100%"
                                value={pass}
                                disabled={disabled}
+                               onEnterPress={this.login}
                                onChange={val => this.setState({pass: val})}
                                title="Пароль"
                                height="40px"
