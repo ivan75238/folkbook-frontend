@@ -8,6 +8,7 @@ import {appActions} from "reducers/actions";
 import connect from "react-redux/es/connect/connect";
 import {API} from "components/API";
 import {Paths} from "../../Paths";
+import _get from "lodash/get";
 
 const ContentWrapper = styled.div`
     width: 100vw;
@@ -104,16 +105,14 @@ class Auth extends PureComponent {
 
         API.USER.LOGIN(username, pass)
             .then(response => {
-                if (response.data.result === false){
-                    toast.error(response.data.msgUser);
-                }
-                else {
-                    dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
-                    dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-                }
+                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
             })
-            .catch(() => {
-                toast.error("Неправилный email или пароль");
+            .catch(error => {
+                if (_get(error, "response.data.msgUser", false))
+                    toast.error(error.response.data.msgUser);
+                else
+                    toast.error("Неправилный email или пароль");
             });
     };
 
