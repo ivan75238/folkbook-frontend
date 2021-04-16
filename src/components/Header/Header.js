@@ -20,6 +20,7 @@ const Wrapper = styled.div`
 
 @connect(() => ({}))
 class Header extends PureComponent {
+
     onClickLogout = () => {
         const {dispatch} = this.props;
         API.USER.LOGOUT()

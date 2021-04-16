@@ -2,14 +2,23 @@ export const Paths = {
     main : {
         list : {
             path : () => `/`,
+            mask : () => `/`
+        }
+    },
+    books : {
+        book : {
+            path : (id) => `/book/${id}`,
+            mask : () => `/book/:id`,
         }
     },
     auth: {
         auth: {
-            path: () => '/'
+            path: () => '/',
+            mask: () => '/'
         },
         registration: {
-            path: () => '/registration'
+            path: () => '/registration',
+            mask: () => '/registration'
         }
     }
 };

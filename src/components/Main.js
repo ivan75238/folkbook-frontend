@@ -7,6 +7,7 @@ import _get from "lodash/get";
 import {Paths} from "../Paths";
 import MainPage from "components/Page/Main/MainPage";
 import Header from "components/Header/Header";
+import BookPage from "components/Page/Book/BookPage";
 
 const MainWrapper = styled.div`
     width: 100vw;
@@ -39,7 +40,9 @@ class Main extends PureComponent {
                 <Header/>
                 <PageInnerContainer>
                     <Switch>
-                        <Route exact path={Paths.main.list.path()} render={props => <MainPage {...props}/>}/>
+                        <Route exact path={Paths.books.book.mask()} render={props => <BookPage {...props}/>}/>
+
+                        <Route exact path={Paths.main.list.mask()} render={props => <MainPage {...props}/>}/>
                     </Switch>
                 </PageInnerContainer>
             </MainWrapper>

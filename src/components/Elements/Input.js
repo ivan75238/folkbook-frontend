@@ -1,6 +1,7 @@
 import React, {PureComponent} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import EyeIcon from "components/Icons/EyeIcon";
 
 const InputWrapper = styled.div`
     position: relative;
@@ -31,6 +32,13 @@ const Label = styled.p`
     background: #fff;
 `;
 
+const IconWrapper = styled.div`
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+`;
+
 const InputStyled = styled.input`
     width: 100%;
     font-family: "GothamPro", sans-serif;
@@ -49,6 +57,10 @@ const InputStyled = styled.input`
 
 //Стилизованный инпут
 class Input extends PureComponent {
+    state = {
+        visiblePassword: false
+    };
+
     onChange = (value) => {
         const {onChange} = this.props;
         if (onChange)
@@ -65,6 +77,7 @@ class Input extends PureComponent {
 
     render() {
         const {value, type, title, disabled, width, margin, height, hideTitle, padding, onClick} = this.props;
+        const {visiblePassword} = this.state;
         return (
             <InputWrapper width={width}
                           onClick={onClick ? onClick : null}
@@ -73,9 +86,15 @@ class Input extends PureComponent {
                     hideTitle ? null :
                         <Label>{title}</Label>
                 }
+                {
+                    type === "password" &&
+                    <IconWrapper onClick={() => this.setState({visiblePassword: !visiblePassword})}>
+                        <EyeIcon/>
+                    </IconWrapper>
+                }
                 <InputStyled onChange={e => this.onChange(e.target.value)}
                              onKeyPress={e => this.onKeyPress(e)}
-                             type={type}
+                             type={type === "password" ? visiblePassword ? "" : type : type}
                              height={height}
                              padding={padding}
                              disabled={disabled}

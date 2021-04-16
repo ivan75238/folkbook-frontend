@@ -5,6 +5,7 @@ import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
 import {get_active_books} from "../../../functions/books";
 import moment from "moment";
+import {Paths} from "../../../Paths";
 
 @connect(state => ({
     user: _get(state.app, "user"),
@@ -15,6 +16,11 @@ class UserBooks extends PureComponent {
         const {dispatch} = this.props;
         get_active_books(dispatch);
     }
+
+    openBook = book => {
+        const {history} = this.props;
+        history.push(Paths.books.book.path(book.id));
+    };
 
     render() {
         const {active_books} = this.props;
@@ -42,6 +48,7 @@ class UserBooks extends PureComponent {
                             }
                             return (
                                 <Row key={i}
+                                     onClick={() => this.openBook(book)}
                                      isCursorPointer>
                                     <Column>{book.name}</Column>
                                     <Column>{`${participants.length}/${book.max_participants}`}</Column>
@@ -61,6 +68,7 @@ class UserBooks extends PureComponent {
 
 UserBooks.propTypes = {
     dispatch: PropTypes.func,
+    history: PropTypes.func,
     user: PropTypes.object,
     active_books: PropTypes.array,
 };

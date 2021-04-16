@@ -8,10 +8,11 @@ import UserBooks from "components/Page/Main/UserBooks";
 @connect(() => ({}))
 class MainPage extends PureComponent {
     render() {
+        const {history} = this.props;
         return (
             <Page>
                 <NewBooks />
-                <UserBooks />
+                <UserBooks history={history}/>
             </Page>
         )
     }
@@ -19,6 +20,7 @@ class MainPage extends PureComponent {
 
 MainPage.propTypes = {
     dispatch: PropTypes.func,
+    history: PropTypes.func,
 };
 
 export default MainPage;

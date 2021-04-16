@@ -65,7 +65,8 @@ class Registration extends PureComponent {
     state = {
         username: "",
         pass: "",
-        pass_repeat: ""
+        pass_repeat: "",
+        disabled: false
     };
 
     registration = () => {
@@ -95,24 +96,29 @@ class Registration extends PureComponent {
             toast.warn("Некорректный email");
             return;
         }
+        this.setState({disabled: true});
 
         API.USER.REGISTRATION(username, pass)
             .then(response => {
                 toast.success(response.data.msgUser);
                 history.push(Paths.auth.auth.path());
+                this.setState({disabled: false});
             })
             .catch(error => {
                 toast.error(error.response.data.msgUser);
+                this.setState({disabled: false});
             });
     };
 
     openAuth = () => {
         const {history} = this.props;
-        history.push(Paths.auth.auth.path());
+        const {disabled} = this.state;
+        if (!disabled)
+            history.push(Paths.auth.auth.path());
     };
 
     render() {
-        const {username, pass, pass_repeat} = this.state;
+        const {username, pass, pass_repeat, disabled} = this.state;
 
         return (
             <ContentWrapper>
@@ -124,12 +130,14 @@ class Registration extends PureComponent {
                         <Input width="100%"
                                value={username}
                                onChange={val => this.setState({username: val})}
+                               disabled={disabled}
                                title="Почта"
                                height="40px"
                                padding="8px 0"/>
                         <Input width="100%"
                                value={pass}
                                onChange={val => this.setState({pass: val})}
+                               disabled={disabled}
                                title="Пароль"
                                height="40px"
                                type={"password"}
@@ -138,6 +146,7 @@ class Registration extends PureComponent {
                         <Input width="100%"
                                value={pass_repeat}
                                onChange={val => this.setState({pass_repeat: val})}
+                               disabled={disabled}
                                title="Подтвердите пароль"
                                height="40px"
                                type={"password"}
@@ -146,6 +155,7 @@ class Registration extends PureComponent {
                         <Button title={"Зарегистрироваться"}
                                 height="40px"
                                 onClick={this.registration}
+                                disabled={disabled}
                                 margin="16px 0 0 0"/>
                         <LinkText onClick={this.openAuth}>Войти в существующий аккаунт</LinkText>
                     </InputWrapper>

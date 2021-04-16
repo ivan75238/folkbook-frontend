@@ -88,7 +88,9 @@ class Auth extends PureComponent {
 
     openRegistration = () => {
         const {history} = this.props;
-        history.push(Paths.auth.registration.path());
+        const {disabled} = this.state;
+        if (!disabled)
+            history.push(Paths.auth.registration.path());
     };
 
     login = () => {
@@ -102,13 +104,16 @@ class Auth extends PureComponent {
             toast.warn("Введите пароль");
             return;
         }
+        this.setState({disabled: true});
 
         API.USER.LOGIN(username, pass)
             .then(response => {
+                this.setState({disabled: false});
                 dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
                 dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
             })
             .catch(error => {
+                this.setState({disabled: false});
                 if (_get(error, "response.data.msgUser", false))
                     toast.error(error.response.data.msgUser);
                 else
