@@ -25,15 +25,15 @@ const API = {
         },
         GET_ACTIVE_BOOKS() {
             return axios.get(URLS.USER.GET_ACTIVE_BOOKS)
-        }
+        },
+        JOIN_IN_BOOK(id_book, id_user) {
+            return axios.post(URLS.BOOKS.JOIN_IN_BOOK,{id_book, id_user})
+        },
     },
 
     BOOKS: {
         GET_NEW() {
             return axios.get(URLS.BOOKS.GET_NEW)
-        },
-        JOIN_IN_BOOK(id_book, id_user) {
-            return axios.post(URLS.BOOKS.JOIN_IN_BOOK,{id_book, id_user})
         },
     },
 };

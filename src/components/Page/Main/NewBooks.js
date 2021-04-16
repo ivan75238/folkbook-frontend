@@ -13,19 +13,26 @@ import moment from "moment";
     new_books: _get(state.books, "new_books"),
 }))
 class NewBooks extends PureComponent {
+    state = {
+        disabled: false,
+    };
+
     componentDidMount() {
         const {dispatch} = this.props;
         get_new_book(dispatch);
     }
 
 
-    joinInBook = (id_book) => {
+    joinInBook = async (id_book) => {
         const { dispatch, user } = this.props;
-        join_in_book(dispatch, id_book, user.id);
+        this.setState({disabled: true});
+        await join_in_book(dispatch, id_book, user.id);
+        this.setState({disabled: false});
     };
 
     render() {
         const {new_books, user} = this.props;
+        const {disabled} = this.state;
         return (
             <Page>
                 <TableName>Ближайшие книги</TableName>
@@ -54,6 +61,7 @@ class NewBooks extends PureComponent {
                                                 "Вы участник"
                                                 :
                                                 <Button title={"Записаться"}
+                                                        disabled={disabled}
                                                         onClick={() => this.joinInBook(book.id)}/>
                                         }
                                     </Column>
