@@ -4,8 +4,6 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import _get from 'lodash/get';
-import {ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 import ReactTooltip from "react-tooltip";
 import Auth from "components/Auth/Auth";
 import Main from "components/Main";
@@ -13,6 +11,8 @@ import {registerLocale, setDefaultLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import {Paths} from "../Paths";
 import Registration from "components/Auth/Registration";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 registerLocale('ru', ru);
 
 const MainWrapper = styled.div`

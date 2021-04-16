@@ -2,12 +2,12 @@ import React, {PureComponent} from "react";
 import styled from "styled-components";
 import Input from "components/Elements/Input";
 import Button from "components/Elements/Button";
-import {toast} from "react-toastify";
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {API} from "components/API";
 import {validateEmail} from "components/utils";
 import {Paths} from "../../Paths";
+import {toast} from "react-toastify";
 
 const ContentWrapper = styled.div`
     width: 100vw;
