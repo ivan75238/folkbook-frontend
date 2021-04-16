@@ -66,25 +66,12 @@ class Auth extends PureComponent {
     state = {
         username: "",
         pass: "",
-        disabled: true
+        disabled: false
     };
 
     constructor(props) {
         super(props);
-        this.checkAuth();
     }
-
-    checkAuth = () => {
-        const {dispatch} = this.props;
-        API.USER.GET_USER()
-            .then(response => {
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
-            })
-            .catch(() => {
-                this.setState({disabled: false});
-            });
-    };
 
     openRegistration = () => {
         const {history} = this.props;

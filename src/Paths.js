@@ -20,5 +20,9 @@ export const Paths = {
             path: () => '/registration',
             mask: () => '/registration'
         }
+    },
+    settings: {
+        path: () => '/settings',
+        mask: () => '/settings'
     }
 };

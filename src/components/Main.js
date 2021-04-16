@@ -34,7 +34,6 @@ const PageInnerContainer = styled.div`
 }))
 class Main extends PureComponent {
     render() {
-
         return (
             <MainWrapper>
                 <Header/>

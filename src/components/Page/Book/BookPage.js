@@ -11,11 +11,10 @@ class BookPage extends PureComponent {
     };
 
     componentDidMount() {
-        console.log("this.props.match",this.props.match);
         if(this.props.match && this.props.match.params && this.props.match.params.id) {
             this.setState({id_book: this.props.match.params.id});
         } else {
-            this.setState({error: 'Пациент не найден'});
+            this.setState({error: 'Книга не найдена'});
         }
     }
 

@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import {connect} from "react-redux";
 import UserInfo from "components/Header/UserInfo";
-import Button from "components/Elements/Button";
-import {API} from "components/API";
-import {appActions} from "reducers/actions";
-import {toast} from "react-toastify";
+import Menu from "components/Menu/Menu";
+import HumburgerIcon from "components/Icons/HumburgerIcon";
 
 //region Styled
 const Wrapper = styled.div`
@@ -15,31 +13,39 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 4px;
+    border-bottom: 1px solid gray;
+`;
+
+const MenuWrapper = styled.div`
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 4px;
+    cursor: pointer;
+`;
+
+const MenuText = styled.div`
+    margin-right: 8px;
 `;
 //endregion
 
 @connect(() => ({}))
 class Header extends PureComponent {
-
-    onClickLogout = () => {
-        const {dispatch} = this.props;
-        API.USER.LOGOUT()
-            .then(() => {
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: false});
-                dispatch({type: appActions.SET_AUTH_DATA, user: null});
-            })
-            .catch(error => {
-                toast.error(error.response.data.msgUser);
-            });
+    state = {
+        openMenu: false
     };
 
     render() {
+        const {openMenu} = this.state;
         return (
             <Wrapper>
                 <UserInfo/>
-                <Button title={"Выход"}
-                        height="40px"
-                        onClick={this.onClickLogout}/>
+                <MenuWrapper onClick={() => this.setState({openMenu: !openMenu})}>
+                    <MenuText>Меню</MenuText>
+                    <HumburgerIcon/>
+                </MenuWrapper>
+                <Menu openMenu={openMenu}/>
             </Wrapper>
         )
     }

@@ -13,6 +13,8 @@ import {Paths} from "../Paths";
 import Registration from "components/Auth/Registration";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {API} from "components/API";
+import {appActions} from "reducers/actions";
 registerLocale('ru', ru);
 
 const MainWrapper = styled.div`
@@ -28,7 +30,7 @@ const MainWrapperInner = styled.div`
 `;
 
 const BackgroundContainer = styled.div`
-    background: #e9e9e9;
+    background: #fff;
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -53,17 +55,31 @@ const StyledToastContainer = styled(ToastContainer).attrs({
 }))
 class App extends PureComponent {
     state = {
-        timeoutSessionId: null,
-        loading: true
+        loading: true,
     };
 
     constructor(props) {
         super(props);
         setDefaultLocale('ru');
+        this.checkAuth();
     }
+
+    checkAuth = () => {
+        const {dispatch} = this.props;
+        API.USER.GET_USER()
+            .then(response => {
+                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                this.setState({loading: false});
+            })
+            .catch(() => {
+                this.setState({loading: false});
+            });
+    };
 
     render() {
         const {auth} = this.props;
+        const {loading} = this.state;
         return(
             <MainWrapper>
                 <ReactTooltip className="EventTooltip"/>
@@ -72,14 +88,17 @@ class App extends PureComponent {
                         <MainWrapperInner>
                             <StyledToastContainer />
                             {
-                                auth ?
-                                    <Main/>
+                                loading ?
+                                    null
                                 :
-                                    <Switch>
-                                        <Route exact path={Paths.auth.auth.mask()} render={props => <Auth {...props}/>}/>
-                                        <Route exact path={Paths.auth.registration.mask()} render={props => <Registration {...props}/>}/>
-                                        <Redirect from="/*" to="/" />
-                                    </Switch>
+                                    auth ?
+                                        <Main/>
+                                    :
+                                        <Switch>
+                                            <Route exact path={Paths.auth.auth.mask()} render={props => <Auth {...props}/>}/>
+                                            <Route exact path={Paths.auth.registration.mask()} render={props => <Registration {...props}/>}/>
+                                            <Redirect from="/*" to="/" />
+                                        </Switch>
                             }
                         </MainWrapperInner>
                 </HashRouter>
