@@ -3,6 +3,7 @@ import {booksActions} from "./actions";
 const initial = {
     new_books: [],
     active_books: [],
+    open_book: null,
 };
 
 export function books(state = initial, action) {
@@ -12,6 +13,12 @@ export function books(state = initial, action) {
             return {
                 ...state,
                 new_books: action.new_books
+            };
+        }
+        case booksActions.SET_BOOK: {
+            return {
+                ...state,
+                open_book: action.open_book
             };
         }
         case booksActions.SET_ACTIVE_BOOKS: {

@@ -14,6 +14,7 @@ export const URLS = {
     },
     BOOKS: {
         GET_NEW: apiUrl + "books/get_new",
+        GET: apiUrl + "books/get",
         JOIN_IN_BOOK: apiUrl + "books/join_in_book",
     }
 };

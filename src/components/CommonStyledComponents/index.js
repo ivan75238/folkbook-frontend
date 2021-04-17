@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Page = styled.div`
     width: 100%;
-    height: auto;
+    height: ${props => props.height || "auto"};
     padding: 16px;
 `;
 

@@ -9,6 +9,13 @@ export const get_new_book = async dispatch => {
         });
 };
 
+export const get_book = (dispatch, id_book) => {
+    API.BOOKS.GET(id_book)
+        .then(response => {
+            dispatch({type: booksActions.SET_BOOK, open_book: response.data});
+        });
+};
+
 export const get_active_books = dispatch => {
     API.USER.GET_ACTIVE_BOOKS()
         .then(response => {
