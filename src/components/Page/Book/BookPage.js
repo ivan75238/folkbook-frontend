@@ -266,16 +266,19 @@ class BookPage extends PureComponent {
                                       maxLenght={2000}
                                       placeholder={"Введите текст секции"}/>
                         <ButtonWrapper>
-                            <Container>
-                                <StyledCheckbox label={"Следующая секция последняя в главе"}
-                                                value={next_is_last_in_chapter}
-                                                disabled={disabledInputs}
-                                                onChange={value => this.setState({next_is_last_in_chapter: value})}/>
-                                <StyledCheckbox label={"Следующая секция последняя в книге"}
-                                                value={next_is_last_in_book}
-                                                disabled={disabledInputs}
-                                                onChange={value => this.setState({next_is_last_in_book: value})}/>
-                            </Container>
+                            {
+                                //ToDo: проверка, если в секции проставлены флаги последних признаков, то не показывать это
+                                <Container>
+                                    <StyledCheckbox label={"Следующая секция последняя в главе"}
+                                                    value={next_is_last_in_chapter}
+                                                    disabled={disabledInputs}
+                                                    onChange={value => this.setState({next_is_last_in_chapter: value})}/>
+                                    <StyledCheckbox label={"Следующая секция последняя в книге"}
+                                                    value={next_is_last_in_book}
+                                                    disabled={disabledInputs}
+                                                    onChange={value => this.setState({next_is_last_in_book: value})}/>
+                                </Container>
+                            }
                             {
                                 !disabledInputs &&
                                 <Container>
