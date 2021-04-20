@@ -95,8 +95,9 @@ class Menu extends PureComponent {
     };
 
     openPage = path => {
-        const {history} = this.props;
+        const {history, closeMenu} = this.props;
         history.push(path);
+        closeMenu();
     };
 
     render() {
@@ -138,6 +139,7 @@ Menu.propTypes = {
     openMenu: PropTypes.bool,
     dispatch: PropTypes.func,
     history: PropTypes.func,
+    closeMenu: PropTypes.func,
 };
 
 export default Menu;

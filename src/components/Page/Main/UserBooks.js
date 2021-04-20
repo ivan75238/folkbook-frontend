@@ -4,8 +4,8 @@ import connect from "react-redux/es/connect/connect";
 import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
 import {get_active_books} from "../../../functions/books";
-import moment from "moment";
 import {Paths} from "../../../Paths";
+import {translateStatusSection} from "components/utils";
 
 @connect(state => ({
     user: _get(state.app, "user"),
@@ -39,13 +39,7 @@ class UserBooks extends PureComponent {
                     {
                         active_books.map((book, i) => {
                             const participants = _get(book, "participants", []);
-                            const section_finished_at = moment(_get(book, "last_section.finished_at"));
-                            const section_vote_finished_at = moment(_get(book, "last_section.vote_finished_at"));
-                            let statusSection = "В роботе", timeout = section_finished_at.format("DD.MM.YYYY HH:mm");
-                            if (moment().isAfter(section_finished_at)) {
-                                statusSection = "Идет голосование";
-                                timeout = section_vote_finished_at.format("DD.MM.YYYY HH:mm");
-                            }
+                            const status = translateStatusSection(book);
                             return (
                                 <Row key={i}
                                      onClick={() => this.openBook(book)}
@@ -54,8 +48,8 @@ class UserBooks extends PureComponent {
                                     <Column>{`${participants.length}/${book.max_participants}`}</Column>
                                     <Column>{book.genres.join(", ")}</Column>
                                     <Column>{_get(book, "last_section.number")}</Column>
-                                    <Column>{statusSection}</Column>
-                                    <Column>{timeout}</Column>
+                                    <Column>{status.title}</Column>
+                                    <Column>{status.timeout.format("DD.MM.YYYY HH:mm")}</Column>
                                 </Row>
                             )
                         })

@@ -38,6 +38,18 @@ const API = {
         GET(id_book) {
             return axios.get(`${URLS.BOOKS.GET}?id_book=${id_book}`)
         },
+        GET_DRAFT_SECTION(id_section) {
+            return axios.get(`${URLS.BOOKS.GET_DRAFT_SECTION}?id_section=${id_section}`)
+        },
+        CREATE_DRAFT_SECTION(data) {
+            return axios.post(URLS.BOOKS.CREATE_DRAFT_SECTION, data)
+        },
+        UPDATE_DRAFT_SECTION(data) {
+            return axios.post(URLS.BOOKS.UPDATE_DRAFT_SECTION, data)
+        },
+        SEND_APPLICANT(data) {
+            return axios.post(URLS.BOOKS.SEND_APPLICANT, data)
+        },
     },
 };
 

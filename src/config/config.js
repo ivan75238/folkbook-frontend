@@ -15,6 +15,10 @@ export const URLS = {
     BOOKS: {
         GET_NEW: apiUrl + "books/get_new",
         GET: apiUrl + "books/get",
+        GET_DRAFT_SECTION: apiUrl + "books/get_draft_section",
+        CREATE_DRAFT_SECTION: apiUrl + "books/create_draft_section",
+        UPDATE_DRAFT_SECTION: apiUrl + "books/update_draft_section",
+        SEND_APPLICANT: apiUrl + "books/send_applicant",
         JOIN_IN_BOOK: apiUrl + "books/join_in_book",
     }
 };

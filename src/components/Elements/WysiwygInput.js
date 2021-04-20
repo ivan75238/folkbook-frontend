@@ -6,6 +6,7 @@ import {ContentState, convertToRaw, EditorState} from "draft-js";
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import {toast} from "react-toastify";
 
 const ContentWrapper = styled.div`
   position: relative;
@@ -20,12 +21,22 @@ const ContentWrapper = styled.div`
     
     .rdw-editor-main {
         height: ${props => !props.viewer ? "calc(100% - 41px)" : "100%"};
+        padding: 8px;
 
         .DraftEditor-root {
             margin-top: -16px;
         }    
     }
   }
+`;
+
+const MaxLengthText = styled.div`
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    z-index: 1;
+    font-size: 14px;
+    color: gray;
 `;
 
 class WysiwygInput extends PureComponent {
@@ -46,17 +57,37 @@ class WysiwygInput extends PureComponent {
         }
     }
 
+    getLeft = () => {
+        const {maxLenght} = this.props;
+        const {editorState} = this.state;
+        let length = 0;
+        if (editorState) {
+            const blocks = convertToRaw(editorState.getCurrentContent());
+            blocks.blocks.map(block => {
+                length += block.text.length;
+            })
+        }
+        return maxLenght - length;
+    };
+
     render() {
         const {
             disabled,
             viewer,
-            placeholder
+            placeholder,
+            maxLenght
         } = this.props;
 
         const {editorState} = this.state;
 
+        const chartLeft = this.getLeft();
+
         return (
             <ContentWrapper viewer={viewer}>
+                {
+                    maxLenght && !disabled &&
+                    <MaxLengthText>{`Осталось символов: ${chartLeft <= 0 ? 0 : chartLeft}`}</MaxLengthText>
+                }
                 <Editor
                     toolbar={{
                         options: ["inline", 'list', 'textAlign'],
@@ -74,7 +105,7 @@ class WysiwygInput extends PureComponent {
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
-                    onEditorStateChange={this.onChange}
+                    onEditorStateChange={maxLenght ? chartLeft <= 0 ? null : this.onChange : this.onChange}
                     onBlur={this.onBlur}
                     placeholder={placeholder}
                 />
@@ -83,9 +114,13 @@ class WysiwygInput extends PureComponent {
     }
 
     onBlur = () => {
-        const {onChange} = this.props;
+        const {onChange, maxLenght} = this.props;
         const {editorState} = this.state;
-        onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+        const chartLeft = this.getLeft();
+        if (chartLeft < 0) {
+            return toast.warning("Секция не может быть более 2000 символов, результат не будет сохранен");
+        }
+        onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())), maxLenght ? chartLeft < 0 : false);
     };
 
     onChange = e => {
@@ -98,6 +133,7 @@ WysiwygInput.propTypes = {
     viewer: PropTypes.bool,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
+    maxLenght: PropTypes.number,
     value: PropTypes.string,
 };
 

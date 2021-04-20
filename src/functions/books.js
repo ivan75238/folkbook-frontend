@@ -9,10 +9,27 @@ export const get_new_book = async dispatch => {
         });
 };
 
-export const get_book = (dispatch, id_book) => {
-    API.BOOKS.GET(id_book)
+export const get_book = async (dispatch, id_book) => {
+    await API.BOOKS.GET(id_book)
         .then(response => {
             dispatch({type: booksActions.SET_BOOK, open_book: response.data});
+        });
+};
+
+export const create_draft_section = (data) => {
+    return API.BOOKS.CREATE_DRAFT_SECTION(data);
+};
+
+export const send_applicant = data => API.BOOKS.SEND_APPLICANT(data);
+
+export const update_draft_section = (data) => {
+    return API.BOOKS.UPDATE_DRAFT_SECTION(data);
+};
+
+export const get_draft_section = async (id_section) => {
+    return await API.BOOKS.GET_DRAFT_SECTION(id_section)
+        .then(response => {
+            return response.data;
         });
 };
 

@@ -28,6 +28,14 @@ const MenuWrapper = styled.div`
 const MenuText = styled.div`
     margin-right: 8px;
 `;
+
+const ClickCatcher = styled.div`
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+`;
 //endregion
 
 @connect(() => ({}))
@@ -45,7 +53,12 @@ class Header extends PureComponent {
                     <MenuText>Меню</MenuText>
                     <HumburgerIcon/>
                 </MenuWrapper>
-                <Menu openMenu={openMenu}/>
+                {
+                    openMenu &&
+                    <ClickCatcher onClick={() => this.setState({openMenu: false})}/>
+                }
+                <Menu openMenu={openMenu}
+                      closeMenu={() => this.setState({openMenu: false})}/>
             </Wrapper>
         )
     }
