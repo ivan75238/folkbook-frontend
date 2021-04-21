@@ -60,9 +60,12 @@ class NewBooks extends PureComponent {
                                             participants.indexOf(user.id) > -1 ?
                                                 "Вы участник"
                                                 :
-                                                <Button title={"Записаться"}
-                                                        disabled={disabled}
-                                                        onClick={() => this.joinInBook(book.id)}/>
+                                                participants.length === book.max_participants ?
+                                                    "Заполнена"
+                                                :
+                                                    <Button title={"Записаться"}
+                                                            disabled={disabled}
+                                                            onClick={() => this.joinInBook(book.id)}/>
                                         }
                                     </Column>
                                 </Row>

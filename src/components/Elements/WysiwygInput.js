@@ -16,7 +16,7 @@ const ContentWrapper = styled.div`
     width: 100%;
     z-index: 0;
     border: ${props => !props.viewer ? "1px solid gray" : "none"};
-    height: ${props => !props.viewer ? "calc(100vh - 740px)" : "calc(100vh - 470px)"};
+    height: ${props => props.height ? props.height : !props.viewer ? "calc(100vh - 740px)" : "calc(100vh - 502px)"};
     border-radius: 5px;
     
     .rdw-editor-main {
@@ -75,7 +75,8 @@ class WysiwygInput extends PureComponent {
             disabled,
             viewer,
             placeholder,
-            maxLenght
+            maxLenght,
+            height
         } = this.props;
 
         const {editorState} = this.state;
@@ -83,7 +84,8 @@ class WysiwygInput extends PureComponent {
         const chartLeft = this.getLeft();
 
         return (
-            <ContentWrapper viewer={viewer}>
+            <ContentWrapper viewer={viewer}
+                            height={height}>
                 {
                     maxLenght && !disabled &&
                     <MaxLengthText>{`Осталось символов: ${chartLeft <= 0 ? 0 : chartLeft}`}</MaxLengthText>
@@ -135,6 +137,7 @@ WysiwygInput.propTypes = {
     onChange: PropTypes.func,
     maxLenght: PropTypes.number,
     value: PropTypes.string,
+    height: PropTypes.string,
 };
 
 export default WysiwygInput;

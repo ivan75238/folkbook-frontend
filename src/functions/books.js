@@ -22,12 +22,28 @@ export const create_draft_section = (data) => {
 
 export const send_applicant = data => API.BOOKS.SEND_APPLICANT(data);
 
+export const send_vote_result = data => API.BOOKS.SEND_VOTE_RESULT(data);
+
 export const update_draft_section = (data) => {
     return API.BOOKS.UPDATE_DRAFT_SECTION(data);
 };
 
 export const get_draft_section = async (id_section) => {
     return await API.BOOKS.GET_DRAFT_SECTION(id_section)
+        .then(response => {
+            return response.data;
+        });
+};
+
+export const get_applicants_on_section = async (id_section) => {
+    return await API.BOOKS.GET_APPLICANTS_ON_SECTION(id_section)
+        .then(response => {
+            return response.data;
+        });
+};
+
+export const get_user_vote_from_section = async (id_section) => {
+    return await API.BOOKS.GET_USER_VOTE_FROM_SECTION(id_section)
         .then(response => {
             return response.data;
         });

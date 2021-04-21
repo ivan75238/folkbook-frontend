@@ -8,7 +8,7 @@ const ButtonWrapper = styled.div`
     justify-content: center;
     padding: 0 16px;
     border-radius: 5px;
-    background: ${props => props.background || "#00b700"};
+    background: ${props => props.disabled ? "gray" : props.background || "#00b700"};
     margin: ${props => props.margin};
     padding: ${props => props.padding};
     width: ${props => props.width || "auto"};
@@ -35,6 +35,7 @@ class Button extends PureComponent {
             <ButtonWrapper width={width}
                            height={height}
                            background={background}
+                           disabled={disabled}
                            onClick={disabled ? null : onClick ? onClick : null}
                            padding={padding}
                            margin={margin}>

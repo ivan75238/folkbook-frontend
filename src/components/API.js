@@ -41,6 +41,12 @@ const API = {
         GET_DRAFT_SECTION(id_section) {
             return axios.get(`${URLS.BOOKS.GET_DRAFT_SECTION}?id_section=${id_section}`)
         },
+        GET_APPLICANTS_ON_SECTION(id_section) {
+            return axios.get(`${URLS.BOOKS.GET_APPLICANTS_ON_SECTION}?id_section=${id_section}`)
+        },
+        GET_USER_VOTE_FROM_SECTION(id_section) {
+            return axios.get(`${URLS.BOOKS.GET_USER_VOTE_FROM_SECTION}?id_section=${id_section}`)
+        },
         CREATE_DRAFT_SECTION(data) {
             return axios.post(URLS.BOOKS.CREATE_DRAFT_SECTION, data)
         },
@@ -49,6 +55,9 @@ const API = {
         },
         SEND_APPLICANT(data) {
             return axios.post(URLS.BOOKS.SEND_APPLICANT, data)
+        },
+        SEND_VOTE_RESULT(data) {
+            return axios.post(URLS.BOOKS.SEND_VOTE_RESULT, data)
         },
     },
 };
