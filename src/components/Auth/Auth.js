@@ -66,7 +66,8 @@ class Auth extends PureComponent {
     state = {
         username: "",
         pass: "",
-        disabled: false
+        disabled: false,
+        disabledBtn: false,
     };
 
     constructor(props) {
@@ -91,16 +92,16 @@ class Auth extends PureComponent {
             toast.warn("Введите пароль");
             return;
         }
-        this.setState({disabled: true});
+        this.setState({disabledBtn: true});
 
         API.USER.LOGIN(username, pass)
             .then(response => {
-                this.setState({disabled: false});
+                this.setState({disabledBtn: false});
                 dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
                 dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
             })
             .catch(error => {
-                this.setState({disabled: false});
+                this.setState({disabledBtn: false});
                 if (_get(error, "response.data.msgUser", false))
                     toast.error(error.response.data.msgUser);
                 else
@@ -109,7 +110,7 @@ class Auth extends PureComponent {
     };
 
     render() {
-        const {username, pass, disabled} = this.state;
+        const {username, pass, disabled, disabledBtn} = this.state;
 
         if (disabled) return null;
 
@@ -140,7 +141,7 @@ class Auth extends PureComponent {
                                padding="8px 0"/>
                         <Button title={"Войти"}
                                 height="40px"
-                                disabled={disabled}
+                                disabled={disabledBtn}
                                 onClick={this.login}
                                 margin="16px 0 0 0"/>
                         <LinkText onClick={this.openRegistration}>Регистрация</LinkText>
