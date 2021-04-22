@@ -57,17 +57,22 @@ class WysiwygInput extends PureComponent {
         }
     }
 
-    getLeft = () => {
-        const {maxLenght} = this.props;
+    getOnlyText = () => {
         const {editorState} = this.state;
-        let length = 0;
+        let text = "";
         if (editorState) {
             const blocks = convertToRaw(editorState.getCurrentContent());
             blocks.blocks.map(block => {
-                length += block.text.length;
+                text += block.text;
             })
         }
-        return maxLenght - length;
+        return text;
+    };
+
+    getLeft = () => {
+        const {maxLenght} = this.props;
+        let text = this.getOnlyText();
+        return maxLenght - text.length;
     };
 
     render() {
@@ -108,25 +113,25 @@ class WysiwygInput extends PureComponent {
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
                     onEditorStateChange={maxLenght ? chartLeft <= 0 ? null : this.onChange : this.onChange}
-                    onBlur={this.onBlur}
                     placeholder={placeholder}
                 />
             </ContentWrapper>
         );
     }
 
-    onBlur = () => {
-        const {onChange, maxLenght} = this.props;
-        const {editorState} = this.state;
-        const chartLeft = this.getLeft();
-        if (chartLeft < 0) {
-            return toast.warning("Секция не может быть более 2000 символов, результат не будет сохранен");
-        }
-        onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())), maxLenght ? chartLeft < 0 : false);
-    };
-
     onChange = e => {
-        this.setState({editorState: e});
+        const {onChange, maxLenght} = this.props;
+        this.setState({editorState: e}, () => {
+            const chartLeft = this.getLeft();
+            if (maxLenght && chartLeft < 0) {
+                return toast.warning(`Секция не может быть более ${maxLenght} символов, результат не будет сохранен`);
+            }
+            if (this.getOnlyText().trim() === "") {
+                onChange("", maxLenght ? chartLeft < 0 : false);
+                return;
+            }
+            onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLenght ? chartLeft < 0 : false);
+        });
     };
 }
 
