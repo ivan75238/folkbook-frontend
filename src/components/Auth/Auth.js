@@ -82,8 +82,9 @@ class Auth extends PureComponent {
     };
 
     login = () => {
-        const {username, pass} = this.state;
+        let {username, pass} = this.state;
         const {dispatch} = this.props;
+        username = username.trim();
         if (username === "") {
             toast.warn("Введите имя пользователя");
             return;

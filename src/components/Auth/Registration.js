@@ -70,8 +70,11 @@ class Registration extends PureComponent {
     };
 
     registration = () => {
-        const {username, pass, pass_repeat} = this.state;
+        let {username, pass, pass_repeat} = this.state;
         const {history} = this.props;
+        username = username.trim();
+        const pass_trim = pass.trim();
+        const pass_repeat_trim = pass_repeat.trim();
         if (username === "") {
             toast.warn("Введите имя пользователя");
             return;
@@ -86,6 +89,10 @@ class Registration extends PureComponent {
         }
         if (pass.length < 8) {
             toast.warn("Пароль должен быть минимум 8 символов");
+            return;
+        }
+        if (pass_trim !== pass || pass_repeat_trim !== pass_repeat ) {
+            toast.warn("Пароль не может содержать символы пробела");
             return;
         }
         if (pass_repeat !== pass) {
