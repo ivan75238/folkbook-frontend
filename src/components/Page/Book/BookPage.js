@@ -367,7 +367,7 @@ class BookPage extends PureComponent {
         chapters.map(chapter => {
             chapter.sections = _orderBy(chapter.sections, i => i.number);
             bookText += `<p style="text-align:center;"><span style="font-size: 18px;">Глава ${chapter.number}</span></p>`;
-            chapter.sections.map(section => bookText += `${section.text}`);
+            chapter.sections.map(section => section.text ? bookText += `${section.text}` : "");
         });
         return bookText;
     };
