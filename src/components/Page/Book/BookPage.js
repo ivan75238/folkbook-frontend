@@ -583,6 +583,7 @@ class BookPage extends PureComponent {
             <Popup title={`Вариант №${applicantView.number}`}
                    onClose={() => this.setState({applicantView: null})}
                    width={"600px"}
+                   listenEscForClose={true}
                    buttons={<Button title={"Выбрать этот вариант"}
                                     height={"40px"}
                                     onClick={() => this.setState({

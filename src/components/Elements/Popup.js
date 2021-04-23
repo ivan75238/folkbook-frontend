@@ -89,6 +89,22 @@ const IconContainer = styled.div`
 
 //Стилизованный инпут
 class Popup extends PureComponent {
+    componentDidMount() {
+        const {listenEscForClose, onClose} = this.props;
+        if (listenEscForClose) {
+            document.onkeydown = evt => {
+                evt = evt || window.event;
+                if (evt.keyCode == 27 && onClose) {
+                     onClose();
+                }
+            };
+        }
+    }
+
+    componentWillUnmount() {
+        document.onkeydown =  null;
+    }
+
     render() {
         const { title, width, onClose, children, buttons} = this.props;
         return (
@@ -114,6 +130,7 @@ Popup.propTypes = {
     onClose: PropTypes.func,
     width: PropTypes.string,
     children: PropTypes.any,
+    listenEscForClose: PropTypes.bool,
     buttons: PropTypes.any,
 };
 
