@@ -6,6 +6,7 @@ import {Column, Page, Row, Table, TableName} from "components/CommonStyledCompon
 import {get_active_books} from "../../../functions/books";
 import {Paths} from "../../../Paths";
 import {translateStatusSection} from "components/utils";
+import _orderBy from 'lodash/orderBy';
 
 @connect(state => ({
     user: _get(state.app, "user"),
@@ -23,7 +24,11 @@ class UserBooks extends PureComponent {
     };
 
     render() {
-        const {active_books} = this.props;
+        let {active_books} = this.props;
+        active_books = _orderBy(active_books, book => {
+            const status = translateStatusSection(book);
+            return status.timeout.unix();
+        });
         return (
             <Page>
                 <TableName>Мои книги в работе</TableName>
