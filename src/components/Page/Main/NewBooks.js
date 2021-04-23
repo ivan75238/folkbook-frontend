@@ -7,6 +7,7 @@ import {get_new_book, join_in_book} from "../../../functions/books";
 import {translateStatusBook} from "components/utils";
 import Button from "components/Elements/Button";
 import moment from "moment";
+import Popup from "components/Elements/Popup";
 
 @connect(state => ({
     user: _get(state.app, "user"),
@@ -15,6 +16,7 @@ import moment from "moment";
 class NewBooks extends PureComponent {
     state = {
         disabled: false,
+        showWarning: false
     };
 
     componentDidMount() {
@@ -27,7 +29,7 @@ class NewBooks extends PureComponent {
         const { dispatch, user } = this.props;
         this.setState({disabled: true});
         await join_in_book(dispatch, id_book, user.id);
-        this.setState({disabled: false});
+        this.setState({disabled: false, showWarning: false});
     };
 
     render() {
@@ -65,7 +67,7 @@ class NewBooks extends PureComponent {
                                                 :
                                                     <Button title={"Записаться"}
                                                             disabled={disabled}
-                                                            onClick={() => this.joinInBook(book.id)}/>
+                                                            onClick={() => this.setState({showWarning: book.id})}/>
                                         }
                                     </Column>
                                 </Row>
@@ -73,9 +75,28 @@ class NewBooks extends PureComponent {
                         })
                     }
                 </Table>
+                {this.renderWarning()}
             </Page>
         )
     }
+
+    renderWarning = () => {
+        const { showWarning } = this.state;
+        if (!showWarning)
+            return null;
+
+        return (
+            <Popup title={`Предупреждение`}
+                   onClose={() => this.setState({showWarning: false})}
+                   width={"600px"}
+                   listenEscForClose={true}
+                   buttons={<Button title={"Продолжить"}
+                                    height={"40px"}
+                                    onClick={() => this.joinInBook(showWarning)}/>}>
+                <p>Время начала книги может измениться, если не останется свободных мест для новых участников. В случае изменения даты и времени начала книги, мы пришлем вам письмо на указанный при регистрации адрес электронной почты.</p>
+            </Popup>
+        )
+    };
 }
 
 NewBooks.propTypes = {
