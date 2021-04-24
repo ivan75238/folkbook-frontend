@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
+import { connect } from "react-redux";
 import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
 import {get_active_books} from "../../../functions/books";

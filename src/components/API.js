@@ -35,6 +35,9 @@ const API = {
         GET_NEW() {
             return axios.get(URLS.BOOKS.GET_NEW)
         },
+        GET_ALL_BOOK_WITHOUT_NOT_STARTED(page, countOnPage) {
+            return axios.get(`${URLS.BOOKS.GET_ALL_BOOK_WITHOUT_NOT_STARTED}?page=${page}&countOnPage=${countOnPage}`)
+        },
         GET(id_book) {
             return axios.get(`${URLS.BOOKS.GET}?id_book=${id_book}`)
         },

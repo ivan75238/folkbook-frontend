@@ -23,5 +23,6 @@ export const URLS = {
         SEND_APPLICANT: apiUrl + "books/send_applicant",
         SEND_VOTE_RESULT: apiUrl + "books/send_vote_result",
         JOIN_IN_BOOK: apiUrl + "books/join_in_book",
+        GET_ALL_BOOK_WITHOUT_NOT_STARTED: apiUrl + "books/get_all_book_without_not_started",
     }
 };

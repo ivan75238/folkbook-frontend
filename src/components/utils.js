@@ -7,6 +7,8 @@ export const translateStatusBook = book => {
             return "Поиск авторов";
         case "in_work":
             return "В работе";
+        case "finished":
+            return "Завершена";
     }
 };
 

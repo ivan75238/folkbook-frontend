@@ -4,7 +4,7 @@ import Input from "components/Elements/Input";
 import Button from "components/Elements/Button";
 import PropTypes from "prop-types";
 import {appActions} from "reducers/actions";
-import connect from "react-redux/es/connect/connect";
+import { connect } from "react-redux";
 import {API} from "components/API";
 import {Paths} from "../../Paths";
 import _get from "lodash/get";

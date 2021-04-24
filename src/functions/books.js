@@ -56,6 +56,13 @@ export const get_active_books = dispatch => {
         });
 };
 
+export const get_all_book_without_not_started = (dispatch, page, countOnPage) => {
+    API.BOOKS.GET_ALL_BOOK_WITHOUT_NOT_STARTED(page, countOnPage)
+        .then(response => {
+            dispatch({type: booksActions.SET_ALL_BOOKS, all_books: response.data});
+        });
+};
+
 export const join_in_book = async (dispatch, id_book, id_user) => {
     await API.USER.JOIN_IN_BOOK(id_book, id_user)
         .then(async () => {

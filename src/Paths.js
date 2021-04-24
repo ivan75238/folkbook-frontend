@@ -9,7 +9,11 @@ export const Paths = {
         book : {
             path : (id) => `/book/${id}`,
             mask : () => `/book/:id`,
-        }
+        },
+        all : {
+            path : () => `/book/all`,
+            mask : () => `/book/all`,
+        },
     },
     auth: {
         auth: {
