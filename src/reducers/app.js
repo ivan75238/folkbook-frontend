@@ -3,6 +3,7 @@ import {appActions} from "./actions";
 const initial = {
     auth: false,
     user: null,
+    loading: false,
 };
 
 export function app(state = initial, action) {
@@ -19,6 +20,13 @@ export function app(state = initial, action) {
             return {
                 ...state,
                 user: action.user
+            };
+        }
+
+        case appActions.SET_LOADING: {
+            return {
+                ...state,
+                loading: action.loading
             };
         }
 

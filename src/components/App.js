@@ -15,6 +15,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {API} from "components/API";
 import {appActions} from "reducers/actions";
+import Loader from "components/Elements/Loader";
 registerLocale('ru', ru);
 
 const MainWrapper = styled.div`
@@ -52,6 +53,7 @@ const StyledToastContainer = styled(ToastContainer).attrs({
 @connect(state => ({
     auth: _get(state.app, "auth"),
     user: _get(state.app, "user"),
+    app_loading: _get(state.app, "loading"),
 }))
 class App extends PureComponent {
     state = {
@@ -78,10 +80,11 @@ class App extends PureComponent {
     };
 
     render() {
-        const {auth} = this.props;
+        const {auth, app_loading} = this.props;
         const {loading} = this.state;
         return(
             <MainWrapper>
+                { app_loading && <Loader /> }
                 <ReactTooltip className="EventTooltip"/>
                 <HashRouter>
                     <BackgroundContainer />
@@ -110,6 +113,7 @@ class App extends PureComponent {
 App.propTypes = {
     dispatch: PropTypes.func,
     auth: PropTypes.bool,
+    app_loading: PropTypes.bool,
     user: PropTypes.object,
 };
 

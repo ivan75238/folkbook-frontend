@@ -3,7 +3,7 @@ import {booksActions} from "./actions";
 const initial = {
     new_books: [],
     active_books: [],
-    all_books: [],
+    all_books: null,
     open_book: null,
 };
 

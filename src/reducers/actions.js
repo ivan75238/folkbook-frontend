@@ -5,6 +5,7 @@ import keyMirror from 'fbjs/lib/keyMirror';
 export const appActions = keyMirror({
     SET_AUTH_VALUE: undefined,
     SET_AUTH_DATA: undefined,
+    SET_LOADING: undefined,
 });
 
 

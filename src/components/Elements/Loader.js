@@ -7,12 +7,13 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;    
-    background: #e9e9e9;
+    background: rgba(0,0,0, 0.5);
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 9999;
 `;
 
 const Label = styled.p`
@@ -20,7 +21,7 @@ const Label = styled.p`
     font-size: 18px;
     text-transform: uppercase;
     font-weight: 600; 
-    color: #000;
+    color: #fff;
 `;
 
 const LoaderWrapper = styled.div`
@@ -30,7 +31,7 @@ const LoaderWrapper = styled.div`
     height: 200px;
 `;
 
-class AuthLoader extends PureComponent {
+class Loader extends PureComponent {
 
     render() {
         return (
@@ -44,4 +45,4 @@ class AuthLoader extends PureComponent {
     }
 }
 
-export default AuthLoader;
+export default Loader;
