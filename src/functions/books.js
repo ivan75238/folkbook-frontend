@@ -56,6 +56,15 @@ export const get_active_books = dispatch => {
         });
 };
 
+export const get_all_user_books = (dispatch, page, countOnPage) => {
+    dispatch({type: appActions.SET_LOADING, loading: true});
+    API.USER.GET_ALL_USER_BOOKS(page, countOnPage)
+        .then(response => {
+            dispatch({type: booksActions.SET_ALL_USER_BOOKS, all_user_books: response.data});
+            dispatch({type: appActions.SET_LOADING, loading: false});
+        });
+};
+
 export const get_all_book_without_not_started = (dispatch, page, countOnPage) => {
     dispatch({type: appActions.SET_LOADING, loading: true});
     API.BOOKS.GET_ALL_BOOK_WITHOUT_NOT_STARTED(page, countOnPage)

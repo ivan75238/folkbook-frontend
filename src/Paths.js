@@ -15,6 +15,12 @@ export const Paths = {
             mask : () => `/book/all`,
         },
     },
+    liked_books : {
+        list : {
+            path : () => `/liked_book/list`,
+            mask : () => `/liked_book/list`,
+        },
+    },
     auth: {
         auth: {
             path: () => '/',

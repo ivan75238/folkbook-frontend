@@ -26,6 +26,9 @@ const API = {
         GET_ACTIVE_BOOKS() {
             return axios.get(URLS.USER.GET_ACTIVE_BOOKS)
         },
+        GET_ALL_USER_BOOKS(page, countOnPage) {
+            return axios.get(`${URLS.USER.GET_ALL_USER_BOOKS}?page=${page}&count_on_page=${countOnPage}`)
+        },
         JOIN_IN_BOOK(id_book, id_user) {
             return axios.post(URLS.BOOKS.JOIN_IN_BOOK,{id_book, id_user})
         },
@@ -69,6 +72,9 @@ const API = {
         },
         REMOVE_LIKE(id_book) {
             return axios.post(URLS.LIKED_BOOKS.REMOVE_LIKE, {id_book})
+        },
+        GET_LIKED_BOOKS(page, countOnPage) {
+            return axios.get(`${URLS.LIKED_BOOKS.GET_LIKED_BOOKS}?page=${page}&count_on_page=${countOnPage}`)
         },
     }
 };

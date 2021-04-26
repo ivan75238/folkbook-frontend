@@ -11,6 +11,7 @@ export const URLS = {
         REGISTRATION: apiUrl + "user/registration",
         GET_USER: apiUrl + "user/",
         GET_ACTIVE_BOOKS: apiUrl + "user/get_active_books",
+        GET_ALL_USER_BOOKS: apiUrl + "user/get_all_user_books",
     },
     BOOKS: {
         GET_NEW: apiUrl + "books/get_new",
@@ -28,5 +29,6 @@ export const URLS = {
     LIKED_BOOKS: {
         CREATE_LIKE: apiUrl + "liked_books/create",
         REMOVE_LIKE: apiUrl + "liked_books/remove",
+        GET_LIKED_BOOKS: apiUrl + "liked_books/get",
     }
 };

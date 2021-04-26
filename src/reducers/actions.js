@@ -14,4 +14,6 @@ export const booksActions = keyMirror({
     SET_ACTIVE_BOOKS: undefined,
     SET_BOOK: undefined,
     SET_ALL_BOOKS: undefined,
+    SET_LIKED_BOOKS: undefined,
+    SET_ALL_USER_BOOKS: undefined,
 });

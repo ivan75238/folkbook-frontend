@@ -4,7 +4,9 @@ const initial = {
     new_books: [],
     active_books: [],
     all_books: null,
+    liked_books: null,
     open_book: null,
+    all_user_books: null,
 };
 
 export function books(state = initial, action) {
@@ -31,10 +33,24 @@ export function books(state = initial, action) {
             };
         }
 
+        case booksActions.SET_ALL_USER_BOOKS: {
+            return {
+                ...state,
+                all_user_books: action.all_user_books
+            };
+        }
+
         case booksActions.SET_ALL_BOOKS: {
             return {
                 ...state,
                 all_books: action.all_books
+            };
+        }
+
+        case booksActions.SET_LIKED_BOOKS: {
+            return {
+                ...state,
+                liked_books: action.liked_books
             };
         }
 

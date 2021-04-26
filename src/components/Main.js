@@ -9,6 +9,7 @@ import MainPage from "components/Page/Main/MainPage";
 import Header from "components/Header/Header";
 import BookPage from "components/Page/Book/BookPage";
 import AllBook from "components/Page/AllBook/AllBook";
+import MyBooks from "components/Page/MyBooks/MyBooks";
 
 const MainWrapper = styled.div`
     width: 100vw;
@@ -42,6 +43,8 @@ class Main extends PureComponent {
                     <Switch>
                         <Route exact path={Paths.books.all.mask()} render={props => <AllBook {...props}/>}/>
                         <Route exact path={Paths.books.book.mask()} render={props => <BookPage {...props}/>}/>
+
+                        <Route exact path={Paths.liked_books.list.mask()} render={props => <MyBooks {...props}/>}/>
 
                         <Route exact path={Paths.main.list.mask()} render={props => <MainPage {...props}/>}/>
                     </Switch>
