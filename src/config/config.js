@@ -24,5 +24,9 @@ export const URLS = {
         SEND_VOTE_RESULT: apiUrl + "books/send_vote_result",
         JOIN_IN_BOOK: apiUrl + "books/join_in_book",
         GET_ALL_BOOK_WITHOUT_NOT_STARTED: apiUrl + "books/get_all_book_without_not_started",
+    },
+    LIKED_BOOKS: {
+        CREATE_LIKE: apiUrl + "liked_books/create",
+        REMOVE_LIKE: apiUrl + "liked_books/remove",
     }
 };

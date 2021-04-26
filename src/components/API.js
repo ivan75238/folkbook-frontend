@@ -63,6 +63,14 @@ const API = {
             return axios.post(URLS.BOOKS.SEND_VOTE_RESULT, data)
         },
     },
+    LIKED_BOOKS: {
+        CREATE_LIKE(id_book) {
+            return axios.post(URLS.LIKED_BOOKS.CREATE_LIKE, {id_book})
+        },
+        REMOVE_LIKE(id_book) {
+            return axios.post(URLS.LIKED_BOOKS.REMOVE_LIKE, {id_book})
+        },
+    }
 };
 
 export {API}

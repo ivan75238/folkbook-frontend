@@ -20,6 +20,8 @@ import {toast} from "react-toastify";
 import CheckedApplicantIcon from "components/Icons/CheckedApplicantIcon";
 import Popup from "components/Elements/Popup";
 import {booksActions} from "reducers/actions";
+import Heart from "components/Icons/Heart";
+import {create_like, remove_like} from "../../../functions/liked_books";
 
 const BookInfo = styled.div`
     width: 100%;
@@ -28,6 +30,16 @@ const BookInfo = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     margin-bottom: 16px;
+    position: relative;
+`;
+
+const LikedIconWrapper = styled.div`
+    height: 24px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    display: flex;
 `;
 
 const Column = styled.div`
@@ -48,6 +60,13 @@ const Text = styled.p`
     span {
         font-weight: bold;    
     }
+`;
+
+const CountLikesText = styled.p`
+    font-weight: bold;
+    font-size: 20px; 
+    margin-right: 8px;
+    color: #000;
 `;
 
 const Title = styled.p`
@@ -200,7 +219,8 @@ class BookPage extends PureComponent {
         if(this.props.match && this.props.match.params && this.props.match.params.id) {
             this.setState({id_book: this.props.match.params.id});
             get_book(dispatch, this.props.match.params.id);
-        } else {
+        }
+        else {
             this.setState({error: 'Книга не найдена'});
         }
     }
@@ -378,6 +398,25 @@ class BookPage extends PureComponent {
         return chapters[0].sections[0];
     };
 
+    setLiked = async (isLiked) => {
+        const {dispatch, open_book} = this.props;
+        const {disabled} = this.state;
+
+        if (disabled)
+            return null;
+
+        if (isLiked) {
+            this.setState({disabled: true});
+            await remove_like(dispatch, open_book.id);
+            this.setState({disabled: false});
+        }
+        else {
+            this.setState({disabled: true});
+            await create_like(dispatch, open_book.id);
+            this.setState({disabled: false});
+        }
+    };
+
     render() {
         const {error} = this.state;
         const {open_book, user} = this.props;
@@ -392,11 +431,13 @@ class BookPage extends PureComponent {
         open_book.last_section = this.getLastSection(open_book);
         const status = translateStatusSection(open_book);
 
+        const isLiked = open_book.likes.indexOf(user.id) > -1;
+
         return (
             <Page height={"calc(100vh - 49px)"}>
                 <BookInfo>
                     <Column>
-                        <Text><span>Название: </span>{open_book.name}</Text>
+                        <Text><span>Название: </span>{open_book.name} </Text>
                         <Text><span>Возрастное ограничение: </span>{open_book.age_rating}</Text>
                         <Text><span>Жанры: </span>{open_book.genres.join(", ")}</Text>
                     </Column>
@@ -404,6 +445,10 @@ class BookPage extends PureComponent {
                         <Text><span>Статус: </span>{status.title}</Text>
                         <Text><span>Срок: </span>{status.timeout.format("DD.MM.YYYY HH:mm")}</Text>
                     </Column>
+                    <LikedIconWrapper onClick={() => this.setLiked(isLiked)}>
+                        <CountLikesText>{open_book.likes.length}</CountLikesText>
+                        <Heart color={isLiked ? "red" : "black"}/>
+                    </LikedIconWrapper>
                 </BookInfo>
                 <Title>Содержание</Title>
                 <ContentWrapper>
