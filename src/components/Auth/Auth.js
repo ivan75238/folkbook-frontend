@@ -9,6 +9,8 @@ import {API} from "components/API";
 import {Paths} from "../../Paths";
 import _get from "lodash/get";
 import {toast} from "react-toastify";
+import VkAuth from 'react-vk-auth';
+
 
 const ContentWrapper = styled.div`
     width: 100vw;
@@ -110,6 +112,10 @@ class Auth extends PureComponent {
             });
     };
 
+    handleVkResponse = (data) => {
+        console.log(data);
+    };
+
     render() {
         const {username, pass, disabled, disabledBtn} = this.state;
 
@@ -147,6 +153,8 @@ class Auth extends PureComponent {
                                 margin="16px 0 0 0"/>
                         <LinkText onClick={this.openRegistration}>Регистрация</LinkText>
                     </InputWrapper>
+                    <VkAuth apiId="7849610"
+                            callback={this.handleVkResponse} />
                 </Container>
             </ContentWrapper>
         )
