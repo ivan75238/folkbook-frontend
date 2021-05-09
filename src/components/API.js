@@ -14,6 +14,9 @@ const API = {
         LOGIN(username, password) {
             return axios.post(URLS.USER.LOGIN, {username, password})
         },
+        LOGIN_VK(data) {
+            return axios.post(URLS.USER.LOGIN_VK, data)
+        },
         REGISTRATION(username, password) {
             return axios.post(URLS.USER.REGISTRATION, {username, password})
         },

@@ -10,6 +10,7 @@ import {Paths} from "../../Paths";
 import _get from "lodash/get";
 import {toast} from "react-toastify";
 import VkAuth from 'react-vk-auth';
+import LogoVk from "components/Icons/LogoVk";
 
 
 const ContentWrapper = styled.div`
@@ -50,6 +51,33 @@ const InputWrapper = styled.div`
     padding: 16px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const VkButton = styled.div`
+    width: 48px;
+    height: 48px;
+
+button {
+    background: transparent;
+    border: none;
+    padding: 0px;
+}
+`;
+
+const LogoWrapper = styled.div`
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const OAuthWrapper = styled.div`
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: center;
 `;
@@ -114,6 +142,31 @@ class Auth extends PureComponent {
 
     handleVkResponse = (data) => {
         console.log(data);
+        if (data.status === "connected") {
+            this.setState({ disabled: true, disabledBtn: true });
+            const data_for_request = {
+                username: data.user.id,
+                first_name: data.user.first_name,
+                last_name: data.user.last_name,
+                href: data.user.href,
+                secret: data.secret,
+                status: data.status,
+                expire: data.expire,
+                password: data.expire,
+            };
+            API.USER.LOGIN_VK(data_for_request)
+                .then(response => {
+                    this.setState({disabledBtn: false, disabled: false});
+                    dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                    dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                })
+                .catch(error => {
+                    console.log("_get(error, \"response.data.msgUser\", false)", _get(error, "response", ));
+                });
+        }
+        else {
+            toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+        }
     };
 
     render() {
@@ -153,8 +206,16 @@ class Auth extends PureComponent {
                                 margin="16px 0 0 0"/>
                         <LinkText onClick={this.openRegistration}>Регистрация</LinkText>
                     </InputWrapper>
-                    <VkAuth apiId="7849610"
-                            callback={this.handleVkResponse} />
+                    <OAuthWrapper>
+                        <VkButton>
+                            <VkAuth apiId="7849610"
+                                    callback={this.handleVkResponse} >
+                                <LogoWrapper>
+                                    <LogoVk/>
+                                </LogoWrapper>
+                            </VkAuth>
+                        </VkButton>
+                    </OAuthWrapper>
                 </Container>
             </ContentWrapper>
         )

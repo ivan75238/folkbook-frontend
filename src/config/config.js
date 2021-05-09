@@ -7,6 +7,7 @@ const apiUrl = process.env.NODE_ENV !== 'production' ? apiUrlDev : apiUrlProd;
 export const URLS = {
     USER: {
         LOGIN: apiUrl + "user/login",
+        LOGIN_VK: apiUrl + "user/login_vk",
         LOGOUT: apiUrl + "user/logout",
         REGISTRATION: apiUrl + "user/registration",
         GET_USER: apiUrl + "user/",
