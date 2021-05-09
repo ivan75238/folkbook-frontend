@@ -10,6 +10,7 @@ export const URLS = {
         LOGIN_VK: apiUrl + "user/login_vk",
         LOGOUT: apiUrl + "user/logout",
         REGISTRATION: apiUrl + "user/registration",
+        REGISTRATION_VK: apiUrl + "user/registration_vk",
         GET_USER: apiUrl + "user/",
         GET_ACTIVE_BOOKS: apiUrl + "user/get_active_books",
         GET_ALL_USER_BOOKS: apiUrl + "user/get_all_user_books",

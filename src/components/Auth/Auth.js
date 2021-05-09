@@ -142,7 +142,6 @@ class Auth extends PureComponent {
 
     handleVkResponse = (data) => {
         const {dispatch} = this.props;
-        console.log(data);
         if (data.status === "connected") {
             this.setState({ disabled: true, disabledBtn: true });
             const data_for_request = {
@@ -162,11 +161,35 @@ class Auth extends PureComponent {
                     dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
                 })
                 .catch(error => {
-                    console.log("_get(error, \"response.data.msgUser\", false)", _get(error, "response", ));
+                    //Делаем регистрацию
+                    if (error.response.status === 401) {
+                        API.USER.REGISTRATION_VK(data_for_request)
+                            .then(() => {
+                                API.USER.LOGIN_VK(data_for_request)
+                                    .then(response => {
+                                        this.setState({disabledBtn: false, disabled: false});
+                                        dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                                        dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                                    })
+                                    .catch(() => {
+                                        toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                                        this.setState({disabledBtn: false, disabled: false});
+                                    })
+                            })
+                            .catch(() => {
+                                toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                                this.setState({disabledBtn: false, disabled: false});
+                            })
+                    }
+                    else {
+                        toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                        this.setState({disabledBtn: false, disabled: false});
+                    }
                 });
         }
         else {
             toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+            this.setState({disabledBtn: false, disabled: false});
         }
     };
 
