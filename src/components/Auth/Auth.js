@@ -146,14 +146,14 @@ class Auth extends PureComponent {
         if (data.status === "connected") {
             this.setState({ disabled: true, disabledBtn: true });
             const data_for_request = {
-                username: data.user.id,
-                first_name: data.user.first_name,
-                last_name: data.user.last_name,
-                href: data.user.href,
-                secret: data.secret,
+                username: data.session.user.id,
+                first_name: data.session.user.first_name,
+                last_name: data.session.user.last_name,
+                href: data.session.user.href,
+                secret: data.session.secret,
                 status: data.status,
-                expire: data.expire,
-                password: data.expire,
+                expire: data.session.expire,
+                password: data.session.expire,
             };
             API.USER.LOGIN_VK(data_for_request)
                 .then(response => {
