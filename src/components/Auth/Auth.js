@@ -141,6 +141,7 @@ class Auth extends PureComponent {
     };
 
     handleVkResponse = (data) => {
+        const {dispatch} = this.props;
         console.log(data);
         if (data.status === "connected") {
             this.setState({ disabled: true, disabledBtn: true });
