@@ -217,10 +217,10 @@ class Auth extends PureComponent {
     };
 
     responseGoogle = (response) => {
-        const {dispatch} = this.props;
+        //const {dispatch} = this.props;
         this.setState({ disabled: true, disabledBtn: true });
         console.log(response);
-        const data_for_request = {
+        /*const data_for_request = {
             username: data.session.user.id,
             first_name: data.session.user.first_name,
             last_name: data.session.user.last_name,
@@ -229,7 +229,7 @@ class Auth extends PureComponent {
             status: data.status,
             expire: data.session.expire,
             password: data.session.expire,
-        };
+        };*/
         if (!response.error) {
 
         }
