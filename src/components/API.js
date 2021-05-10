@@ -17,11 +17,17 @@ const API = {
         LOGIN_VK(data) {
             return axios.post(URLS.USER.LOGIN_VK, data)
         },
+        LOGIN_GOOGLE(data) {
+            return axios.post(URLS.USER.LOGIN_GOOGLE, data)
+        },
         REGISTRATION(username, password) {
             return axios.post(URLS.USER.REGISTRATION, {username, password})
         },
         REGISTRATION_VK(data) {
             return axios.post(URLS.USER.REGISTRATION_VK, data)
+        },
+        REGISTRATION_GOOGLE(data) {
+            return axios.post(URLS.USER.REGISTRATION_GOOGLE, data)
         },
         LOGOUT() {
             return axios.post(URLS.USER.LOGOUT)

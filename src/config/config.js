@@ -8,9 +8,11 @@ export const URLS = {
     USER: {
         LOGIN: apiUrl + "user/login",
         LOGIN_VK: apiUrl + "user/login_vk",
+        LOGIN_GOOGLE: apiUrl + "user/login_google",
         LOGOUT: apiUrl + "user/logout",
         REGISTRATION: apiUrl + "user/registration",
         REGISTRATION_VK: apiUrl + "user/registration_vk",
+        REGISTRATION_GOOGLE: apiUrl + "user/registration_google",
         GET_USER: apiUrl + "user/",
         GET_ACTIVE_BOOKS: apiUrl + "user/get_active_books",
         GET_ALL_USER_BOOKS: apiUrl + "user/get_all_user_books",

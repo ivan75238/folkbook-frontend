@@ -217,22 +217,51 @@ class Auth extends PureComponent {
     };
 
     responseGoogle = (response) => {
-        //const {dispatch} = this.props;
+        const {dispatch} = this.props;
         this.setState({ disabled: true, disabledBtn: true });
-        console.log(response);
-        /*const data_for_request = {
-            username: data.session.user.id,
-            first_name: data.session.user.first_name,
-            last_name: data.session.user.last_name,
-            href: data.session.user.href,
-            secret: data.session.secret,
-            status: data.status,
-            expire: data.session.expire,
-            password: data.session.expire,
-        };
         if (!response.error) {
-
-        }*/
+            const data_for_request = {
+                username: response.profileObj.googleId,
+                email: response.profileObj.email,
+                first_name: response.profileObj.givenName,
+                last_name: response.profileObj.familyName,
+                secret: response.accessToken,
+                expire: response.Aa,
+                password: response.Aa
+            };
+            API.USER.LOGIN_GOOGLE(data_for_request)
+                .then(response => {
+                    this.setState({disabledBtn: false, disabled: false});
+                    dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                    dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                })
+                .catch(error => {
+                    //Делаем регистрацию
+                    if (error.response.status === 401) {
+                        API.USER.REGISTRATION_GOOGLE(data_for_request)
+                            .then(() => {
+                                API.USER.LOGIN_GOOGLE(data_for_request)
+                                    .then(response => {
+                                        this.setState({disabledBtn: false, disabled: false});
+                                        dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+                                        dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+                                    })
+                                    .catch(() => {
+                                        toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                                        this.setState({disabledBtn: false, disabled: false});
+                                    })
+                            })
+                            .catch(() => {
+                                toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                                this.setState({disabledBtn: false, disabled: false});
+                            })
+                    }
+                    else {
+                        toast.error("Произошла ошибка, повторите попытку или попробуйте позже");
+                        this.setState({disabledBtn: false, disabled: false});
+                    }
+                });
+        }
     };
 
     render() {
