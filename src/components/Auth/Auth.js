@@ -11,6 +11,8 @@ import _get from "lodash/get";
 import {toast} from "react-toastify";
 import VkAuth from 'react-vk-auth';
 import LogoVk from "components/Icons/LogoVk";
+import { GoogleLogin } from 'react-google-login';
+import LogoGoogle from "components/Icons/LogoGoogle";
 
 
 const ContentWrapper = styled.div`
@@ -69,6 +71,21 @@ button {
 const LogoWrapper = styled.div`
     width: 32px;
     height: 32px;
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+`;
+
+const GoogleWrapper = styled.div`
+    width: 22px;
+    height: 22px;
     margin: 8px;
     display: flex;
     align-items: center;
@@ -199,6 +216,25 @@ class Auth extends PureComponent {
         }
     };
 
+    responseGoogle = (response) => {
+        const {dispatch} = this.props;
+        this.setState({ disabled: true, disabledBtn: true });
+        console.log(response);
+        const data_for_request = {
+            username: data.session.user.id,
+            first_name: data.session.user.first_name,
+            last_name: data.session.user.last_name,
+            href: data.session.user.href,
+            secret: data.session.secret,
+            status: data.status,
+            expire: data.session.expire,
+            password: data.session.expire,
+        };
+        if (!response.error) {
+
+        }
+    };
+
     render() {
         const {username, pass, disabled, disabledBtn} = this.state;
 
@@ -245,6 +281,18 @@ class Auth extends PureComponent {
                                 </LogoWrapper>
                             </VkAuth>
                         </VkButton>
+                        <GoogleLogin
+                            clientId="556493551813-43hqhe31birgr84pre1lkvp20hs506o9.apps.googleusercontent.com"
+                            render={renderProps => (
+                                <GoogleWrapper onClick={() => renderProps.onClick()}>
+                                    <LogoGoogle />
+                                </GoogleWrapper>
+                            )}
+                            buttonText="Login"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
                     </OAuthWrapper>
                 </Container>
             </ContentWrapper>
