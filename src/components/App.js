@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import _get from 'lodash/get';
 import ReactTooltip from "react-tooltip";
-import Auth from "components/Auth/Auth";
+import AuthPage from "components/Auth/AuthPage";
 import Main from "components/Main";
 import {registerLocale, setDefaultLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
@@ -98,7 +98,7 @@ class App extends PureComponent {
                                         <Main/>
                                     :
                                         <Switch>
-                                            <Route exact path={Paths.auth.auth.mask()} render={props => <Auth {...props}/>}/>
+                                            <Route exact path={Paths.auth.auth.mask()} render={props => <AuthPage {...props}/>}/>
                                             <Route exact path={Paths.auth.registration.mask()} render={props => <Registration {...props}/>}/>
                                             <Redirect from="/*" to="/" />
                                         </Switch>

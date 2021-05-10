@@ -8,7 +8,8 @@ const ButtonWrapper = styled.div`
     justify-content: center;
     padding: 0 16px;
     border-radius: 5px;
-    background: ${props => props.disabled ? "gray" : props.background || "#00b700"};
+    border: ${props => props.border};
+    background: ${props => props.disabled ? "gray" : props.background || "#3366FF"};
     margin: ${props => props.margin};
     padding: ${props => props.padding};
     width: ${props => props.width || "auto"};
@@ -16,7 +17,7 @@ const ButtonWrapper = styled.div`
     cursor: pointer;
     
     &:hover {
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        box-shadow: 0 0 3px rgba(0,0,0,0.4);
     }
 `;
 
@@ -30,21 +31,40 @@ const Label = styled.p`
 class Button extends PureComponent {
 
     render() {
-        const {title, width, height, textColor, disabled, fontSize, margin, onClick, background, padding} = this.props;
-        return (
-            <ButtonWrapper width={width}
-                           height={height}
-                           background={background}
-                           disabled={disabled}
-                           onClick={disabled ? null : onClick ? onClick : null}
-                           padding={padding}
-                           margin={margin}>
-                <Label fontSize={fontSize}
-                       textColor={textColor}>
-                    {title}
-                </Label>
-            </ButtonWrapper>
-        )
+        const {title, width, height, textColor, disabled, fontSize, margin, onClick, background, padding, type} = this.props;
+        switch (type) {
+            case "fill-white":
+                return (
+                    <ButtonWrapper width={width}
+                                   height={height}
+                                   background={"transparent"}
+                                   disabled={disabled}
+                                   border={"2px solid white"}
+                                   onClick={disabled ? null : onClick ? onClick : null}
+                                   padding={padding}
+                                   margin={margin}>
+                        <Label fontSize={fontSize}
+                               textColor={"white"}>
+                            {title}
+                        </Label>
+                    </ButtonWrapper>
+                );
+            default:
+                return (
+                    <ButtonWrapper width={width}
+                                   height={height}
+                                   background={background}
+                                   disabled={disabled}
+                                   onClick={disabled ? null : onClick ? onClick : null}
+                                   padding={padding}
+                                   margin={margin}>
+                        <Label fontSize={fontSize}
+                               textColor={textColor}>
+                            {title}
+                        </Label>
+                    </ButtonWrapper>
+                )
+        }
     }
 }
 
@@ -61,6 +81,7 @@ Button.propTypes = {
     height: PropTypes.string,
     margin: PropTypes.string,
     padding: PropTypes.string,
+    type: PropTypes.string,
 };
 
 export default Button;

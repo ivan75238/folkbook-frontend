@@ -42,7 +42,7 @@ const IconWrapper = styled.div`
 const InputStyled = styled.input`
     width: 100%;
     font-family: "GothamPro", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     height: ${props => props.height}; 
     border: 1px solid #cdcdcd;
     box-sizing: border-box;
@@ -52,7 +52,6 @@ const InputStyled = styled.input`
     color: #000;
     padding: 0 16px;
     outline: none;
-    -webkit-appearance: none;
 `;
 
 //Стилизованный инпут
