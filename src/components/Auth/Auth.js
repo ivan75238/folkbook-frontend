@@ -229,10 +229,10 @@ class Auth extends PureComponent {
             status: data.status,
             expire: data.session.expire,
             password: data.session.expire,
-        };*/
+        };
         if (!response.error) {
 
-        }
+        }*/
     };
 
     render() {
