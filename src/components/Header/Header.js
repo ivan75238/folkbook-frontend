@@ -9,11 +9,21 @@ import HumburgerIcon from "components/Icons/HumburgerIcon";
 //region Styled
 const Wrapper = styled.div`
     width: 100vw;
+    height: 48px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e7e8ec;
+`;
+
+const WrapperInner = styled.div`
+    width: 100%;
+    max-width: 1180px;
+    padding: 0px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px;
-    border-bottom: 1px solid gray;
 `;
 
 const MenuWrapper = styled.div`
@@ -21,8 +31,12 @@ const MenuWrapper = styled.div`
     height: 100%;
     align-items: center;
     justify-content: flex-end;
-    padding: 4px;
     cursor: pointer;
+    
+    svg {
+        width: 38px;
+        height: 38px;
+    }
 `;
 
 const MenuText = styled.div`
@@ -48,17 +62,19 @@ class Header extends PureComponent {
         const {openMenu} = this.state;
         return (
             <Wrapper>
-                <UserInfo/>
-                <MenuWrapper onClick={() => this.setState({openMenu: !openMenu})}>
-                    <MenuText>Меню</MenuText>
-                    <HumburgerIcon/>
-                </MenuWrapper>
-                {
-                    openMenu &&
-                    <ClickCatcher onClick={() => this.setState({openMenu: false})}/>
-                }
-                <Menu openMenu={openMenu}
-                      closeMenu={() => this.setState({openMenu: false})}/>
+                <WrapperInner>
+                    <UserInfo/>
+                    <MenuWrapper onClick={() => this.setState({openMenu: !openMenu})}>
+                        <MenuText>Меню</MenuText>
+                        <HumburgerIcon/>
+                    </MenuWrapper>
+                    {
+                        openMenu &&
+                        <ClickCatcher onClick={() => this.setState({openMenu: false})}/>
+                    }
+                    <Menu openMenu={openMenu}
+                          closeMenu={() => this.setState({openMenu: false})}/>
+                </WrapperInner>
             </Wrapper>
         )
     }

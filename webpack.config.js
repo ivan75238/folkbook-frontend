@@ -55,6 +55,7 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html",
             inject: 'body',
+            favicon: "./src/common/favicon.svg",
         }),
         new CopyPlugin([
             {from: 'src/config/*.json', toType: 'dir'},

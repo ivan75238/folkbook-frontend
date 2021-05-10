@@ -28,6 +28,7 @@ const MainWrapperInner = styled.div`
     width: 100vw;
     height: 100vh;
     position: relative;
+    background-color: #F5F5F5;
 `;
 
 const BackgroundContainer = styled.div`
