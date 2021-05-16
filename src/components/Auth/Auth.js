@@ -1,30 +1,19 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
 import Input from "components/Elements/Input";
 import Button from "components/Elements/Button";
-import PropTypes from "prop-types";
-import {appActions} from "reducers/actions";
-import { connect } from "react-redux";
-import {API} from "components/API";
-import _get from "lodash/get";
 import {toast} from "react-toastify";
+import {API} from "components/API";
+import {appActions} from "reducers/actions";
+import _get from "lodash/get";
+import {useDispatch} from "react-redux";
 
-@connect(() => ({}))
-class Auth extends PureComponent {
-    state = {
-        username: "",
-        pass: "",
-        disabled: false,
-        disabledBtn: false,
-    };
+export const Auth = () => {
+    const [username, setUsername] = useState("");
+    const [pass, setPass] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const dispatch = useDispatch();
 
-    constructor(props) {
-        super(props);
-    }
-
-    login = () => {
-        let {username, pass} = this.state;
-        const {dispatch} = this.props;
-        username = username.trim();
+    const login = async () => {
         if (username === "") {
             toast.warn("Введите имя пользователя");
             return;
@@ -33,62 +22,47 @@ class Auth extends PureComponent {
             toast.warn("Введите пароль");
             return;
         }
-        this.setState({disabledBtn: true});
-
-        API.USER.LOGIN(username, pass)
-            .then(response => {
-                this.setState({disabledBtn: false});
-                dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-            })
-            .catch(error => {
-                this.setState({disabledBtn: false});
-                if (_get(error, "response.data.msgUser", false))
-                    toast.error(error.response.data.msgUser);
-                else
-                    toast.error("Неправилный email или пароль");
-            });
+        setDisabled(true);
+        try {
+            const response = await API.USER.LOGIN(username, pass);
+            dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
+            dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
+            setDisabled(false);
+        }
+        catch(error) {
+            setDisabled(false);
+            if (_get(error, "response.data.msgUser", false))
+                toast.error(error.response.data.msgUser);
+            else
+                toast.error("Неправилный email или пароль");
+        }
     };
 
-    render() {
-        const {username, pass, disabled, disabledBtn} = this.state;
-
-        if (disabled) return null;
-
-        return (
-            <>
-                <Input width="100%"
-                       value={username}
-                       onChange={val => this.setState({username: val})}
-                       disabled={disabled}
-                       onEnterPress={this.login}
-                       title="Почта"
-                       height="40px"
-                       padding="8px 0"/>
-                <Input width="100%"
-                       value={pass}
-                       disabled={disabled}
-                       onEnterPress={this.login}
-                       onChange={val => this.setState({pass: val})}
-                       title="Пароль"
-                       height="40px"
-                       type={"password"}
-                       margin="16px 0 0 0"
-                       padding="8px 0"/>
-                <Button title={"Войти"}
-                        height="40px"
-                        disabled={disabledBtn}
-                        onClick={this.login}
-                        margin="16px 0 0 0"/>
-            </>
-        )
-    }
-}
-
-Auth.propTypes = {
-    updateSession: PropTypes.func,
-    dispatch: PropTypes.func,
-    history: PropTypes.object,
+    return (
+        <>
+            <Input width="100%"
+                   value={username}
+                   onChange={val => setUsername(val.trim())}
+                   disabled={disabled}
+                   onEnterPress={login}
+                   title="Почта"
+                   height="40px"
+                   padding="8px 0"/>
+            <Input width="100%"
+                   value={pass}
+                   disabled={disabled}
+                   onEnterPress={login}
+                   onChange={val => setPass(val.trim())}
+                   title="Пароль"
+                   height="40px"
+                   type={"password"}
+                   margin="16px 0 0 0"
+                   padding="8px 0"/>
+            <Button title={"Войти"}
+                    height="40px"
+                    disabled={disabled}
+                    onClick={login}
+                    margin="16px 0 0 0"/>
+        </>
+    )
 };
-
-export default Auth;

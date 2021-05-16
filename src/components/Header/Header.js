@@ -1,7 +1,5 @@
-import React, {PureComponent} from "react";
-import PropTypes from "prop-types";
+import React, {useState} from "react";
 import styled from "styled-components";
-import {connect} from "react-redux";
 import UserInfo from "components/Header/UserInfo";
 import Menu from "components/Menu/Menu";
 import HumburgerIcon from "components/Icons/HumburgerIcon";
@@ -52,37 +50,23 @@ const ClickCatcher = styled.div`
 `;
 //endregion
 
-@connect(() => ({}))
-class Header extends PureComponent {
-    state = {
-        openMenu: false
-    };
-
-    render() {
-        const {openMenu} = this.state;
-        return (
-            <Wrapper>
-                <WrapperInner>
-                    <UserInfo/>
-                    <MenuWrapper onClick={() => this.setState({openMenu: !openMenu})}>
-                        <MenuText>Меню</MenuText>
-                        <HumburgerIcon/>
-                    </MenuWrapper>
-                    {
-                        openMenu &&
-                        <ClickCatcher onClick={() => this.setState({openMenu: false})}/>
-                    }
-                    <Menu openMenu={openMenu}
-                          closeMenu={() => this.setState({openMenu: false})}/>
-                </WrapperInner>
-            </Wrapper>
-        )
-    }
-}
-
-Header.propTypes = {
-    user: PropTypes.object,
-    dispatch: PropTypes.func,
+export const Header = () => {
+    const [openMenu, setOpenMenu] = useState(false);
+    return (
+        <Wrapper>
+            <WrapperInner>
+                <UserInfo/>
+                <MenuWrapper onClick={() => setOpenMenu(!openMenu)}>
+                    <MenuText>Меню</MenuText>
+                    <HumburgerIcon/>
+                </MenuWrapper>
+                {
+                    openMenu &&
+                    <ClickCatcher onClick={() => setOpenMenu(false)}/>
+                }
+                <Menu openMenu={openMenu}
+                      closeMenu={() => setOpenMenu(false)}/>
+            </WrapperInner>
+        </Wrapper>
+    )
 };
-
-export default Header;

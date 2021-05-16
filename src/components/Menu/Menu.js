@@ -1,13 +1,14 @@
-import React, {PureComponent} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import {Items} from "components/Menu/Items";
+import { useHistory } from "react-router-dom";
 import {API} from "components/API";
 import {appActions} from "reducers/actions";
 import {toast} from "react-toastify";
-import {connect} from "react-redux";
-import {Items} from "components/Menu/Items";
-import {withRouter} from "react-router-dom";
+import {useDispatch} from "react-redux";
 
+//region Styled
 const Wrapper = styled.div`
     position: fixed;
     z-index: 1000;
@@ -46,99 +47,75 @@ const Item = styled.div`
         color: #42526E;
     }
 `;
+//endregion
 
-@withRouter
-@connect(() => ({}))
-class Menu extends PureComponent {
-    state = {
-        activeMenuId: 0,
-    };
+export const Menu = ({openMenu, closeMenu}) => {
+    const [activeMenuId, setActiveMenuId] = useState(0);
+    const itemsTop = Items.filter(i => i.id < 100);
+    const itemsBottom = Items.filter(i => i.id > 100);
+    let history = useHistory();
+    let dispatch = useDispatch();
 
-    unlisten = null;
-
-    componentDidMount() {
-        this.onLocationChange(this);
-        this.unlisten = this.props.history.listen(() => {
-            this.onLocationChange(this)
-        });
-    }
-
-    componentWillUnmount() {
-        this.unlisten();
-    }
-
-    onClickLogout = () => {
-        const {dispatch} = this.props;
-        API.USER.LOGOUT()
-            .then(() => {
-                dispatch({type: appActions.SET_AUTH_VALUE, auth: false});
-                dispatch({type: appActions.SET_AUTH_DATA, user: null});
-            })
-            .catch(error => {
-                toast.error(error.response.data.msgUser);
+    useEffect(() => {
+        const onLocationChange = () => {
+            const pathname = window.location.hash.split('/');
+            const findMenuItem = Items.find(i => {
+                const pathParsed = i.path.split('/');
+                if (pathname.findIndex(j => j === pathParsed[1]) > -1)
+                    return i;
             });
-    };
+            setActiveMenuId(findMenuItem ? findMenuItem.id : -1);
+        };
+        return history.listen(onLocationChange);
+    });
 
-    onLocationChange = (_this) => {
-        const pathname = window.location.hash.split('/');
-        const findMenuItem = Items.find(i => {
-            const pathParsed = i.path.split('/');
-            if (pathname.findIndex(j => j === pathParsed[1]) > -1)
-                return i;
-        });
-        if (findMenuItem) {
-            _this.setState({activeMenuId: findMenuItem.id});
-        }
-        else {
-            _this.setState({activeMenuId: -1});
-        }
-    };
-
-    openPage = path => {
-        const {history, closeMenu} = this.props;
+    const openPage = path => {
         history.push(path);
         closeMenu();
     };
 
-    render() {
-        const {openMenu} = this.props;
-        const {activeMenuId} = this.state;
-        const itemsTop = Items.filter(i => i.id < 100);
-        const itemsBottom = Items.filter(i => i.id > 100);
-        return(
-            <Wrapper openMenu={openMenu}>
-                <MenuWrapper>
-                    {
-                        itemsTop.map((item, i) => {
-                            return <Item key={i}
-                                         isActive={activeMenuId === item.id}
-                                         onClick={() => this.openPage(item.path)}>
-                                        {item.title}
-                                    </Item>;
-                        })
-                    }
-                </MenuWrapper>
-                <MenuWrapper>
-                    {
-                        itemsBottom.map((item, i) => {
-                            return <Item key={i}
-                                         isActive={activeMenuId === item.id}
-                                         onClick={() => this.openPage(item.path)}>
-                                {item.title}
-                            </Item>;
-                        })
-                    }
-                    <Item onClick={this.onClickLogout}>Выход</Item>
-                </MenuWrapper>
-            </Wrapper>
-        )
-    }
-}
+    const onClickLogout = async () => {
+        try {
+            await API.USER.LOGOUT();
+            dispatch({type: appActions.SET_AUTH_VALUE, auth: false});
+            dispatch({type: appActions.SET_AUTH_DATA, user: null});
+        }
+        catch(error) {
+            toast.error(error.response.data.msgUser);
+        }
+    };
+
+    return(
+        <Wrapper openMenu={openMenu}>
+            <MenuWrapper>
+                {
+                    itemsTop.map((item, i) => {
+                        return <Item key={i}
+                                     isActive={activeMenuId === item.id}
+                                     onClick={() => openPage(item.path)}>
+                            {item.title}
+                        </Item>;
+                    })
+                }
+            </MenuWrapper>
+            <MenuWrapper>
+                {
+                    itemsBottom.map((item, i) => {
+                        return <Item key={i}
+                                     isActive={activeMenuId === item.id}
+                                     onClick={() => openPage(item.path)}>
+                            {item.title}
+                        </Item>;
+                    })
+                }
+                <Item onClick={onClickLogout}>Выход</Item>
+            </MenuWrapper>
+        </Wrapper>
+    )
+};
 
 Menu.propTypes = {
     openMenu: PropTypes.bool,
-    dispatch: PropTypes.func,
-    history: PropTypes.func,
     closeMenu: PropTypes.func,
 };
 

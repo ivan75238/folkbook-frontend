@@ -25,10 +25,6 @@ export const Paths = {
         auth: {
             path: () => '/',
             mask: () => '/'
-        },
-        registration: {
-            path: () => '/registration',
-            mask: () => '/registration'
         }
     },
     settings: {
