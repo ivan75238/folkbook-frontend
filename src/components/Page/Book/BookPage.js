@@ -1,6 +1,6 @@
-import React, {PureComponent} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Page} from "components/CommonStyledComponents";
 import styled from "styled-components";
 import {
@@ -23,6 +23,7 @@ import {booksActions} from "reducers/actions";
 import Heart from "components/Icons/Heart";
 import {create_like, remove_like} from "../../../functions/liked_books";
 
+//region Styled
 const BookInfo = styled.div`
     width: 100%;
     height: auto;
@@ -191,293 +192,162 @@ const OptionsWrapper = styled.div`
     justify-content: flex-start;
     margin-top: 16px;
 `;
+//endregion
 
-@connect(state => ({
-    user: _get(state.app, "user"),
-    open_book: _get(state.books, "open_book"),
-}))
-class BookPage extends PureComponent {
-    state = {
-        error: null,
-        id_book: null,
-        value: "",
-        draft_section: null,
-        disabled: false,
-        next_is_last_in_chapter: false,
-        next_is_last_in_book: false,
-        applicants: null,
-        selectedApplicantId: null,
-        applicantView: null,
-        isVoted: false,
-        next_is_last_in_chapter_vote: false,
-        next_is_last_in_book_vote: false,
-        disabled_vote: false
-    };
+const getLastSection = open_book => {
+    const chapters = _orderBy(open_book.chapters, i => i.number, "desc");
+    chapters[0].sections = _orderBy(chapters[0].sections, i => i.number, "desc");
+    return chapters[0].sections[0];
+};
 
-    componentDidMount() {
-        const {dispatch} = this.props;
-        if(this.props.match && this.props.match.params && this.props.match.params.id) {
-            this.setState({id_book: this.props.match.params.id});
-            get_book(dispatch, this.props.match.params.id);
+export const BookPage = ({match}) => {
+    const [error, setError] = useState();
+    const [value, setValue] = useState("");
+    const [draftSection, setDraftSection] = useState();
+    const [disabled, setDisabled] = useState();
+    const [nextIsLastInChapter, setNextIsLastInChapter] = useState();
+    const [nextIsLastInBook, setNextIsLastInBook] = useState();
+    const [selectedApplicantId, setSelectedApplicantId] = useState();
+    const [applicants, setApplicants] = useState();
+    const [isVoted, setIsVoted] = useState();
+    const [nextIsLastInChapterVote, setNextIsLastInChapterVote] = useState();
+    const [nextIsLastInBookVote, setNextIsLastInBookVote] = useState();
+    const [disabledVote, setDisabledVote] = useState();
+    const [applicantView, setApplicantView] = useState();
+    const user = useSelector(state => _get(state.app, "user"));
+    const openBook = useSelector(state => _get(state.books, "open_book"));
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const id = _get(match, "params.id");
+        if (id) {
+            get_book(dispatch, id)
         }
         else {
-            this.setState({error: 'Книга не найдена'});
+            setError("Книга не найдена");
         }
-    }
 
-    componentDidUpdate(prevProps) {
-        const {open_book, user} = this.props;
-        const open_book_old = prevProps.open_book;
-        if (open_book && open_book.participants.find(i => i === user.id)) {
-            //Проверка на факт участника
-            if (!open_book_old && open_book && open_book.status === "in_work") {
-                setTimeout(async () => {
-                    open_book.last_section = this.getLastSection(open_book);
-                    const status = translateStatusSection(open_book);
-                    if (status.status === "in_work") {
-                        this.getDraftSection(open_book.last_section.id);
-                    }
-                    if (status.status === "vote") {
-                        this.getApplicantsOnSection(open_book.last_section.id);
-                        this.getExistUserVote(open_book.last_section.id);
-                    }
-                }, 100)
+        return () => dispatch({type: booksActions.SET_BOOK, open_book: null});
+    }, []);
+
+    useEffect(() => {
+        if (openBook && openBook.status === "in_work" && openBook.participants.find(i => i === user.id)) {
+            openBook.last_section = getLastSection(openBook);
+            const status = translateStatusSection(openBook);
+            if (status.status === "in_work") {
+                getDraftSection(openBook.last_section.id);
             }
-            else if (open_book_old && open_book) {
-                open_book_old.last_section = this.getLastSection(open_book_old);
-                open_book.last_section = this.getLastSection(open_book);
-                const statusOld = translateStatusSection(open_book_old);
-                const statusNew = translateStatusSection(open_book);
-                if (statusOld.status === "in_work" && statusNew.status === "vote") {
-                    this.getApplicantsOnSection(open_book.last_section.id);
-                    this.getExistUserVote(open_book.last_section.id);
-                }
+            if (status.status === "vote") {
+                getApplicantsOnSection(openBook.last_section.id);
+                getExistUserVote(openBook.last_section.id);
             }
         }
-    }
 
-    getApplicantsOnSection = async id_section => {
+        if (openBook && openBook.participants.find(i => i === user.id)) {
+            openBook.last_section = getLastSection(openBook);
+            const statusNew = translateStatusSection(openBook);
+            if (statusNew.status === "vote") {
+                getApplicantsOnSection(openBook.last_section.id);
+                getExistUserVote(openBook.last_section.id);
+            }
+        }
+    }, [openBook]);
+
+    if (error)
+        return <p>{error}</p>;
+
+    if (!openBook)
+        return null;
+
+    const getApplicantsOnSection = async id_section => {
         const applicants = await get_applicants_on_section(id_section);
-        this.setState({applicants});
+        setApplicants(applicants);
     };
 
-    getExistUserVote = async id_section => {
-        const result = await get_user_vote_from_section(id_section);
-        this.setState({isVoted: result.isVoted});
-    };
-
-    getDraftSection = async id_section => {
+    const getDraftSection = async id_section => {
         const draft_section = await get_draft_section(id_section);
         if (draft_section) {
-            this.setState({
-                draft_section,
-                value: draft_section.text,
-                next_is_last_in_book: draft_section.next_is_last_in_book,
-                next_is_last_in_chapter: draft_section.next_is_last_in_chapter
-            })
+            setDraftSection(draft_section);
+            setValue(draft_section.text);
+            setNextIsLastInBook(draft_section.next_is_last_in_book);
+            setNextIsLastInChapter(draft_section.next_is_last_in_chapter);
         }
     };
 
-    sendToVote = async () => {
-        const {dispatch, open_book} = this.props;
-        const {value, next_is_last_in_chapter, next_is_last_in_book} = this.state;
-        const id_section = this.getLastSection(open_book).id;
-        this.setState({disabled: true});
-        const data = {
-            id_section,
-            text: value,
-            next_is_last_in_book,
-            next_is_last_in_chapter
-        };
-        send_applicant(data)
-            .then(async () => {
-                toast.success("Ваш вариант отправлен на голосование");
-                await get_book(dispatch, this.props.match.params.id);
-                await this.getDraftSection(id_section);
-                this.setState({disabled: false});
-            })
-            .catch(async error => {
-                if (error.response.data.msg === "vote start") {
-                    await get_book(dispatch, this.props.match.params.id);
-                }
-                this.setState({disabled: false});
-                return toast.error(error.response.data.msgUser);
-            });
+    const onChangeValueText = (val, disabledMax) => {
+        setValue(value);
+        setDisabled(disabledMax);
     };
 
-    saveDraft = async () => {
-        const {draft_section, value, next_is_last_in_chapter, next_is_last_in_book} = this.state;
-        const {dispatch, open_book} = this.props;
-        const id_section = this.getLastSection(open_book).id;
-        this.setState({disabled: true});
+    const saveDraft = async () => {
+        const id_section = getLastSection(openBook).id;
+        setDisabled(true);
         const data = {
             id_section,
             text: value,
-            next_is_last_in_book,
-            next_is_last_in_chapter
+            next_is_last_in_book: nextIsLastInBook,
+            next_is_last_in_chapter: nextIsLastInChapter
         };
         //Создаем запись в кандидатах
-        if (!draft_section) {
-            create_draft_section(data)
-                .then(() => {
-                    return toast.success("Изменения сохранены");
-                })
-                .catch(async error => {
-                    if (error.response.data.msg === "vote start") {
-                        await get_book(dispatch, this.props.match.params.id);
-                        this.setState({disabled: false});
-                    }
-                    return toast.error(error.response.data.msgUser);
-                });
+        if (!draftSection) {
+            try {
+                await create_draft_section(data);
+                return toast.success("Изменения сохранены");
+            }
+            catch (error) {
+                if (error.response.data.msg === "vote start") {
+                    await get_book(dispatch, match.params.id);
+                }
+                setDisabled(false);
+                return toast.error(error.response.data.msgUser);
+            }
         }
         //Обновляем черновик
         else {
-            await update_draft_section(data)
-                .then(() => {
-                    return toast.success("Изменения сохранены");
-                })
-                .catch(async error => {
-                    if (error.response.data.msg === "vote start") {
-                        await get_book(dispatch, this.props.match.params.id);
-                        this.setState({disabled: false});
-                    }
-                    return toast.error(error.response.data.msgUser);
-                });
-        }
-        this.setState({disabled: false});
-    };
-
-    componentWillUnmount() {
-        const {dispatch} = this.props;
-        dispatch({type: booksActions.SET_BOOK, open_book: null});
-    }
-
-    sendUserVote = async () => {
-        const {selectedApplicantId, next_is_last_in_chapter_vote, next_is_last_in_book_vote} = this.state;
-        const {dispatch, open_book} = this.props;
-        this.setState({disabled_vote: true});
-        const id_section = this.getLastSection(open_book).id;
-        const data = {
-            id_applicant: selectedApplicantId,
-            id_section,
-            next_is_last_in_book: next_is_last_in_book_vote,
-            next_is_last_in_chapter: next_is_last_in_chapter_vote
-        };
-        send_vote_result(data)
-            .then(async () => {
-                toast.success("Ваш голос принят, дождитесь окончания голосования");
-                await get_book(dispatch, this.props.match.params.id);
-                this.getExistUserVote(id_section);
-                this.setState({disabled_vote: false});
-            })
-            .catch(async error => {
+            try {
+                await update_draft_section(data);
+                return toast.success("Изменения сохранены");
+            }
+            catch(error) {
                 if (error.response.data.msg === "vote start") {
-                    await get_book(dispatch, this.props.match.params.id);
-                    this.getExistUserVote(id_section);
+                    await get_book(dispatch, match.params.id);
                 }
-                this.setState({disabled_vote: false});
+                setDisabled(false);
                 return toast.error(error.response.data.msgUser);
-            });
-    };
-
-    generateBookHtml = () => {
-        const {open_book} = this.props;
-        const chapters = _orderBy(open_book.chapters, i => i.number);
-        let bookText = '';
-        chapters.map(chapter => {
-            chapter.sections = _orderBy(chapter.sections, i => i.number);
-            bookText += `<p style="text-align:center;"><span style="font-size: 18px;">Глава ${chapter.number}</span></p>`;
-            chapter.sections.map(section => section.text ? bookText += `${section.text}` : "");
-        });
-        return bookText;
-    };
-
-    getLastSection = (open_book) => {
-        const chapters = _orderBy(open_book.chapters, i => i.number, "desc");
-        chapters[0].sections = _orderBy(chapters[0].sections, i => i.number, "desc");
-        return chapters[0].sections[0];
-    };
-
-    setLiked = async (isLiked) => {
-        const {dispatch, open_book} = this.props;
-        const {disabled} = this.state;
-
-        if (disabled)
-            return null;
-
-        if (isLiked) {
-            this.setState({disabled: true});
-            await remove_like(dispatch, open_book.id);
-            this.setState({disabled: false});
-        }
-        else {
-            this.setState({disabled: true});
-            await create_like(dispatch, open_book.id);
-            this.setState({disabled: false});
+            }
         }
     };
 
-    render() {
-        const {error} = this.state;
-        const {open_book, user} = this.props;
+    const sendToVote = async () => {
+        const id_section = getLastSection(openBook).id;
+        setDisabled(true);
+        const data = {
+            id_section,
+            text: value,
+            next_is_last_in_book: nextIsLastInBook,
+            next_is_last_in_chapter: nextIsLastInChapter
+        };
+        try {
+            await send_applicant(data);
+            toast.success("Ваш вариант отправлен на голосование");
+            await get_book(dispatch, match.params.id);
+            await getDraftSection(id_section);
+            setDisabled(false);
+        }
+        catch (error) {
+            if (error.response.data.msg === "vote start") {
+                await get_book(dispatch, match.params.id);
+            }
+            setDisabled(false);
+            return toast.error(error.response.data.msgUser);
+        }
+    };
 
-        if (error)
-            return <p>{error}</p>;
-
-        if (!open_book)
-            return null;
-
-        const user_is_participant = _get(open_book, "participants",[]).find(i => i === user.id);
-        open_book.last_section = this.getLastSection(open_book);
-        const status = translateStatusSection(open_book);
-
-        const isLiked = open_book.likes.indexOf(user.id) > -1;
-
-        return (
-            <Page height={"calc(100vh - 49px)"}>
-                <BookInfo>
-                    <Column>
-                        <Text><span>Название: </span>{open_book.name} </Text>
-                        <Text><span>Возрастное ограничение: </span>{open_book.age_rating}</Text>
-                        <Text><span>Жанры: </span>{open_book.genres.join(", ")}</Text>
-                    </Column>
-                    <Column>
-                        <Text><span>Статус: </span>{status.title}</Text>
-                        <Text><span>Срок: </span>{status.timeout.format("DD.MM.YYYY HH:mm")}</Text>
-                    </Column>
-                    <LikedIconWrapper onClick={() => this.setLiked(isLiked)}>
-                        <CountLikesText>{open_book.likes.length}</CountLikesText>
-                        <Heart color={isLiked ? "red" : "black"}/>
-                    </LikedIconWrapper>
-                </BookInfo>
-                <Title>Содержание</Title>
-                <ContentWrapper>
-                    <WysiwygInput value={this.generateBookHtml()}
-                                  viewer={true}/>
-                </ContentWrapper>
-                {
-                    user_is_participant &&
-                    open_book.status === "in_work" &&
-                    status.status === "in_work" &&
-                    this.renderTextEditor(open_book)
-                }
-                {
-                    user_is_participant &&
-                    open_book.status === "in_work" &&
-                    status.status === "vote" &&
-                    this.renderVote(open_book)
-                }
-                {this.renderApplicantView()}
-            </Page>
-        )
-    }
-
-    renderTextEditor = (open_book) => {
-        const {value, disabled, next_is_last_in_chapter, next_is_last_in_book, draft_section} = this.state;
-        const disabledInputs = draft_section ? draft_section.status === "finished" : false;
+    const renderTextEditor = () => {
+        const disabledInputs = draftSection ? draftSection.status === "finished" : false;
         return (
             <>
-                <WysiwygInput onChange={(value, disabledMax) => this.setState({value, disabled: disabledMax})}
+                <WysiwygInput onChange={onChangeValueText}
                               value={value}
                               disabled={disabled || disabledInputs}
                               maxLenght={2000}
@@ -485,17 +355,23 @@ class BookPage extends PureComponent {
                 <ButtonWrapper>
                     <Container>
                         {
-                            !open_book.last_section.is_last_in_chapter &&
-                            !open_book.last_section.is_last_in_book &&
+                            !openBook.last_section.is_last_in_chapter &&
+                            !openBook.last_section.is_last_in_book &&
                             <>
                                 <StyledCheckbox label={"Следующая секция последняя в главе"}
-                                                value={next_is_last_in_chapter}
+                                                value={nextIsLastInChapter}
                                                 disabled={disabled || disabledInputs}
-                                                onChange={value => this.setState({next_is_last_in_chapter: value, next_is_last_in_book: false})}/>
+                                                onChange={value =>  {
+                                                    setNextIsLastInChapter(value);
+                                                    setNextIsLastInBook(false);
+                                                }}/>
                                 <StyledCheckbox label={"Следующая секция последняя в книге"}
-                                                value={next_is_last_in_book}
+                                                value={nextIsLastInBook}
                                                 disabled={disabled || disabledInputs}
-                                                onChange={value => this.setState({next_is_last_in_chapter: false, next_is_last_in_book: value})}/>
+                                                onChange={value => {
+                                                    setNextIsLastInChapter(false);
+                                                    setNextIsLastInBook(value);
+                                                }}/>
                             </>
                         }
                     </Container>
@@ -504,13 +380,13 @@ class BookPage extends PureComponent {
                         <Container>
                             <Button title={"Сохранить черновик"}
                                     height="40px"
-                                    onClick={this.saveDraft}
+                                    onClick={saveDraft}
                                     disabled={!value || disabled}
                                     margin="0 16px 0 0"/>
                             <Button title={"Отправить на голосование"}
                                     height="40px"
                                     disabled={!value || disabled}
-                                    onClick={this.sendToVote}
+                                    onClick={sendToVote}
                                     margin="0 0 0 0"/>
                         </Container>
                     }
@@ -519,22 +395,41 @@ class BookPage extends PureComponent {
         )
     };
 
-    renderVote = (open_book) => {
-        const {applicants, selectedApplicantId, isVoted, next_is_last_in_chapter_vote, disabled_vote, next_is_last_in_book_vote} = this.state;
-        const {user} = this.props;
-        if (isVoted) {
-            return <p>Вы уже проголосовали, дождитесь окончания голосования</p>
+    const sendUserVote = async () => {
+        setDisabledVote(true);
+        const id_section = getLastSection(openBook).id;
+        const data = {
+            id_applicant: selectedApplicantId,
+            id_section,
+            next_is_last_in_book: nextIsLastInBookVote,
+            next_is_last_in_chapter: nextIsLastInChapterVote
+        };
+        try {
+            await send_vote_result(data);
+            toast.success("Ваш голос принят, дождитесь окончания голосования");
+            await get_book(dispatch, match.params.id);
+            await getExistUserVote(id_section);
+            setDisabledVote(false);
         }
+        catch(error) {
+            if (error.response.data.msg === "vote start") {
+                await get_book(dispatch, this.props.match.params.id);
+                await getExistUserVote(id_section);
+            }
+            setDisabledVote(false);
+            return toast.error(error.response.data.msgUser);
+        }
+    };
 
-        if (!applicants) {
+    const renderVote = () => {
+        if (isVoted)
+            return <p>Вы уже проголосовали, дождитесь окончания голосования</p>;
+        if (!applicants)
             return null;
-        }
+        if (!applicants.find(i => i.id_user === user.id))
+            return <p>В голосовании учавствуют только предложившие свой вариант пользователи</p>;
 
-        if (!applicants.find(i => i.id_user === user.id)){
-            return <p>В голосовании учавствуют только предложившие свой вариант пользователи</p>
-        }
         const applicantsWithoutAuthUser = applicants.filter(i => i.id_user !== user.id);
-
         let showQuestionLastInChapter = false, showQuestionLastInBook = false;
         applicants.map(applicant => {
             if (applicant.next_is_last_in_chapter) {
@@ -552,7 +447,7 @@ class BookPage extends PureComponent {
                         applicantsWithoutAuthUser.map((applicant, i) => {
                             return (
                                 <ApplicantVariant key={i}
-                                                  onClick={() => this.setState({applicantView: {applicant, number: i+1}})}>
+                                                  onClick={() => setApplicantView({applicantView: {applicant, number: i+1}})}>
                                     <ApplicantBox>
                                         {`№${i+1}`}
                                     </ApplicantBox>
@@ -568,38 +463,38 @@ class BookPage extends PureComponent {
                     }
                 </ApplicantsWrapper>
                 {
-                    !open_book.last_section.is_last_in_book &&
-                    !open_book.last_section.is_last_in_chapter &&
+                    !openBook.last_section.is_last_in_book &&
+                    !openBook.last_section.is_last_in_chapter &&
                     showQuestionLastInChapter &&
                     <QuestionWrapper>
                         <p>Участники предлагают завершить главу следующей секцией, вы согласны?</p>
                         <OptionsWrapper>
                             <StyledCheckbox label={"Согласен"}
-                                            value={next_is_last_in_chapter_vote}
-                                            disabled={disabled_vote}
-                                            onChange={() => this.setState({next_is_last_in_chapter_vote: true})}/>
+                                            value={nextIsLastInChapterVote}
+                                            disabled={disabledVote}
+                                            onChange={() => nextIsLastInChapterVote(true)}/>
                             <StyledCheckbox label={"Не согласен"}
-                                            value={!next_is_last_in_chapter_vote}
-                                            disabled={disabled_vote}
-                                            onChange={() => this.setState({next_is_last_in_chapter_vote: false})}/>
+                                            value={!nextIsLastInChapterVote}
+                                            disabled={disabledVote}
+                                            onChange={() =>setNextIsLastInChapterVote(false)}/>
                         </OptionsWrapper>
                     </QuestionWrapper>
                 }
                 {
-                    !open_book.last_section.is_last_in_book &&
-                    !open_book.last_section.is_last_in_chapter &&
+                    !openBook.last_section.is_last_in_book &&
+                    !openBook.last_section.is_last_in_chapter &&
                     showQuestionLastInBook &&
                     <QuestionWrapper>
                         <p>Участники предлагают завершить книгу следующей секцией, вы согласны?</p>
                         <OptionsWrapper>
                             <StyledCheckbox label={"Согласен"}
-                                            value={next_is_last_in_book_vote}
-                                            disabled={disabled_vote}
-                                            onChange={() => this.setState({next_is_last_in_book_vote: true})}/>
+                                            value={nextIsLastInBookVote}
+                                            disabled={disabledVote}
+                                            onChange={() => setNextIsLastInBookVote(true)}/>
                             <StyledCheckbox label={"Не согласен"}
-                                            value={!next_is_last_in_book_vote}
-                                            disabled={disabled_vote}
-                                            onChange={() => this.setState({next_is_last_in_book_vote: false})}/>
+                                            value={!nextIsLastInBookVote}
+                                            disabled={disabledVote}
+                                            onChange={() => setNextIsLastInBookVote(false)}/>
                         </OptionsWrapper>
                     </QuestionWrapper>
                 }
@@ -610,7 +505,7 @@ class BookPage extends PureComponent {
                         <Container>
                             <Button title={"Проголосовать"}
                                     height="40px"
-                                    onClick={this.sendUserVote}
+                                    onClick={sendUserVote}
                                     margin="0 0 0 0"/>
                         </Container>
                     </ButtonWrapper>
@@ -619,35 +514,97 @@ class BookPage extends PureComponent {
         );
     };
 
-    renderApplicantView = () => {
-        const { applicantView } = this.state;
-        if (!applicantView)
-            return null;
-
-        return (
-            <Popup title={`Вариант №${applicantView.number}`}
-                   onClose={() => this.setState({applicantView: null})}
-                   width={"600px"}
-                   listenEscForClose={true}
-                   buttons={<Button title={"Выбрать этот вариант"}
-                                    height={"40px"}
-                                    onClick={() => this.setState({
-                                        applicantView: null,
-                                        selectedApplicantId: applicantView.applicant.id
-                                    })}/>}>
-                <WysiwygInput value={applicantView.applicant.text}
-                              height={"auto"}
-                              viewer={true}/>
-            </Popup>
-        )
+    const getExistUserVote = async (id_section) => {
+        const result = await get_user_vote_from_section(id_section);
+        setIsVoted(result.isVoted);
     };
-}
 
-BookPage.propTypes = {
-    dispatch: PropTypes.func,
-    match: PropTypes.any,
-    open_book: PropTypes.object,
-    user: PropTypes.object,
+    const user_is_participant = _get(openBook, "participants",[]).find(i => i === user.id);
+    openBook.last_section = getLastSection(openBook);
+    const status = translateStatusSection(openBook);
+    const isLiked = openBook.likes.indexOf(user.id) > -1;
+
+    const setLiked = async isLiked => {
+        if (disabled) return null;
+        setDisabledVote(true);
+        isLiked ? await remove_like(dispatch, openBook.id) : await create_like(dispatch, openBook.id);
+        setDisabledVote(false);
+    };
+
+    const onSelectApplicantView = id => {
+        setApplicantView(id);
+        setSelectedApplicantId(applicantView.applicant.id);
+    };
+
+    return (
+        <Page height={"calc(100vh - 49px)"}>
+            <BookInfo>
+                <Column>
+                    <Text><span>Название: </span>{openBook.name} </Text>
+                    <Text><span>Возрастное ограничение: </span>{openBook.age_rating}</Text>
+                    <Text><span>Жанры: </span>{openBook.genres.join(", ")}</Text>
+                </Column>
+                <Column>
+                    <Text><span>Статус: </span>{status.title}</Text>
+                    <Text><span>Срок: </span>{status.timeout.format("DD.MM.YYYY HH:mm")}</Text>
+                </Column>
+                <LikedIconWrapper onClick={() => setLiked(isLiked)}>
+                    <CountLikesText>{openBook.likes.length}</CountLikesText>
+                    <Heart color={isLiked ? "red" : "black"}/>
+                </LikedIconWrapper>
+            </BookInfo>
+            <Title>Содержание</Title>
+            <ContentWrapper>
+                <WysiwygInput value={generateBookHtml(openBook)}
+                              viewer={true}/>
+            </ContentWrapper>
+            {
+                user_is_participant &&
+                openBook.status === "in_work" &&
+                status.status === "in_work" &&
+                renderTextEditor(openBook)
+            }
+            {
+                user_is_participant &&
+                openBook.status === "in_work" &&
+                status.status === "vote" &&
+                renderVote(openBook)
+            }
+            {renderApplicantView(applicantView, onSelectApplicantView, setApplicantView)}
+        </Page>
+    )
 };
 
-export default BookPage;
+BookPage.propTypes = {
+    match: PropTypes.any,
+};
+
+const renderApplicantView = (applicantView, onSelected, setApplicantView) => {
+    if (!applicantView)
+        return null;
+
+    return (
+        <Popup title={`Вариант №${applicantView.number}`}
+               onClose={() => setApplicantView(null)}
+               width={"600px"}
+               listenEscForClose={true}
+               buttons={<Button title={"Выбрать этот вариант"}
+                                height={"40px"}
+                                onClick={() => onSelected(applicantView.applicant.id)}/>}>
+            <WysiwygInput value={applicantView.applicant.text}
+                          height={"auto"}
+                          viewer={true}/>
+        </Popup>
+    )
+};
+
+const generateBookHtml = (openBook) => {
+    const chapters = _orderBy(openBook.chapters, i => i.number);
+    let bookText = '';
+    chapters.map(chapter => {
+        chapter.sections = _orderBy(chapter.sections, i => i.number);
+        bookText += `<p style="text-align:center;"><span style="font-size: 18px;">Глава ${chapter.number}</span></p>`;
+        chapter.sections.map(section => section.text ? bookText += `${section.text}` : "");
+    });
+    return bookText;
+};

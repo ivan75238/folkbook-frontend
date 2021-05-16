@@ -4,8 +4,8 @@ import styled from "styled-components";
 import {Paths} from "../Paths";
 import MainPage from "components/Page/Main/MainPage";
 import {Header} from "components/Header/Header";
-import BookPage from "components/Page/Book/BookPage";
-import AllBook from "components/Page/AllBook/AllBook";
+import {BookPage} from "components/Page/Book/BookPage";
+import {AllBook} from "components/Page/AllBook/AllBook";
 import MyBooks from "components/Page/MyBooks/MyBooks";
 
 //region Styled
@@ -36,8 +36,8 @@ export const Main = () => {
             <Header/>
             <PageInnerContainer>
                 <Switch>
-                    <Route exact path={Paths.books.all.mask()} render={props => <AllBook {...props}/>}/>
-                    <Route exact path={Paths.books.book.mask()} render={props => <BookPage {...props}/>}/>
+                    <Route exact path={Paths.books.all.mask()} component={AllBook}/>
+                    <Route exact path={Paths.books.book.mask()} component={BookPage}/>
 
                     <Route exact path={Paths.liked_books.list.mask()} render={props => <MyBooks {...props}/>}/>
 
