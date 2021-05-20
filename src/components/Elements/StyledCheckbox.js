@@ -1,8 +1,9 @@
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from "prop-types";
 import CheckedIcon from "components/Icons/CheckedIcon";
 
+//region Styled
 const LabelWrapperHover = styled.div`
   position: absolute;
   left: 0;
@@ -91,54 +92,40 @@ const IconWrapper = styled.div`
         background-color: rgba(27, 117, 187, 0.1);
     }
 `;
+//endregion
 
-@withTheme
-export class StyledCheckbox extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+export const StyledCheckbox = ({disabled, onChange, value, mainMargin, isChecked, label}) => {
+    const toggleChecked = () => disabled ? null : onChange(value);
 
-    static propTypes = {
-        value: PropTypes.any,
-        onChange: PropTypes.func,
-        disabled: PropTypes.bool,
-        label: PropTypes.string,
-        mainMargin: PropTypes.string,
-    };
+    return (
+        <CheckboxWrapper mainMargin={mainMargin}
+                         onClick={toggleChecked}>
+            <LabelWrapperHover/>
+            <CheckboxInput
+                type="checkbox"
+                checked={isChecked}
+                disabled={disabled}/>
+            <LabelWrapper
+                label={label}
+                disabled={disabled}
+                checked={isChecked}>
+                {label}
+            </LabelWrapper>
+            {
+                isChecked &&
+                <IconWrapper>
+                    <CheckedIcon/>
+                </IconWrapper>
+            }
+        </CheckboxWrapper>
+    )
+};
 
-    toggleChecked = () => {
-        const {disabled, onChange} = this.props;
-        if (disabled) {
-            return;
-        }
-        onChange(!this.props.value);
-    };
-
-    render() {
-        const {label, disabled, mainMargin} = this.props;
-        const isChecked = !!this.props.value;
-
-        return (
-            <CheckboxWrapper mainMargin={mainMargin}
-                             onClick={this.toggleChecked}>
-                <LabelWrapperHover/>
-                <CheckboxInput
-                    type="checkbox"
-                    checked={isChecked}
-                    disabled={disabled}/>
-                <LabelWrapper
-                    label={label}
-                    disabled={disabled}
-                    checked={isChecked}>
-                    {label}
-                </LabelWrapper>
-                {
-                    isChecked &&
-                    <IconWrapper>
-                        <CheckedIcon/>
-                    </IconWrapper>
-                }
-            </CheckboxWrapper>
-        );
-    }
-}
+StyledCheckbox.propTypes = {
+    value: PropTypes.any,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    isChecked: PropTypes.bool,
+    label: PropTypes.string,
+    mainMargin: PropTypes.string,
+};

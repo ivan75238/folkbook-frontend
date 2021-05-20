@@ -2,7 +2,7 @@ import React from "react";
 import {Route, Switch} from "react-router-dom";
 import styled from "styled-components";
 import {Paths} from "../Paths";
-import MainPage from "components/Page/Main/MainPage";
+import {MainPage} from "components/Page/Main/MainPage";
 import {Header} from "components/Header/Header";
 import {BookPage} from "components/Page/Book/BookPage";
 import {AllBook} from "components/Page/AllBook/AllBook";
@@ -39,9 +39,9 @@ export const Main = () => {
                     <Route exact path={Paths.books.all.mask()} component={AllBook}/>
                     <Route exact path={Paths.books.book.mask()} component={BookPage}/>
 
-                    <Route exact path={Paths.liked_books.list.mask()} render={props => <MyBooks {...props}/>}/>
+                    <Route exact path={Paths.liked_books.list.mask()} component={MyBooks}/>
 
-                    <Route exact path={Paths.main.list.mask()} render={props => <MainPage {...props}/>}/>
+                    <Route exact path={Paths.main.list.mask()} component={MainPage}/>
                 </Switch>
             </PageInnerContainer>
         </MainWrapper>

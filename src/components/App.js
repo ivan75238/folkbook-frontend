@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import _get from 'lodash/get';
 import ReactTooltip from "react-tooltip";
 import {AuthPage} from "components/Auth/AuthPage";
@@ -77,7 +77,7 @@ export const App = () => {
         <MainWrapper>
             { app_loading && <Loader /> }
             <ReactTooltip className="EventTooltip"/>
-            <BrowserRouter>
+            <HashRouter>
                 <BackgroundContainer />
                 <MainWrapperInner>
                     <StyledToastContainer />
@@ -94,7 +94,7 @@ export const App = () => {
                                 </Switch>
                     }
                 </MainWrapperInner>
-            </BrowserRouter>
+            </HashRouter>
         </MainWrapper>
     );
 };

@@ -1,8 +1,9 @@
-import React, {PureComponent} from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Close from "components/Icons/Close";
 
+//region Styled
 const Wrapper = styled.div`
     position: absolute;
     width: 100vw;
@@ -86,44 +87,38 @@ const IconContainer = styled.div`
         height: 16px;
     }
 `;
+//endregion
 
-//Стилизованный инпут
-class Popup extends PureComponent {
-    componentDidMount() {
-        const {listenEscForClose, onClose} = this.props;
+const Popup = ({title, onClose, width, children, buttons, listenEscForClose}) => {
+    useEffect(() => {
         if (listenEscForClose) {
             document.onkeydown = evt => {
                 evt = evt || window.event;
                 if (evt.keyCode == 27 && onClose) {
-                     onClose();
+                    onClose();
                 }
             };
         }
-    }
 
-    componentWillUnmount() {
-        document.onkeydown =  null;
-    }
+        return () => document.onkeydown =  null;
+    });
 
-    render() {
-        const { title, width, onClose, children, buttons} = this.props;
-        return (
-            <Wrapper>
-                <Background onClick={onClose ? onClose : null}/>
-                <PopupContainer width={width}>
-                    <Header>
-                        {title}
-                        <IconContainer onClick={onClose ? onClose : null}>
-                            <Close color={"#fff"}/>
-                        </IconContainer>
-                    </Header>
-                    <Content>{children}</Content>
-                    <ButtonsContainer>{buttons}</ButtonsContainer>
-                </PopupContainer>
-            </Wrapper>
-        )
-    }
-}
+    return (
+        <Wrapper>
+            <Background onClick={onClose ? onClose : null}/>
+            <PopupContainer width={width}>
+                <Header>
+                    {title}
+                    <IconContainer onClick={onClose ? onClose : null}>
+                        <Close color={"#fff"}/>
+                    </IconContainer>
+                </Header>
+                <Content>{children}</Content>
+                <ButtonsContainer>{buttons}</ButtonsContainer>
+            </PopupContainer>
+        </Wrapper>
+    )
+};
 
 Popup.propTypes = {
     title: PropTypes.string,

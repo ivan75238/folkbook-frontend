@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {Editor} from "react-draft-wysiwyg";
@@ -8,6 +8,7 @@ import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {toast} from "react-toastify";
 
+//region Styled
 const ContentWrapper = styled.div`
   position: relative;
   display: flex;
@@ -17,6 +18,7 @@ const ContentWrapper = styled.div`
     z-index: 0;
     border: ${props => !props.viewer ? "1px solid gray" : "none"};
     height: ${props => props.height ? props.height : !props.viewer ? "calc(100vh - 740px)" : "calc(100vh - 502px)"};
+    background-color: ${props => props.backgroundColor || "transparent"};
     border-radius: 5px;
     
     .rdw-editor-main {
@@ -38,111 +40,97 @@ const MaxLengthText = styled.div`
     font-size: 14px;
     color: gray;
 `;
+//endregion
 
-class WysiwygInput extends PureComponent {
-    constructor(props) {
-        super(props);
-        const contentBlock = htmlToDraft(props.value);
+const WysiwygInput = (props) => {
+    const {
+        disabled, viewer,
+        placeholder, maxLength,
+        value, height,
+        backgroundColor, onChange
+    } = props;
+    const createEditorState = () => {
+        const contentBlock = htmlToDraft(value);
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-        const editorState = EditorState.createWithContent(contentState);
-        this.state = {editorState}
-    }
+        return EditorState.createWithContent(contentState);
+    };
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.value !== draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))) {
-            const contentBlock = htmlToDraft(nextProps.value);
-            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-            const editorState = EditorState.createWithContent(contentState);
-            this.setState({editorState});
-        }
-    }
+    const [editorState, setEditorState] = useState(createEditorState);
 
-    getOnlyText = () => {
-        const {editorState} = this.state;
-        let text = "";
+    const getOnlyText = () => {
         if (editorState) {
             const blocks = convertToRaw(editorState.getCurrentContent());
-            blocks.blocks.map(block => {
-                text += block.text;
-            })
+            return blocks.blocks.map(block => block.text).join("");
         }
-        return text;
+        return "";
     };
 
-    getLeft = () => {
-        const {maxLenght} = this.props;
-        let text = this.getOnlyText();
-        return maxLenght - text.length;
+    const getLeft = () => {
+        return maxLength - getOnlyText().length;
     };
 
-    render() {
-        const {
-            disabled,
-            viewer,
-            placeholder,
-            maxLenght,
-            height
-        } = this.props;
+    useEffect(() => {
+        if (value !== draftToHtml(convertToRaw(editorState.getCurrentContent()))) {
+            setEditorState(createEditorState());
+        }
+    }, [value]);
 
-        const {editorState} = this.state;
+    const chartLeft = getLeft();
 
+    const onChangeEvent = e => {
+        setEditorState(e);
         const chartLeft = this.getLeft();
-
-        return (
-            <ContentWrapper viewer={viewer}
-                            height={height}>
-                {
-                    maxLenght && !disabled &&
-                    <MaxLengthText>{`Осталось символов: ${chartLeft <= 0 ? 0 : chartLeft}`}</MaxLengthText>
-                }
-                <Editor
-                    toolbar={{
-                        options: ["inline", 'list', 'textAlign'],
-                        inline: {
-                            options: ['bold', 'italic', 'underline']
-                        },
-                        list: {
-                            options: ['ordered'],
-                        },
-                        fontFamily: ['opensans']
-                    }}
-                    toolbarHidden={disabled || viewer}
-                    readOnly={disabled || viewer}
-                    editorState={editorState}
-                    toolbarClassName="toolbarClassName"
-                    wrapperClassName="wrapperClassName"
-                    editorClassName="editorClassName"
-                    onEditorStateChange={maxLenght ? chartLeft <= 0 ? null : this.onChange : this.onChange}
-                    placeholder={placeholder}
-                />
-            </ContentWrapper>
-        );
-    }
-
-    onChange = e => {
-        const {onChange, maxLenght} = this.props;
-        this.setState({editorState: e}, () => {
-            const chartLeft = this.getLeft();
-            if (maxLenght && chartLeft < 0) {
-                return toast.warning(`Секция не может быть более ${maxLenght} символов, результат не будет сохранен`);
-            }
-            if (this.getOnlyText().trim() === "") {
-                onChange("", maxLenght ? chartLeft < 0 : false);
-                return;
-            }
-            onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLenght ? chartLeft < 0 : false);
-        });
+        if (maxLength && chartLeft < 0) {
+            return toast.warning(`Секция не может быть более ${maxLength} символов, результат не будет сохранен`);
+        }
+        if (getOnlyText().trim() === "") {
+            onChange("", maxLength ? chartLeft < 0 : false);
+            return;
+        }
+        onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLength ? chartLeft < 0 : false);
     };
-}
+
+    return (
+        <ContentWrapper viewer={viewer}
+                        backgroundColor={backgroundColor}
+                        height={height}>
+            {
+                maxLength && !disabled &&
+                <MaxLengthText>{`Осталось символов: ${chartLeft <= 0 ? 0 : chartLeft}`}</MaxLengthText>
+            }
+            <Editor
+                toolbar={{
+                    options: ["inline", 'list', 'textAlign'],
+                    inline: {
+                        options: ['bold', 'italic', 'underline']
+                    },
+                    list: {
+                        options: ['ordered'],
+                    },
+                    fontFamily: ['opensans']
+                }}
+                toolbarHidden={disabled || viewer}
+                readOnly={disabled || viewer}
+                editorState={editorState}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={maxLength ? chartLeft <= 0 ? null : onChangeEvent : onChangeEvent}
+                placeholder={placeholder}
+            />
+        </ContentWrapper>
+    )
+};
 
 WysiwygInput.propTypes = {
     disabled: PropTypes.bool,
     viewer: PropTypes.bool,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    maxLenght: PropTypes.number,
+    maxLength: PropTypes.number,
     value: PropTypes.string,
     height: PropTypes.string,
+    backgroundColor: PropTypes.string,
 };
 
 export default WysiwygInput;

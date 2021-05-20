@@ -1,7 +1,8 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+//region Styled
 const ButtonWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -26,49 +27,51 @@ const Label = styled.p`
     font-size: ${props => props.fontSize || "14px"};
     color: ${props => props.textColor || "#fff"};
 `;
+//endregion
 
-//Стилизованный button
-class Button extends PureComponent {
+const Button = (props) => {
+    const {
+        title, background,
+        textColor, fontSize,
+        onClick, disabled,
+        width, height,
+        margin, padding, type
+    } = props;
 
-    render() {
-        const {title, width, height, textColor, disabled, fontSize, margin, onClick, background, padding, type} = this.props;
-        switch (type) {
-            case "fill-white":
-                return (
-                    <ButtonWrapper width={width}
-                                   height={height}
-                                   background={"transparent"}
-                                   disabled={disabled}
-                                   border={"2px solid white"}
-                                   onClick={disabled ? null : onClick ? onClick : null}
-                                   padding={padding}
-                                   margin={margin}>
-                        <Label fontSize={fontSize}
-                               textColor={"white"}>
-                            {title}
-                        </Label>
-                    </ButtonWrapper>
-                );
-            default:
-                return (
-                    <ButtonWrapper width={width}
-                                   height={height}
-                                   background={background}
-                                   disabled={disabled}
-                                   onClick={disabled ? null : onClick ? onClick : null}
-                                   padding={padding}
-                                   margin={margin}>
-                        <Label fontSize={fontSize}
-                               textColor={textColor}>
-                            {title}
-                        </Label>
-                    </ButtonWrapper>
-                )
-        }
+    switch (type) {
+        case "fill-white":
+            return (
+                <ButtonWrapper width={width}
+                               height={height}
+                               background={"transparent"}
+                               disabled={disabled}
+                               border={"2px solid white"}
+                               onClick={disabled ? null : onClick ? onClick : null}
+                               padding={padding}
+                               margin={margin}>
+                    <Label fontSize={fontSize}
+                           textColor={"white"}>
+                        {title}
+                    </Label>
+                </ButtonWrapper>
+            );
+        default:
+            return (
+                <ButtonWrapper width={width}
+                               height={height}
+                               background={background}
+                               disabled={disabled}
+                               onClick={disabled ? null : onClick ? onClick : null}
+                               padding={padding}
+                               margin={margin}>
+                    <Label fontSize={fontSize}
+                           textColor={textColor}>
+                        {title}
+                    </Label>
+                </ButtonWrapper>
+            )
     }
-}
-
-
+};
 
 Button.propTypes = {
     title: PropTypes.any,

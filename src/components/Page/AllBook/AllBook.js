@@ -29,10 +29,10 @@ export const AllBook = () => {
         get_all_book_without_not_started(dispatch, page, countOnPage);
     };
 
-    const books = _orderBy(all_books.books, i => moment(i.last_section.updated_at).unix(), "desc");
-
     if (!all_books)
         return null;
+
+    const books = _orderBy(all_books.books, i => moment(i.last_section.updated_at).unix(), "desc");
 
     return (
         <Page>

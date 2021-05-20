@@ -1,8 +1,9 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import styled from "styled-components";
 import Button from "components/Elements/Button";
 import PropTypes from "prop-types";
 
+//region Styled
 const PaginatorWrapper = styled.div`
     width: 100%;
     padding: 8px;
@@ -27,68 +28,66 @@ const Dots = styled.div`
   border-radius: 5px;
   margin-right: 8px;
   `;
+//endregion
 
-class Paginator extends PureComponent {
-    render() {
-        const {countOnPage, currentPage, onChangeCurrentPage, countItems} = this.props;
-        const countPage = Math.ceil(countItems/countOnPage);
-        return (
-            <PaginatorWrapper>
-                {
-                    countPage < 2 ? null :
-                        <>
-                            <Button title={"<<"}
-                                    height="40px"
-                                    onClick={() => currentPage === 1 ? null : onChangeCurrentPage(1)}
-                                    margin="0 8px 0 0"/>
-                            <Button title={"<"}
-                                    height="40px"
-                                    onClick={() => currentPage === 1 ? null : onChangeCurrentPage(currentPage-1)}
-                                    margin="0 8px 0 0"/>
-                            {
-                                currentPage < 4 ? null :
-                                    <Dots>...</Dots>
-                            }
-                            {
-                                new Array(countPage).fill(0).map((item, i) => {
-                                    if (currentPage > 3) {
-                                        if ((i+1) < currentPage - 2) {
-                                            return null;
-                                        }
+const Paginator = ({countOnPage, currentPage, onChangeCurrentPage, countItems}) => {
+    const countPage = Math.ceil(countItems/countOnPage);
+    return (
+        <PaginatorWrapper>
+            {
+                countPage < 2 ? null :
+                    <>
+                        <Button title={"<<"}
+                                height="40px"
+                                onClick={() => currentPage === 1 ? null : onChangeCurrentPage(1)}
+                                margin="0 8px 0 0"/>
+                        <Button title={"<"}
+                                height="40px"
+                                onClick={() => currentPage === 1 ? null : onChangeCurrentPage(currentPage-1)}
+                                margin="0 8px 0 0"/>
+                        {
+                            currentPage < 4 ? null :
+                                <Dots>...</Dots>
+                        }
+                        {
+                            new Array(countPage).fill(0).map((item, i) => {
+                                if (currentPage > 3) {
+                                    if ((i+1) < currentPage - 2) {
+                                        return null;
                                     }
-                                    if (currentPage < countPage-3){
-                                        if ((i+1) > currentPage + 2) {
-                                            return null;
-                                        }
+                                }
+                                if (currentPage < countPage-3){
+                                    if ((i+1) > currentPage + 2) {
+                                        return null;
                                     }
-                                    return (
-                                        <Button title={i+1}
-                                                key={i}
-                                                height="40px"
-                                                background={currentPage === (i+1) ? "#51db51" : ""}
-                                                onClick={() => currentPage === (i+1) ? null : onChangeCurrentPage(i+1)}
-                                                margin="0 8px 0 0"/>
-                                    )
-                                })
-                            }
-                            {
-                                currentPage > countPage-3 ? null :
-                                    <Dots>...</Dots>
-                            }
-                            <Button title={">"}
-                                    height="40px"
-                                    onClick={() => currentPage === countPage ? null : onChangeCurrentPage(currentPage+1)}
-                                    margin="0 8px 0 0"/>
-                            <Button title={">>"}
-                                    height="40px"
-                                    onClick={() => currentPage === countPage ? null : onChangeCurrentPage(countPage)}
-                                    margin="0 0 0 0"/>
-                        </>
-                }
-            </PaginatorWrapper>
-        )
-    }
-}
+                                }
+                                return (
+                                    <Button title={i+1}
+                                            key={i}
+                                            height="40px"
+                                            background={currentPage === (i+1) ? "#51db51" : ""}
+                                            onClick={() => currentPage === (i+1) ? null : onChangeCurrentPage(i+1)}
+                                            margin="0 8px 0 0"/>
+                                )
+                            })
+                        }
+                        {
+                            currentPage > countPage-3 ? null :
+                                <Dots>...</Dots>
+                        }
+                        <Button title={">"}
+                                height="40px"
+                                onClick={() => currentPage === countPage ? null : onChangeCurrentPage(currentPage+1)}
+                                margin="0 8px 0 0"/>
+                        <Button title={">>"}
+                                height="40px"
+                                onClick={() => currentPage === countPage ? null : onChangeCurrentPage(countPage)}
+                                margin="0 0 0 0"/>
+                    </>
+            }
+        </PaginatorWrapper>
+    )
+};
 
 Paginator.propTypes = {
     countOnPage: PropTypes.number,

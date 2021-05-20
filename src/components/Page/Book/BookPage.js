@@ -274,7 +274,7 @@ export const BookPage = ({match}) => {
         }
     };
 
-    const onChangeValueText = (val, disabledMax) => {
+    const onChangeValueText = (value, disabledMax) => {
         setValue(value);
         setDisabled(disabledMax);
     };
@@ -351,6 +351,7 @@ export const BookPage = ({match}) => {
                               value={value}
                               disabled={disabled || disabledInputs}
                               maxLenght={2000}
+                              backgroundColor={"#fff"}
                               placeholder={"Введите текст секции"}/>
                 <ButtonWrapper>
                     <Container>
