@@ -1,7 +1,7 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import {connect} from "react-redux";
+import {useSelector} from "react-redux";
 import _get from "lodash/get";
 
 //region Styled
@@ -33,24 +33,17 @@ const Name = styled.div`
 `;
 //endregion
 
-@connect(state => ({
-    user: _get(state.app, "user"),
-}))
-class UserInfo extends PureComponent {
-    render() {
-        const {user} = this.props;
+const UserInfo = () => {
+    const user = useSelector(state => _get(state.app, "user"));
+    if (!user) return null;
 
-        if (!user)
-            return null;
-
-        return (
-            <Wrapper>
-                <IconAvatarContainer>{user.nickname.substring(0, 1)}</IconAvatarContainer>
-                <Name>{user.nickname}</Name>
-            </Wrapper>
-        )
-    }
-}
+    return (
+        <Wrapper>
+            <IconAvatarContainer>{user.nickname.substring(0, 1)}</IconAvatarContainer>
+            <Name>{user.nickname}</Name>
+        </Wrapper>
+    )
+};
 
 UserInfo.propTypes = {
     user: PropTypes.object,

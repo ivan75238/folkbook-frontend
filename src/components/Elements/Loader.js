@@ -1,7 +1,8 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import styled from "styled-components";
 import LoaderSvg from "components/Elements/LoaderSvg";
 
+//region Styled
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -30,19 +31,17 @@ const LoaderWrapper = styled.div`
     justify-content: center;
     height: 200px;
 `;
+//endregion
 
-class Loader extends PureComponent {
-
-    render() {
-        return (
-            <Wrapper>
-                <Label>Загрузка</Label>
-                <LoaderWrapper>
-                    <LoaderSvg />
-                </LoaderWrapper>
-            </Wrapper>
-        )
-    }
-}
+const Loader = () => {
+    return (
+        <Wrapper>
+            <Label>Загрузка</Label>
+            <LoaderWrapper>
+                <LoaderSvg />
+            </LoaderWrapper>
+        </Wrapper>
+    )
+};
 
 export default Loader;

@@ -53,8 +53,8 @@ export const Menu = ({openMenu, closeMenu}) => {
     const [activeMenuId, setActiveMenuId] = useState(0);
     const itemsTop = Items.filter(i => i.id < 100);
     const itemsBottom = Items.filter(i => i.id > 100);
-    let history = useHistory();
-    let dispatch = useDispatch();
+    const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const onLocationChange = () => {

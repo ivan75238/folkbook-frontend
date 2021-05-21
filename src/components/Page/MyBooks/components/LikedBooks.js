@@ -15,7 +15,7 @@ const LikedBooks = () => {
     const [page, setPage] = useState(1);
     const [countOnPage] = useState(10);
     const dispatch = useDispatch();
-    let history = useHistory();
+    const history = useHistory();
 
     useEffect(() => get_liked_books(dispatch, page, countOnPage), []);
 

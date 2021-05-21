@@ -16,7 +16,7 @@ const UserBooks = () => {
     const [page, setPage] = useState(1);
     const [countOnPage] = useState(10);
     const dispatch = useDispatch();
-    let history = useHistory();
+    const history = useHistory();
 
     const all_user_books = useSelector(state => _get(state.books, "all_user_books"));
 

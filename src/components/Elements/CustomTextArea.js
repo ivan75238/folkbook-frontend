@@ -44,8 +44,6 @@ const InputWrapper = styled.div`
 
 function auxiliaryTextColor(type) {
     switch(type){
-        /*case "error":
-            return "#DF5252";*/
         default:
             return "#B3BABD";
     }
@@ -101,38 +99,38 @@ class CustomTextArea extends PureComponent {
         const {value, type, title, width, margin, errorText, height, padding, onClick, disable, auxiliaryText, background, minRows, maxRows, isRequired} = this.props;
         const {focus, error} = this.state;
         return (
-                <InputWrapper width={width}
-                              onClick={onClick ? onClick : null}
-                              margin={margin}
-                              color={disable ? "disable" : error ? "error" : focus ? "focus" : null}
-                              background={background}
-                              disable={disable ? "1" : "0"}
-                              padding={padding}
-                              height={height}>
-                    <Label isFull={focus ? "0" : value === "" ? "1" : "0"}
-                           onClick={() => this._input.focus()}
-                           color={error ? "error" : focus ? "focus" : value !== "" ? "active" : null}>
-                        {title}
-                        {isRequired && <Required>*</Required>}
-                    </Label>
-                    <TextareaAutosize onChange={e => this.onChange(e.target.value)}
-                                      onFocus={() => this.setState({focus: true})}
-                                      onBlur={() => this.setState({focus: false})}
-                                      onKeyPress={e => this.onKeyPeress(e.keyCode)}
-                                      type={type}
-                                      maxRows={maxRows}
-                                      minRows={minRows}
-                                      disabled={disable}
-                                      value={value ? value : ""}
-                                      ref={(c) => this._input = c}/>
-                    {
-                        (auxiliaryText || errorText) &&
-                            <AuxiliaryText color={error ? "error" : null}>
-                                {errorText ? errorText : auxiliaryText}
-                            </AuxiliaryText>
-                    }
-                </InputWrapper>
-            )
+            <InputWrapper width={width}
+                          onClick={onClick ? onClick : null}
+                          margin={margin}
+                          color={disable ? "disable" : error ? "error" : focus ? "focus" : null}
+                          background={background}
+                          disable={disable ? "1" : "0"}
+                          padding={padding}
+                          height={height}>
+                <Label isFull={focus ? "0" : value === "" ? "1" : "0"}
+                       onClick={() => this._input.focus()}
+                       color={error ? "error" : focus ? "focus" : value !== "" ? "active" : null}>
+                    {title}
+                    {isRequired && <Required>*</Required>}
+                </Label>
+                <TextareaAutosize onChange={e => this.onChange(e.target.value)}
+                                  onFocus={() => this.setState({focus: true})}
+                                  onBlur={() => this.setState({focus: false})}
+                                  onKeyPress={e => this.onKeyPeress(e.keyCode)}
+                                  type={type}
+                                  maxRows={maxRows}
+                                  minRows={minRows}
+                                  disabled={disable}
+                                  value={value ? value : ""}
+                                  ref={(c) => this._input = c}/>
+                {
+                    (auxiliaryText || errorText) &&
+                        <AuxiliaryText color={error ? "error" : null}>
+                            {errorText ? errorText : auxiliaryText}
+                        </AuxiliaryText>
+                }
+            </InputWrapper>
+        )
     }
 }
 

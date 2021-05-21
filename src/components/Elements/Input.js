@@ -1,8 +1,9 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import EyeIcon from "components/Icons/EyeIcon";
 
+//region Styled
 const InputWrapper = styled.div`
     position: relative;
     width: ${props => props.width};
@@ -53,57 +54,42 @@ const InputStyled = styled.input`
     padding: 0 16px;
     outline: none;
 `;
+//endregion
 
-//Стилизованный инпут
-class Input extends PureComponent {
-    state = {
-        visiblePassword: false
-    };
+const Input = (props) => {
+    const {onChange, value, onEnterPress, type, title, disabled, width, margin, height, hideTitle, padding, onClick} = props;
+    const [visiblePassword, setVisiblePassword] = useState();
 
-    onChange = (value) => {
-        const {onChange} = this.props;
-        if (onChange)
-            onChange(value)
-    };
-
-    onKeyPress(event) {
-        const {onEnterPress} = this.props;
+    const onKeyPress = event => {
         if (onEnterPress && event.charCode === 13){
             onEnterPress(event);
         }
-    }
+    };
 
-
-    render() {
-        const {value, type, title, disabled, width, margin, height, hideTitle, padding, onClick} = this.props;
-        const {visiblePassword} = this.state;
-        return (
-            <InputWrapper width={width}
-                          onClick={onClick ? onClick : null}
-                          margin={margin}>
-                {
-                    hideTitle ? null :
-                        <Label>{title}</Label>
-                }
-                {
-                    type === "password" &&
-                    <IconWrapper onClick={() => this.setState({visiblePassword: !visiblePassword})}>
-                        <EyeIcon/>
-                    </IconWrapper>
-                }
-                <InputStyled onChange={e => this.onChange(e.target.value)}
-                             onKeyPress={e => this.onKeyPress(e)}
-                             type={type === "password" ? visiblePassword ? "" : type : type}
-                             height={height}
-                             padding={padding}
-                             disabled={disabled}
-                             value={value ? value : ""}/>
-            </InputWrapper>
-        )
-    }
-}
-
-
+    return (
+        <InputWrapper width={width}
+                      onClick={onClick ? onClick : null}
+                      margin={margin}>
+            {
+                hideTitle ? null :
+                    <Label>{title}</Label>
+            }
+            {
+                type === "password" &&
+                <IconWrapper onClick={() => setVisiblePassword(!visiblePassword)}>
+                    <EyeIcon/>
+                </IconWrapper>
+            }
+            <InputStyled onChange={e => onChange(e.target.value)}
+                         onKeyPress={e => onKeyPress(e)}
+                         type={type === "password" ? visiblePassword ? "" : type : type}
+                         height={height}
+                         padding={padding}
+                         disabled={disabled}
+                         value={value ? value : ""}/>
+        </InputWrapper>
+    )
+};
 
 Input.propTypes = {
     value: PropTypes.any,

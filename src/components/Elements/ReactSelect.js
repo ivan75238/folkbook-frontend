@@ -1,9 +1,10 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Select from "react-select";
 
-const DPInputWrapper = styled.div`
+//region Styled
+const InputWrapper = styled.div`
   height: ${props => props.inputHeight || "auto"};
   width: ${props => props.inputWidth || "auto"};
   margin: ${props => props.margin || "auto"};
@@ -17,25 +18,23 @@ const DPInputWrapper = styled.div`
         }
     }
 `;
+//endregion
 
 
-class ReactSelect extends PureComponent {
-
-    render() {
-        const {height, value, onChange, width, options, margin, placeholder} = this.props;
-        return (
-            <DPInputWrapper inputHeight={height}
-                            inputWidth={width}
-                            margin={margin}>
-                <Select value={value}
-                        className={"react-select"}
-                        options={options}
-                        placeholder={placeholder}
-                        onChange={onChange}/>
-            </DPInputWrapper>
-        )
-    }
-}
+const ReactSelect = () => {
+    const {height, value, onChange, width, options, margin, placeholder} = props;
+    return (
+        <InputWrapper inputHeight={height}
+                      inputWidth={width}
+                      margin={margin}>
+            <Select value={value}
+                    className={"react-select"}
+                    options={options}
+                    placeholder={placeholder}
+                    onChange={onChange}/>
+        </InputWrapper>
+    )
+};
 
 ReactSelect.propTypes = {
     height: PropTypes.string,
