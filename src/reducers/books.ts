@@ -9,7 +9,7 @@ const initial = {
     all_user_books: null,
 };
 
-export function books(state = initial, action) {
+export function books(state = initial, action:any) {
 
     switch (action.type) {
         case booksActions.SET_NEW_BOOKS: {

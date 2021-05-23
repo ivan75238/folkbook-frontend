@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import Input from "components/Elements/Input";
-import Button from "components/Elements/Button";
+import Input from "../Elements/Input";
+import Button from "../Elements/Button";
 import {toast} from "react-toastify";
-import {API} from "components/API";
-import {appActions} from "reducers/actions";
+import {API} from "../API";
+import {appActions} from "../../reducers/actions";
 import _get from "lodash/get";
 import {useDispatch} from "react-redux";
 
@@ -42,7 +42,7 @@ export const Auth = () => {
         <>
             <Input width="100%"
                    value={username}
-                   onChange={val => setUsername(val.trim())}
+                   onChange={(val: string) => setUsername(val.trim())}
                    disabled={disabled}
                    onEnterPress={login}
                    title="Почта"
@@ -52,7 +52,7 @@ export const Auth = () => {
                    value={pass}
                    disabled={disabled}
                    onEnterPress={login}
-                   onChange={val => setPass(val.trim())}
+                   onChange={(val: string) => setPass(val.trim())}
                    title="Пароль"
                    height="40px"
                    type={"password"}
@@ -62,7 +62,7 @@ export const Auth = () => {
                     height="40px"
                     disabled={disabled}
                     onClick={login}
-                    margin="16px 0 0 0"/>
+                    margin="16px 0 0 0" />
         </>
     )
 };

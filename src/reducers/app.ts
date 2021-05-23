@@ -6,7 +6,7 @@ const initial = {
     loading: false,
 };
 
-export function app(state = initial, action) {
+export function app(state = initial, action: any) {
 
     switch (action.type) {
         case appActions.SET_AUTH_VALUE: {

@@ -2,7 +2,7 @@ import React from "react";
 import {Route, Switch} from "react-router-dom";
 import styled from "styled-components";
 import {Paths} from "../Paths";
-import {MainPage} from "components/Page/Main/MainPage";
+import {MainPage} from "./Page/Main/MainPage";
 import {Header} from "components/Header/Header";
 import {BookPage} from "components/Page/Book/BookPage";
 import {AllBook} from "components/Page/AllBook/AllBook";

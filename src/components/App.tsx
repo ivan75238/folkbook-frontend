@@ -1,20 +1,26 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import _get from 'lodash/get';
+// @ts-ignore
 import ReactTooltip from "react-tooltip";
-import {AuthPage} from "components/Auth/AuthPage";
-import {Main} from "components/Main";
+import {AuthPage} from "./Auth/AuthPage";
+import {Main} from "./Main";
 import {registerLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import {Paths} from "../Paths";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {API} from "components/API";
-import {appActions} from "reducers/actions";
-import Loader from "components/Elements/Loader";
+import {API} from "./API";
+import {appActions} from "../reducers/actions";
+import Loader from "./Elements/Loader";
+import {useAppSelector} from "../store/hooks";
 registerLocale('ru', ru);
+
+//Types
+
+//endregion
 
 //region Styled
 const MainWrapper = styled.div`
@@ -52,8 +58,8 @@ const StyledToastContainer = styled(ToastContainer).attrs({
 //endregion
 
 export const App = () => {
-    const auth = useSelector(state => _get(state.app, "auth", false));
-    const app_loading = useSelector(state => _get(state.app, "loading", false));
+    const auth = useAppSelector(state => _get(state.app, "auth", false));
+    const app_loading = useAppSelector(state => _get(state.app, "loading", false));
 
     const [loading, setLoading] = useState(true);
     const [resCheckAuth, setResCheckAuth] = useState({});

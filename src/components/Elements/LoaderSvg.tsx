@@ -1,6 +1,6 @@
 import React from "react";
 
-const LoaderSvg = () => {
+export const LoaderSvg = () => {
     return (
         <svg width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
             <circle cx="50" cy="50" r="0" fill="none" stroke="#ffffff" strokeWidth="2">
@@ -14,5 +14,3 @@ const LoaderSvg = () => {
         </svg>
     )
 };
-
-export default LoaderSvg;

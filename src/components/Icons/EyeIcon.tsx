@@ -1,7 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-const EyeIcon = ({color, opacity}) => {
+type Props = {
+    color?: string,
+    opacity?: number,
+}
+
+const EyeIcon = ({color, opacity}: Props) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg"
              width="24"
@@ -36,11 +40,6 @@ const EyeIcon = ({color, opacity}) => {
             </g>
         </svg>
     );
-};
-
-EyeIcon.propTypes = {
-    color: PropTypes.string,
-    opacity: PropTypes.number,
 };
 
 export default EyeIcon;

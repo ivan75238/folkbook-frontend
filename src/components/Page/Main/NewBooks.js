@@ -15,7 +15,7 @@ const NewBooks = () => {
     const new_books = useSelector(state => _get(state.books, "new_books"));
     const dispatch = useDispatch();
 
-    useEffect(() => get_new_book(), []);
+    useEffect(() => get_new_book(dispatch), []);
 
     const joinInBook = async () => {
         setDisabled(true);

@@ -1,3 +1,4 @@
+// @ts-ignore
 import keyMirror from 'fbjs/lib/keyMirror';
 
 //Ключи для глобального хранилища

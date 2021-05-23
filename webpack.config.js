@@ -20,6 +20,10 @@ module.exports = {
                 use: ['babel-loader', 'eslint-loader'],
             },
             {
+                test: /\.(ts|tsx)$/,
+                use: ['ts-loader'],
+            },
+            {
                 test: /\.html$/,
                 use: [
                     {
@@ -63,6 +67,7 @@ module.exports = {
         new CleanWebpackPlugin(),
     ],
     resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
             components: path.resolve(__dirname, 'src/components/'),
             modules: path.resolve(__dirname, 'src/modules/'),

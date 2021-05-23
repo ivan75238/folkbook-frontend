@@ -7,7 +7,7 @@ export const Paths = {
     },
     books : {
         book : {
-            path : (id) => `/book/${id}`,
+            path : (id: number) => `/book/${id}`,
             mask : () => `/book/:id`,
         },
         all : {

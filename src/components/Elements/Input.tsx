@@ -1,10 +1,33 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import EyeIcon from "components/Icons/EyeIcon";
+import EyeIcon from "../Icons/EyeIcon";
+
+//region Types
+type Props = {
+    value?: string,
+    onEnterPress?: Function,
+    type?: string,
+    title?: string,
+    disabled?: boolean,
+    width?: string,
+    margin?: string,
+    height?: string,
+    hideTitle?: boolean,
+    padding?: string,
+    onClick?: () => void | null
+}
+
+type PropsStyled = Props & {
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void | null,
+}
+
+type PropsComponent = Props & {
+    onChange?: (e: string) => void | null,
+}
+//endregion
 
 //region Styled
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<PropsStyled>`
     position: relative;
     width: ${props => props.width};
     margin: ${props => props.margin};
@@ -40,7 +63,7 @@ const IconWrapper = styled.div`
     cursor: pointer;
 `;
 
-const InputStyled = styled.input`
+const InputStyled = styled.input<PropsStyled>`
     width: 100%;
     font-family: "GothamPro", sans-serif;
     font-size: 14px;
@@ -56,19 +79,25 @@ const InputStyled = styled.input`
 `;
 //endregion
 
-const Input = (props) => {
+const Input = (props: PropsComponent) => {
     const {onChange, value, onEnterPress, type, title, disabled, width, margin, height, hideTitle, padding, onClick} = props;
-    const [visiblePassword, setVisiblePassword] = useState();
+    const [visiblePassword, setVisiblePassword] = useState<boolean>();
 
-    const onKeyPress = event => {
+    const onKeyPressHandler = (event: React.KeyboardEvent) => {
         if (onEnterPress && event.charCode === 13){
             onEnterPress(event);
         }
     };
 
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (onChange){
+            onChange(e.target.value);
+        }
+    };
+
     return (
         <InputWrapper width={width}
-                      onClick={onClick ? onClick : null}
+                      onClick={() => onClick ? onClick() : null}
                       margin={margin}>
             {
                 hideTitle ? null :
@@ -80,8 +109,8 @@ const Input = (props) => {
                     <EyeIcon/>
                 </IconWrapper>
             }
-            <InputStyled onChange={e => onChange(e.target.value)}
-                         onKeyPress={e => onKeyPress(e)}
+            <InputStyled onChange={onChangeHandler}
+                         onKeyPress={onKeyPressHandler}
                          type={type === "password" ? visiblePassword ? "" : type : type}
                          height={height}
                          padding={padding}
@@ -89,22 +118,6 @@ const Input = (props) => {
                          value={value ? value : ""}/>
         </InputWrapper>
     )
-};
-
-Input.propTypes = {
-    value: PropTypes.any,
-    type: PropTypes.string,
-    title: PropTypes.string,
-    padding: PropTypes.string,
-    hideTitle: PropTypes.bool,
-    widthImportant: PropTypes.bool,
-    onChange: PropTypes.func,
-    onClick: PropTypes.func,
-    width: PropTypes.string,
-    height: PropTypes.string,
-    disabled: PropTypes.bool,
-    onEnterPress: PropTypes.func,
-    margin: PropTypes.string,
 };
 
 export default Input;

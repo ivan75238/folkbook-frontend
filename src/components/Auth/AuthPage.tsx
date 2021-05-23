@@ -1,17 +1,18 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import Button from "components/Elements/Button";
-import {appActions} from "reducers/actions";
+import Button from "../Elements/Button";
+import {appActions} from "../../reducers/actions";
 import {useDispatch} from "react-redux";
-import {API} from "components/API";
+import {API} from "../API";
 import {toast} from "react-toastify";
+// @ts-ignore
 import VkAuth from 'react-vk-auth';
-import LogoVk from "components/Icons/LogoVk";
+import LogoVk from "../Icons/LogoVk";
 import { GoogleLogin } from 'react-google-login';
-import LogoGoogle from "components/Icons/LogoGoogle";
+import LogoGoogle from "../Icons/LogoGoogle";
 import auth_main_book from "../Images/auth_main_book.png"
-import {Auth} from "components/Auth/Auth";
-import Registration from "components/Auth/Registration";
+import {Auth} from "./Auth";
+import Registration from "../Auth/Registration";
 
 //region Styles
 const ContentWrapper = styled.div`
