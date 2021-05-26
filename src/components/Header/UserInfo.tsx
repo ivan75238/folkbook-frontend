@@ -1,8 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import {useSelector} from "react-redux";
 import _get from "lodash/get";
+import {useAppSelector} from "../../store/hooks";
+import {User} from "../../Types/Types";
 
 //region Styled
 const Wrapper = styled.div`
@@ -34,7 +34,7 @@ const Name = styled.div`
 //endregion
 
 const UserInfo = () => {
-    const user = useSelector(state => _get(state.app, "user"));
+    const user = useAppSelector<User>(state => _get(state.app, "user"));
     if (!user) return null;
 
     return (
@@ -43,10 +43,6 @@ const UserInfo = () => {
             <Name>{user.nickname}</Name>
         </Wrapper>
     )
-};
-
-UserInfo.propTypes = {
-    user: PropTypes.object,
 };
 
 export default UserInfo;

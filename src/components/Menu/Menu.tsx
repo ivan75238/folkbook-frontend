@@ -1,15 +1,28 @@
 import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import {Items} from "components/Menu/Items";
+import {Items} from "./Items";
 import { useHistory } from "react-router-dom";
-import {API} from "components/API";
-import {appActions} from "reducers/actions";
+import {API} from "../API";
+import {appActions} from "../../reducers/actions";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 
+//region Types
+type WrapperProps = {
+    openMenu: boolean
+}
+
+type ItemProps = {
+    isActive?: boolean
+}
+
+type Props = WrapperProps & {
+    closeMenu: () => void
+}
+//endregion
+
 //region Styled
-const Wrapper = styled.div`
+const Wrapper = styled.div<WrapperProps>`
     position: fixed;
     z-index: 1000;
     width: 240px;
@@ -29,7 +42,7 @@ const MenuWrapper = styled.div`
     width: 100%;
 `;
 
-const Item = styled.div`
+const Item = styled.div<ItemProps>`
     width: 100%;
     height: 40px;
     padding: 0 16px;
@@ -49,8 +62,8 @@ const Item = styled.div`
 `;
 //endregion
 
-export const Menu = ({openMenu, closeMenu}) => {
-    const [activeMenuId, setActiveMenuId] = useState(0);
+export const Menu = ({openMenu, closeMenu}: Props) => {
+    const [activeMenuId, setActiveMenuId] = useState<number>(0);
     const itemsTop = Items.filter(i => i.id < 100);
     const itemsBottom = Items.filter(i => i.id > 100);
     const history = useHistory();
@@ -69,7 +82,7 @@ export const Menu = ({openMenu, closeMenu}) => {
         return history.listen(onLocationChange);
     });
 
-    const openPage = path => {
+    const openPage = (path: string) => {
         history.push(path);
         closeMenu();
     };
@@ -112,11 +125,6 @@ export const Menu = ({openMenu, closeMenu}) => {
             </MenuWrapper>
         </Wrapper>
     )
-};
-
-Menu.propTypes = {
-    openMenu: PropTypes.bool,
-    closeMenu: PropTypes.func,
 };
 
 export default Menu;

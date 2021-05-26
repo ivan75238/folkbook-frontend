@@ -1,7 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from "prop-types";
-import CheckedIcon from "components/Icons/CheckedIcon";
+import CheckedIcon from "../../components/Icons/CheckedIcon";
+
+//region Type
+type CheckboxWrapperProps = {
+    mainMargin: string
+}
+
+type LabelWrapperProps = {
+    label: string,
+}
+
+type Props = CheckboxWrapperProps & LabelWrapperProps & {
+    value?: boolean,
+    onChange: (x:boolean) => void,
+    isChecked: boolean,
+    disabled?: boolean
+}
+//endregion
 
 //region Styled
 const LabelWrapperHover = styled.div`
@@ -16,7 +32,7 @@ const LabelWrapperHover = styled.div`
   border-radius: 4px;
 `;
 
-const CheckboxWrapper = styled.div`
+const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
     position: relative;
     display: flex;
     align-items: center;
@@ -31,7 +47,7 @@ const CheckboxWrapper = styled.div`
     }
 `;
 
-const LabelWrapper = styled.label`
+const LabelWrapper = styled.label<LabelWrapperProps>`
     display: flex;
     align-items: center;
     height: 100%;
@@ -41,7 +57,7 @@ const LabelWrapper = styled.label`
     cursor: inherit;
     margin-bottom: 0;
     position: relative;
-    ${(props) => (!props.label ? 'height: 8px' : '')};
+    ${props => props.label !== "" ? 'height: 8px' : ''};
 
     :before {
         content: '';
@@ -94,8 +110,10 @@ const IconWrapper = styled.div`
 `;
 //endregion
 
-export const StyledCheckbox = ({disabled, onChange, value, mainMargin, isChecked, label}) => {
-    const toggleChecked = () => disabled ? null : onChange(value);
+export const StyledCheckbox: React.FC<Props> = (props:Props) => {
+    const {disabled, onChange, value, mainMargin, isChecked, label} = props;
+
+    const toggleChecked = () => disabled ? null : onChange(!value);
 
     return (
         <CheckboxWrapper mainMargin={mainMargin}
@@ -105,10 +123,7 @@ export const StyledCheckbox = ({disabled, onChange, value, mainMargin, isChecked
                 type="checkbox"
                 checked={isChecked}
                 disabled={disabled}/>
-            <LabelWrapper
-                label={label}
-                disabled={disabled}
-                checked={isChecked}>
+            <LabelWrapper label={label}>
                 {label}
             </LabelWrapper>
             {
@@ -119,13 +134,4 @@ export const StyledCheckbox = ({disabled, onChange, value, mainMargin, isChecked
             }
         </CheckboxWrapper>
     )
-};
-
-StyledCheckbox.propTypes = {
-    value: PropTypes.any,
-    onChange: PropTypes.func,
-    disabled: PropTypes.bool,
-    isChecked: PropTypes.bool,
-    label: PropTypes.string,
-    mainMargin: PropTypes.string,
 };

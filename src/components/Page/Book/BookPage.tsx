@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
-import {Page} from "components/CommonStyledComponents";
+import {Page} from "../../CommonStyledComponents";
 import styled from "styled-components";
 import {
     create_draft_section, get_applicants_on_section,
@@ -11,17 +10,28 @@ import {
     update_draft_section
 } from "../../../functions/books";
 import _get from "lodash/get";
-import WysiwygInput from "components/Elements/WysiwygInput";
-import Button from "components/Elements/Button";
+import WysiwygInput from "../../Elements/WysiwygInput";
+import Button from "../../Elements/Button";
 import _orderBy from 'lodash/orderBy';
-import {translateStatusSection} from "components/utils";
-import {StyledCheckbox} from "components/Elements/StyledCheckbox";
+import {translateStatusSection} from "../../utils";
+import {StyledCheckbox} from "../../Elements/StyledCheckbox";
 import {toast} from "react-toastify";
-import CheckedApplicantIcon from "components/Icons/CheckedApplicantIcon";
-import Popup from "components/Elements/Popup";
-import {booksActions} from "reducers/actions";
-import Heart from "components/Icons/Heart";
+import CheckedApplicantIcon from "../../../components/Icons/CheckedApplicantIcon";
+import Popup from "../../../components/Elements/Popup";
+import {booksActions} from "../../../reducers/actions";
+import Heart from "../../../components/Icons/Heart";
 import {create_like, remove_like} from "../../../functions/liked_books";
+import {Applicant, Book, Section} from "../../../Types/Types";
+import { RouteComponentProps } from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks";
+
+//region Types
+type OtherProps = {
+
+}
+
+type Props = RouteComponentProps<OtherProps>;
+//endregion
 
 //region Styled
 const BookInfo = styled.div`
@@ -140,7 +150,7 @@ const IconWrapper = styled.div`
     background: rgba(255,255,255, 0.3);
 `;
 
-const getRandomArbitrary = (min, max) => {
+const getRandomArbitrary = (min: number, max: number): number => {
     return Math.random() * (max - min) + min;
 };
 
@@ -194,29 +204,29 @@ const OptionsWrapper = styled.div`
 `;
 //endregion
 
-const getLastSection = open_book => {
+const getLastSection = (open_book: Book): Section => {
     const chapters = _orderBy(open_book.chapters, i => i.number, "desc");
     chapters[0].sections = _orderBy(chapters[0].sections, i => i.number, "desc");
     return chapters[0].sections[0];
 };
 
-export const BookPage = ({match}) => {
-    const [error, setError] = useState();
-    const [value, setValue] = useState("");
-    const [draftSection, setDraftSection] = useState();
-    const [disabled, setDisabled] = useState();
-    const [nextIsLastInChapter, setNextIsLastInChapter] = useState();
-    const [nextIsLastInBook, setNextIsLastInBook] = useState();
-    const [selectedApplicantId, setSelectedApplicantId] = useState();
-    const [applicants, setApplicants] = useState();
-    const [isVoted, setIsVoted] = useState();
-    const [nextIsLastInChapterVote, setNextIsLastInChapterVote] = useState();
-    const [nextIsLastInBookVote, setNextIsLastInBookVote] = useState();
-    const [disabledVote, setDisabledVote] = useState();
-    const [applicantView, setApplicantView] = useState();
-    const user = useSelector(state => _get(state.app, "user"));
-    const openBook = useSelector(state => _get(state.books, "open_book"));
-    const dispatch = useDispatch();
+export const BookPage: React.FC<Props> = ({match}) => {
+    const [error, setError] = useState<string>();
+    const [value, setValue] = useState<string>("");
+    const [draftSection, setDraftSection] = useState<Applicant>();
+    const [disabled, setDisabled] = useState<boolean>();
+    const [nextIsLastInChapter, setNextIsLastInChapter] = useState<number>();
+    const [nextIsLastInBook, setNextIsLastInBook] = useState<number>();
+    const [selectedApplicantId, setSelectedApplicantId] = useState<number>();
+    const [applicants, setApplicants] = useState<Applicant[]>();
+    const [isVoted, setIsVoted] = useState<boolean>();
+    const [nextIsLastInChapterVote, setNextIsLastInChapterVote] = useState<boolean>();
+    const [nextIsLastInBookVote, setNextIsLastInBookVote] = useState<boolean>();
+    const [disabledVote, setDisabledVote] = useState<boolean>();
+    const [applicantView, setApplicantView] = useState<Applicant>();
+    const user = useAppSelector(state => _get(state.app, "user"));
+    const openBook = useAppSelector(state => _get(state.books, "open_book"));
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const id = _get(match, "params.id");
@@ -227,11 +237,11 @@ export const BookPage = ({match}) => {
             setError("Книга не найдена");
         }
 
-        return () => dispatch({type: booksActions.SET_BOOK, open_book: null});
+        return () => {dispatch({type: booksActions.SET_BOOK, open_book: null})};
     }, []);
 
     useEffect(() => {
-        if (openBook && openBook.status === "in_work" && openBook.participants.find(i => i === user.id)) {
+        if (openBook && openBook.status === "in_work" && openBook.participants.find((i: number) => i === user.id)) {
             openBook.last_section = getLastSection(openBook);
             const status = translateStatusSection(openBook);
             if (status.status === "in_work") {
@@ -243,7 +253,7 @@ export const BookPage = ({match}) => {
             }
         }
 
-        if (openBook && openBook.participants.find(i => i === user.id)) {
+        if (openBook && openBook.participants.find((i: number) => i === user.id)) {
             openBook.last_section = getLastSection(openBook);
             const statusNew = translateStatusSection(openBook);
             if (statusNew.status === "vote") {
@@ -259,22 +269,22 @@ export const BookPage = ({match}) => {
     if (!openBook)
         return null;
 
-    const getApplicantsOnSection = async id_section => {
+    const getApplicantsOnSection = async (id_section:number) => {
         const applicants = await get_applicants_on_section(id_section);
         setApplicants(applicants);
     };
 
-    const getDraftSection = async id_section => {
+    const getDraftSection = async (id_section: number) => {
         const draft_section = await get_draft_section(id_section);
         if (draft_section) {
             setDraftSection(draft_section);
-            setValue(draft_section.text);
+            setValue(draft_section.text ? draft_section.text : "");
             setNextIsLastInBook(draft_section.next_is_last_in_book);
             setNextIsLastInChapter(draft_section.next_is_last_in_chapter);
         }
     };
 
-    const onChangeValueText = (value, disabledMax) => {
+    const onChangeValueText = (value: string, disabledMax: boolean) => {
         setValue(value);
         setDisabled(disabledMax);
     };

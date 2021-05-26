@@ -1,7 +1,20 @@
 import React, {useEffect} from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import Close from "components/Icons/Close";
+import Close from "../../components/Icons/Close";
+
+//region Types
+type PopupContainerProps = {
+    width?: string
+}
+
+type PopupProps = PopupContainerProps & {
+    title?: string,
+    onClose?: () => void,
+    children?: React.ReactNode,
+    listenEscForClose?: boolean,
+    buttons?: React.ReactNode
+}
+//endregion
 
 //region Styled
 const Wrapper = styled.div`
@@ -26,7 +39,7 @@ const Background = styled.div`
     left: 0;
 `;
 
-const PopupContainer = styled.div`
+const PopupContainer = styled.div<PopupContainerProps>`
     width: ${props => props.width || "auto"};
     height: auto;
     background: #fff;
@@ -89,7 +102,8 @@ const IconContainer = styled.div`
 `;
 //endregion
 
-const Popup = ({title, onClose, width, children, buttons, listenEscForClose}) => {
+const Popup: React.FC<PopupProps> = (props: PopupProps) => {
+    const {title, onClose, width, children, buttons, listenEscForClose} = props;
     useEffect(() => {
         if (listenEscForClose) {
             document.onkeydown = evt => {
@@ -100,16 +114,16 @@ const Popup = ({title, onClose, width, children, buttons, listenEscForClose}) =>
             };
         }
 
-        return () => document.onkeydown =  null;
+        return () => {document.onkeydown =  null};
     });
 
     return (
         <Wrapper>
-            <Background onClick={onClose ? onClose : null}/>
+            <Background onClick={() => onClose ? onClose : null}/>
             <PopupContainer width={width}>
                 <Header>
                     {title}
-                    <IconContainer onClick={onClose ? onClose : null}>
+                    <IconContainer onClick={() => onClose ? onClose : null}>
                         <Close color={"#fff"}/>
                     </IconContainer>
                 </Header>
@@ -118,15 +132,6 @@ const Popup = ({title, onClose, width, children, buttons, listenEscForClose}) =>
             </PopupContainer>
         </Wrapper>
     )
-};
-
-Popup.propTypes = {
-    title: PropTypes.string,
-    onClose: PropTypes.func,
-    width: PropTypes.string,
-    children: PropTypes.any,
-    listenEscForClose: PropTypes.bool,
-    buttons: PropTypes.any,
 };
 
 export default Popup;

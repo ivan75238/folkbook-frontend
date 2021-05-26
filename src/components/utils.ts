@@ -1,7 +1,8 @@
 import moment from "moment";
 import _get from "lodash/get";
+import {Book, BookStatus} from "../Types/Types";
 
-export const translateStatusBook = book => {
+export const translateStatusBook = (book: Book) => {
     switch (book.status) {
         case "created":
             return "Поиск авторов";
@@ -12,12 +13,12 @@ export const translateStatusBook = book => {
     }
 };
 
-export const validateEmail = email =>  {
+export const validateEmail = (email: string): boolean =>  {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 };
 
-export const translateStatusSection = book => {
+export const translateStatusSection = (book: Book): BookStatus  => {
     const section_finished_at = moment(_get(book, "last_section.finished_at")).local();
     const section_vote_finished_at = moment(_get(book, "last_section.vote_finished_at")).local();
     let statusSection = "in_work";
@@ -37,5 +38,11 @@ export const translateStatusSection = book => {
                 status: "in_work",
                 timeout: section_finished_at
             };
+        default:
+            return {
+                title: "Ошибка статус",
+                status: "error",
+                timeout: moment()
+            }
     }
 };

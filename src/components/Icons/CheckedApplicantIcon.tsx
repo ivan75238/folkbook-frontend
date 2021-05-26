@@ -1,7 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const CheckedApplicantIcon = ({fill = "black"}) => {
+type Props = {
+    fill?: string
+}
+
+const CheckedApplicantIcon: React.FC<Props> = ({fill = "black"}: Props) => {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" x="0px" y="0px" viewBox="0 0 512 512" fill={fill}>
             <g>
@@ -16,11 +19,6 @@ const CheckedApplicantIcon = ({fill = "black"}) => {
             </g>
         </svg>
     )
-};
-
-CheckedApplicantIcon.propTypes = {
-    fill: PropTypes.string,
-    opacity: PropTypes.number,
 };
 
 export default CheckedApplicantIcon;

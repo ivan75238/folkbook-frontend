@@ -1,6 +1,20 @@
 import styled from "styled-components";
 
-export const Page = styled.div`
+//region Types
+type PropsPage = {
+    height?: string
+}
+
+type PropsRow = {
+    isCursorPointer?: boolean
+}
+
+type PropsColumn = {
+    isHeader?: boolean
+}
+//endregion
+
+export const Page = styled.div<PropsPage>`
     width: 100%;
     height: ${props => props.height || "auto"};
     padding: 16px;
@@ -14,7 +28,7 @@ export const Table = styled.div`
     flex-direction: column;
 `;
 
-export const Row = styled.div`
+export const Row = styled.div<PropsRow>`
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -24,7 +38,7 @@ export const Row = styled.div`
     cursor: ${props => props.isCursorPointer ? "pointer" : "default"};
 `;
 
-export const Column = styled.div`
+export const Column = styled.div<PropsColumn>`
     width: 100%;
     display: flex;
     align-items: flex-start;

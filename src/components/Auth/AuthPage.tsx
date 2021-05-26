@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import Button from "../Elements/Button";
 import {appActions} from "../../reducers/actions";
-import {useDispatch} from "react-redux";
-import {API} from "../API";
+import {API, LoginRequestType} from "../API";
 import {toast} from "react-toastify";
 // @ts-ignore
 import VkAuth from 'react-vk-auth';
@@ -13,6 +12,7 @@ import LogoGoogle from "../Icons/LogoGoogle";
 import auth_main_book from "../Images/auth_main_book.png"
 import {Auth} from "./Auth";
 import Registration from "../Auth/Registration";
+import {useAppDispatch} from "../../store/hooks";
 
 //region Styles
 const ContentWrapper = styled.div`
@@ -135,7 +135,11 @@ const TitleWrapper = styled.div`
     justify-content: center;
 `;
 
-const Tab = styled.div`
+type PropsTab = {
+    isActive: boolean
+}
+
+const Tab = styled.div<PropsTab>`
     width: 50%;
     height: 40px;
     display: flex;
@@ -218,15 +222,15 @@ const LinkText = styled.p`
 //endregion
 
 export const AuthPage = () => {
-    const [disabledBtn, setDisabledBtn] = useState(false);
-    const [popupTabIndex, setPopupTabIndex] = useState(-1);
-    const dispatch = useDispatch();
+    const [disabledBtn, setDisabledBtn] = useState<boolean>(false);
+    const [popupTabIndex, setPopupTabIndex] = useState<number>(-1);
+    const dispatch = useAppDispatch();
 
-    const responseGoogle = async response => {
+    const responseGoogle = async (response: any) => {
         const errorMsg = "Произошла ошибка, повторите попытку или попробуйте позже";
         if (!response.error) {
             setDisabledBtn(true);
-            const data_for_request = {
+            const data_for_request: LoginRequestType = {
                 username: response.profileObj.googleId,
                 email: response.profileObj.email,
                 first_name: response.profileObj.givenName,
@@ -264,11 +268,11 @@ export const AuthPage = () => {
         }
     };
 
-    const handleVkResponse = async data => {
+    const handleVkResponse = async (data: any) => {
         const errorMsg = "Произошла ошибка, повторите попытку или попробуйте позже";
         if (data.status === "connected") {
             setDisabledBtn(true);
-            const data_for_request = {
+            const data_for_request: LoginRequestType = {
                 username: data.session.user.id,
                 first_name: data.session.user.first_name,
                 last_name: data.session.user.last_name,
@@ -310,6 +314,12 @@ export const AuthPage = () => {
         }
     };
 
+    const onClickHandler = (e: any) => {
+        if (!e.target.closest('.ignoreEvents')) {
+            setPopupTabIndex(-1);
+        }
+    };
+
     return (
         <ContentWrapper>
             <HeaderWrapper>
@@ -346,7 +356,7 @@ export const AuthPage = () => {
             </FooterWrapper>
             {
                 popupTabIndex !== -1 &&
-                <PopupWrapper onClick={e => e.target.closest('.ignoreEvents') ? null : setPopupTabIndex(-1)}>
+                <PopupWrapper onClick={onClickHandler}>
                     <Container className={"ignoreEvents"}>
                         <TitleWrapper>
                             <Tab isActive={popupTabIndex === 0}

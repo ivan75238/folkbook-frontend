@@ -1,35 +1,36 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import _get from "lodash/get";
-import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
+import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
 import {get_new_book, join_in_book} from "../../../functions/books";
-import {translateStatusBook} from "components/utils";
-import Button from "components/Elements/Button";
+import {translateStatusBook} from "../../utils";
+import Button from "../../Elements/Button";
 import moment from "moment";
-import Popup from "components/Elements/Popup";
+import Popup from "../../Elements/Popup";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks";
+import {Book} from "../../../Types/Types";
 
-const NewBooks = () => {
-    const [disabled, setDisabled] = useState(false);
-    const [showWarning, setShowWarning] = useState(false);
-    const user = useSelector(state => _get(state.app, "user"));
-    const new_books = useSelector(state => _get(state.books, "new_books"));
-    const dispatch = useDispatch();
+const NewBooks: React.FC = () => {
+    const [disabled, setDisabled] = useState<boolean>(false);
+    const [showWarning, setShowWarning] = useState<number>(0);
+    const user = useAppSelector(state => _get(state.app, "user"));
+    const new_books = useAppSelector(state => _get(state.books, "new_books"));
+    const dispatch = useAppDispatch();
 
-    useEffect(() => get_new_book(dispatch), []);
+    useEffect(() => {get_new_book(dispatch)}, []);
 
     const joinInBook = async () => {
         setDisabled(true);
         await join_in_book(dispatch, showWarning, user.id);
         setDisabled(false);
-        setShowWarning(false);
+        setShowWarning(0);
     };
 
     const renderWarning = () => {
         if (!showWarning) return null;
 
         return (
-            <Popup title={`Предупреждение`}
-                   onClose={() => setShowWarning(false)}
+            <Popup title={"Предупреждение"}
+                   onClose={() => setShowWarning(0)}
                    width={"600px"}
                    listenEscForClose={true}
                    buttons={<Button title={"Продолжить"}
@@ -53,8 +54,8 @@ const NewBooks = () => {
                     <Column isHeader>Действия</Column>
                 </Row>
                 {
-                    new_books.map((book, i) => {
-                        const participants = _get(book, "participants", []);
+                    new_books.map((book: Book, i: number) => {
+                        const participants: number[] = _get(book, "participants", []);
                         return (
                             <Row key={i}>
                                 <Column>{book.name}</Column>

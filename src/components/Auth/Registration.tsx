@@ -1,16 +1,19 @@
 import React, {useState} from "react";
-import Input from "components/Elements/Input";
-import Button from "components/Elements/Button";
+import Input from "../Elements/Input";
+import Button from "../Elements/Button";
 import {toast} from "react-toastify";
-import {validateEmail} from "components/utils";
-import {API} from "components/API";
-import PropTypes from "prop-types";
+import {validateEmail} from "../utils";
+import {API} from "../API";
 
-const Registration = ({openAuthTab}) => {
-    const [username, setUsername] = useState("");
-    const [pass, setPass] = useState("");
-    const [passRepeat, setPassRepeat] = useState("");
-    const [disabled, setDisabled] = useState(false);
+type Props = {
+    openAuthTab: () => void
+}
+
+const Registration = ({openAuthTab}: Props) => {
+    const [username, setUsername] = useState<string>("");
+    const [pass, setPass] = useState<string>("");
+    const [passRepeat, setPassRepeat] = useState<string>("");
+    const [disabled, setDisabled] = useState<boolean>(false);
 
     const registration = async () => {
         if (username === "") {
@@ -85,10 +88,6 @@ const Registration = ({openAuthTab}) => {
                     margin="16px 0 0 0"/>
         </>
     )
-};
-
-Registration.propTypes = {
-    openAuthTab: PropTypes.func.isRequired,
 };
 
 export default Registration;

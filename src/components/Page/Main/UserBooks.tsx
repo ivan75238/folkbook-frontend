@@ -1,24 +1,24 @@
 import React, {useEffect} from "react";
-import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
 import _get from "lodash/get";
-import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
+import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
 import {get_active_books} from "../../../functions/books";
 import {Paths} from "../../../Paths";
-import {translateStatusSection} from "components/utils";
+import {translateStatusSection} from "../../utils";
 import _orderBy from 'lodash/orderBy';
 import { useHistory } from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks";
+import {Book, BookStatus} from "../../../Types/Types";
 
 const UserBooks = () => {
-    const active_books = useSelector(state => _get(state.books, "active_books"));
-    const dispatch = useDispatch();
+    const active_books = useAppSelector<Book[]>(state => _get(state.books, "active_books", []));
+    const dispatch = useAppDispatch();
     const history = useHistory();
 
     useEffect(() => get_active_books(dispatch), []);
-    const openBook = book => history.push(Paths.books.book.path(book.id));
+    const openBook = (book: Book) => history.push(Paths.books.book.path(book.id));
 
     const active_books_ordered = _orderBy(active_books, book => {
-        const status = translateStatusSection(book);
+        const status: BookStatus = translateStatusSection(book);
         return status.timeout.unix();
     });
 
@@ -55,13 +55,6 @@ const UserBooks = () => {
             </Table>
         </Page>
     )
-};
-
-UserBooks.propTypes = {
-    dispatch: PropTypes.func,
-    history: PropTypes.func,
-    user: PropTypes.object,
-    active_books: PropTypes.array,
 };
 
 export default UserBooks;

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 const HumburgerIcon = () => {
     return (
@@ -16,11 +15,6 @@ const HumburgerIcon = () => {
             <rect x="17" y="17" width="2" height="2"/>
         </svg>
     )
-};
-
-HumburgerIcon.propTypes = {
-    color: PropTypes.string,
-    opacity: PropTypes.number,
 };
 
 export default HumburgerIcon;

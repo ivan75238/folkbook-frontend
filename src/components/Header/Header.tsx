@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import UserInfo from "components/Header/UserInfo";
-import Menu from "components/Menu/Menu";
-import HumburgerIcon from "components/Icons/HumburgerIcon";
+import UserInfo from "./UserInfo";
+import Menu from "../../components/Menu/Menu";
+import HumburgerIcon from "../../components/Icons/HumburgerIcon";
 
 //region Styled
 const Wrapper = styled.div`
@@ -51,7 +51,7 @@ const ClickCatcher = styled.div`
 //endregion
 
 export const Header = () => {
-    const [openMenu, setOpenMenu] = useState(false);
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
     return (
         <Wrapper>
             <WrapperInner>

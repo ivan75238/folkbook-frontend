@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import {Editor} from "react-draft-wysiwyg";
 import {ContentState, convertToRaw, EditorState} from "draft-js";
 import draftToHtml from 'draftjs-to-html';
@@ -8,8 +7,24 @@ import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {toast} from "react-toastify";
 
+//region Types
+type ContentWrapperProps = {
+    viewer?: boolean,
+    height?: string,
+    backgroundColor?: string
+}
+
+type Props = ContentWrapperProps & {
+    disabled?: boolean,
+    placeholder?: string,
+    onChange: (x:string, y:boolean) => void,
+    maxLength?: number,
+    value?: string
+}
+//endregion
+
 //region Styled
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<ContentWrapperProps>`
   position: relative;
   display: flex;
   
@@ -42,20 +57,21 @@ const MaxLengthText = styled.div`
 `;
 //endregion
 
-const WysiwygInput = (props) => {
+const WysiwygInput:React.FC<Props> = (props: Props) => {
     const {
         disabled, viewer,
         placeholder, maxLength,
         value, height,
         backgroundColor, onChange
     } = props;
+
     const createEditorState = () => {
-        const contentBlock = htmlToDraft(value);
+        const contentBlock = htmlToDraft(value ? value : "");
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
         return EditorState.createWithContent(contentState);
     };
 
-    const [editorState, setEditorState] = useState(createEditorState);
+    const [editorState, setEditorState] = useState<EditorState>(createEditorState);
 
     const getOnlyText = () => {
         if (editorState) {
@@ -65,8 +81,10 @@ const WysiwygInput = (props) => {
         return "";
     };
 
-    const getLeft = () => {
-        return maxLength - getOnlyText().length;
+    const getLeft = (): number => {
+        if (maxLength)
+            return maxLength - getOnlyText().length;
+        return 0;
     };
 
     useEffect(() => {
@@ -75,19 +93,19 @@ const WysiwygInput = (props) => {
         }
     }, [value]);
 
-    const chartLeft = getLeft();
-
-    const onChangeEvent = e => {
+    const onChangeEvent = (e: EditorState) => {
         setEditorState(e);
-        const chartLeft = this.getLeft();
-        if (maxLength && chartLeft < 0) {
-            return toast.warning(`Секция не может быть более ${maxLength} символов, результат не будет сохранен`);
+        if (maxLength) {
+            const chartLeft = getLeft();
+            if (chartLeft < 0) {
+                return toast.warning(`Секция не может быть более ${maxLength} символов, результат не будет сохранен`);
+            }
         }
         if (getOnlyText().trim() === "") {
-            onChange("", maxLength ? chartLeft < 0 : false);
+            onChange("", maxLength ? getLeft() < 0 : false);
             return;
         }
-        onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLength ? chartLeft < 0 : false);
+        onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLength ? getLeft() < 0 : false);
     };
 
     return (
@@ -96,7 +114,7 @@ const WysiwygInput = (props) => {
                         height={height}>
             {
                 maxLength && !disabled &&
-                <MaxLengthText>{`Осталось символов: ${chartLeft <= 0 ? 0 : chartLeft}`}</MaxLengthText>
+                <MaxLengthText>{`Осталось символов: ${getLeft() <= 0 ? 0 : getLeft()}`}</MaxLengthText>
             }
             <Editor
                 toolbar={{
@@ -115,22 +133,11 @@ const WysiwygInput = (props) => {
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
-                onEditorStateChange={maxLength ? chartLeft <= 0 ? null : onChangeEvent : onChangeEvent}
+                onEditorStateChange={e => {maxLength ? getLeft() <= 0 ? null : onChangeEvent(e) : onChangeEvent(e)}}
                 placeholder={placeholder}
             />
         </ContentWrapper>
     )
-};
-
-WysiwygInput.propTypes = {
-    disabled: PropTypes.bool,
-    viewer: PropTypes.bool,
-    placeholder: PropTypes.string,
-    onChange: PropTypes.func,
-    maxLength: PropTypes.number,
-    value: PropTypes.string,
-    height: PropTypes.string,
-    backgroundColor: PropTypes.string,
 };
 
 export default WysiwygInput;
