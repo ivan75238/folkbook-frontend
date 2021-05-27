@@ -1,10 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import Select from "react-select";
 
+//region Types
+type InputWrapperProps = {
+    inputHeight?: string,
+    inputWidth?: string,
+    margin?: string
+}
+
+type Props = {
+    height?: string,
+    width?: string,
+    placeholder? : string,
+    margin?: string,
+    options: { label: string; value: string }[],
+    value: {label: string; value: string},
+    onChange: (value: any) => void
+}
+//endregion
+
 //region Styled
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<InputWrapperProps>`
   height: ${props => props.inputHeight || "auto"};
   width: ${props => props.inputWidth || "auto"};
   margin: ${props => props.margin || "auto"};
@@ -21,7 +38,7 @@ const InputWrapper = styled.div`
 //endregion
 
 
-const ReactSelect = () => {
+const ReactSelect:React.FC<Props> = (props: Props) => {
     const {height, value, onChange, width, options, margin, placeholder} = props;
     return (
         <InputWrapper inputHeight={height}
@@ -34,16 +51,6 @@ const ReactSelect = () => {
                     onChange={onChange}/>
         </InputWrapper>
     )
-};
-
-ReactSelect.propTypes = {
-    height: PropTypes.string,
-    width: PropTypes.string,
-    placeholder: PropTypes.string,
-    margin: PropTypes.string,
-    options: PropTypes.object,
-    value: PropTypes.object,
-    onChange: PropTypes.func,
 };
 
 export default ReactSelect;
