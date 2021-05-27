@@ -42,7 +42,7 @@ const Dots = styled.div<DotsProps>`
   `;
 //endregion
 
-const Paginator: React.FC<Props> = (props: Props) => {
+const Paginator = (props: Props) => {
     const {countOnPage, currentPage, onChangeCurrentPage, countItems} = props;
     const countPage = Math.ceil(countItems/countOnPage);
     return (

@@ -7,13 +7,13 @@ import Button from "../../Elements/Button";
 import moment from "moment";
 import Popup from "../../Elements/Popup";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {Book} from "../../../Types/Types";
+import {Book, User} from "../../../Types/Types";
 
-const NewBooks: React.FC = () => {
+const NewBooks = () => {
     const [disabled, setDisabled] = useState<boolean>(false);
     const [showWarning, setShowWarning] = useState<number>(0);
-    const user = useAppSelector(state => _get(state.app, "user"));
-    const new_books = useAppSelector(state => _get(state.books, "new_books"));
+    const user = useAppSelector<User>(state => state.app.user);
+    const new_books = useAppSelector<Book[]>(state => state.books.new_books);
     const dispatch = useAppDispatch();
 
     useEffect(() => {get_new_book(dispatch)}, []);

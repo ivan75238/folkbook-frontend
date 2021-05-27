@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {get_all_book_without_not_started} from "../../../functions/books";
-import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
 import {translateStatusBook} from "../../utils";
 import Paginator from "../../Elements/Paginator";
@@ -9,12 +8,12 @@ import moment from "moment";
 import {Paths} from "../../../Paths";
 import { useHistory } from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {Book} from "../../../Types/Types";
+import {Book, PaginationBook} from "../../../Types/Types";
 
 export const AllBook = () => {
     const [page, setPage] = useState<number>(1);
     const [countOnPage] = useState<number>(20);
-    const all_books = useAppSelector(state => _get(state.books, "all_books", {}));
+    const all_books = useAppSelector<PaginationBook>(state => state.books.all_books);
     const history = useHistory();
     const dispatch = useAppDispatch();
 
@@ -32,7 +31,7 @@ export const AllBook = () => {
     if (!all_books)
         return null;
 
-    const books = _orderBy(all_books.books, i => moment(i.last_section.updated_at).unix(), "desc");
+    const books = _orderBy(all_books.books, i => i.last_section ? moment(i.last_section.updated_at).unix() : 0, "desc");
 
     return (
         <Page>

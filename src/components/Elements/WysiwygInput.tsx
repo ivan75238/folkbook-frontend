@@ -57,7 +57,7 @@ const MaxLengthText = styled.div`
 `;
 //endregion
 
-const WysiwygInput:React.FC<Props> = (props: Props) => {
+const WysiwygInput = (props: Props) => {
     const {
         disabled, viewer,
         placeholder, maxLength,

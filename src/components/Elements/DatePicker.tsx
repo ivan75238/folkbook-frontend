@@ -17,7 +17,7 @@ type Props = {
     width?: string,
     hideTitle?: boolean,
     selected?: Date|null,
-    onChange: ( date: Date | [Date, Date] | null, event?: React.SyntheticEvent<any>) => void,
+    onChange: (date: Date) => void,
     format?: string,
 }
 //endregion
@@ -80,7 +80,7 @@ const Label = styled.p`
 //endregion
 
 //Стилизованный button
-const CustomDatePicker:React.FC<Props> = (props: Props) => {
+const CustomDatePicker = (props: Props) => {
     const {height, selected, margin, onChange, width, hideTitle, title, format = "dd.MM.yyyy"} = props;
     return (
         <DPInputWrapper inputHeight={height}
@@ -95,6 +95,6 @@ const CustomDatePicker:React.FC<Props> = (props: Props) => {
                         dateFormat={format}/>
         </DPInputWrapper>
     )
-}
+};
 
 export default CustomDatePicker;

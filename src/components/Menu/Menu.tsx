@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import {API} from "../API";
 import {appActions} from "../../reducers/actions";
 import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../store/hooks";
 
 //region Types
 type WrapperProps = {
@@ -67,7 +67,7 @@ export const Menu = ({openMenu, closeMenu}: Props) => {
     const itemsTop = Items.filter(i => i.id < 100);
     const itemsBottom = Items.filter(i => i.id > 100);
     const history = useHistory();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const onLocationChange = () => {

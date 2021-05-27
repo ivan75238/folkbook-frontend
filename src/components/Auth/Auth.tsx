@@ -5,13 +5,13 @@ import {toast} from "react-toastify";
 import {API} from "../API";
 import {appActions} from "../../reducers/actions";
 import _get from "lodash/get";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../store/hooks";
 
 export const Auth = () => {
-    const [username, setUsername] = useState("");
-    const [pass, setPass] = useState("");
-    const [disabled, setDisabled] = useState(false);
-    const dispatch = useDispatch();
+    const [username, setUsername] = useState<string>("");
+    const [pass, setPass] = useState<string>("");
+    const [disabled, setDisabled] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
 
     const login = async () => {
         if (username === "") {

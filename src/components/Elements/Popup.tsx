@@ -102,7 +102,7 @@ const IconContainer = styled.div`
 `;
 //endregion
 
-const Popup: React.FC<PopupProps> = (props: PopupProps) => {
+const Popup = (props: PopupProps) => {
     const {title, onClose, width, children, buttons, listenEscForClose} = props;
     useEffect(() => {
         if (listenEscForClose) {

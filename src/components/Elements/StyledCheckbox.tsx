@@ -109,7 +109,7 @@ const IconWrapper = styled.div`
 `;
 //endregion
 
-export const StyledCheckbox: React.FC<Props> = (props:Props) => {
+export const StyledCheckbox = (props:Props) => {
     const {disabled, onChange, value, mainMargin, label} = props;
 
     const toggleChecked = () => disabled ? null : onChange(!value);

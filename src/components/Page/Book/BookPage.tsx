@@ -202,13 +202,7 @@ const OptionsWrapper = styled.div`
 `;
 //endregion
 
-const getLastSection = (open_book: Book): Section => {
-    const chapters = _orderBy(open_book.chapters, i => i.number, "desc");
-    chapters[0].sections = _orderBy(chapters[0].sections, i => i.number, "desc");
-    return chapters[0].sections[0];
-};
-
-export const BookPage: React.FC<Props> = ({match}: Props) => {
+export const BookPage = ({match}: Props) => {
     const [error, setError] = useState<string>();
     const [value, setValue] = useState<string>("");
     const [draftSection, setDraftSection] = useState<Applicant>();
@@ -587,6 +581,12 @@ export const BookPage: React.FC<Props> = ({match}: Props) => {
             {renderApplicantView(applicantView, onSelectApplicantView, setApplicantView)}
         </Page>
     )
+};
+
+const getLastSection = (open_book: Book): Section => {
+    const chapters = _orderBy(open_book.chapters, i => i.number, "desc");
+    chapters[0].sections = _orderBy(chapters[0].sections, i => i.number, "desc");
+    return chapters[0].sections[0];
 };
 
 const renderApplicantView = (applicantView: Applicant|undefined, onSelect: (applicant: Applicant) => void, setApplicantView: (applicant: Applicant|undefined) => void) => {

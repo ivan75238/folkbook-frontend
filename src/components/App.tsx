@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {useDispatch} from "react-redux";
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import _get from 'lodash/get';
 // @ts-ignore
@@ -15,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {API} from "./API";
 import {appActions} from "../reducers/actions";
 import Loader from "./Elements/Loader";
-import {useAppSelector} from "../store/hooks";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
 registerLocale('ru', ru);
 
 //Types
@@ -58,12 +57,11 @@ const StyledToastContainer = styled(ToastContainer).attrs({
 //endregion
 
 export const App = () => {
-    const auth = useAppSelector(state => _get(state.app, "auth", false));
-    const app_loading = useAppSelector(state => _get(state.app, "loading", false));
+    const auth = useAppSelector<boolean>(state => _get(state.app, "auth", false));
+    const app_loading = useAppSelector<boolean>(state => _get(state.app, "loading", false));
 
-    const [loading, setLoading] = useState(true);
-    const [resCheckAuth, setResCheckAuth] = useState({});
-    const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(true);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const getUser = async () => {
@@ -77,7 +75,7 @@ export const App = () => {
             }
         };
         getUser();
-    }, [resCheckAuth, setResCheckAuth, dispatch]);
+    }, []);
 
     return (
         <MainWrapper>

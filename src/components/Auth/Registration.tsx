@@ -6,10 +6,11 @@ import {validateEmail} from "../utils";
 import {API} from "../API";
 
 type Props = {
-    openAuthTab: () => void
+    openAuthTab: () => void,
 }
 
-const Registration = ({openAuthTab}: Props) => {
+const Registration = (props: Props) => {
+    const {openAuthTab} = props;
     const [username, setUsername] = useState<string>("");
     const [pass, setPass] = useState<string>("");
     const [passRepeat, setPassRepeat] = useState<string>("");

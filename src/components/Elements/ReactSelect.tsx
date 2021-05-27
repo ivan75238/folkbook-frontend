@@ -38,7 +38,7 @@ const InputWrapper = styled.div<InputWrapperProps>`
 //endregion
 
 
-const ReactSelect:React.FC<Props> = (props: Props) => {
+const ReactSelect = (props: Props) => {
     const {height, value, onChange, width, options, margin, placeholder} = props;
     return (
         <InputWrapper inputHeight={height}
