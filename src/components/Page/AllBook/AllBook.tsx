@@ -1,30 +1,30 @@
 import React, {useEffect, useState} from "react";
 import {get_all_book_without_not_started} from "../../../functions/books";
-import {useDispatch, useSelector} from "react-redux";
 import _get from "lodash/get";
-import {Column, Page, Row, Table, TableName} from "components/CommonStyledComponents";
-import {translateStatusBook} from "components/utils";
-import Paginator from "components/Elements/Paginator";
+import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
+import {translateStatusBook} from "../../utils";
+import Paginator from "../../Elements/Paginator";
 import _orderBy from 'lodash/orderBy';
 import moment from "moment";
 import {Paths} from "../../../Paths";
 import { useHistory } from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks";
+import {Book} from "../../../Types/Types";
 
 export const AllBook = () => {
-    const [page, setPage] = useState(1);
-    const [countOnPage] = useState(20);
-    const all_books = useSelector(state => _get(state.books, "all_books", {}));
+    const [page, setPage] = useState<number>(1);
+    const [countOnPage] = useState<number>(20);
+    const all_books = useAppSelector(state => _get(state.books, "all_books", {}));
     const history = useHistory();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         get_all_book_without_not_started(dispatch, page, countOnPage);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickRow = book => history.push(Paths.books.book.path(book.id));
+    const onClickRow = (book: Book) => history.push(Paths.books.book.path(book.id));
 
-    const loadBooks = page => {
+    const loadBooks = (page: number) => {
         setPage(page);
         get_all_book_without_not_started(dispatch, page, countOnPage);
     };

@@ -8,6 +8,11 @@ export type User = {
     nickname: string
 }
 
+export type PaginationBook = {
+    books: Book[],
+    allCount: number
+}
+
 export type Book = {
     id: number,
     name: string,
@@ -18,8 +23,9 @@ export type Book = {
     chapter_count: number,
     genres: string[],
     participants?: number[],
+    likes?: number[],
     chapters?: Chapter[],
-    last_section?: Section[],
+    last_section?: Section,
     last_chapter_number? : number,
     last_chapter_id? : number,
 }
@@ -38,7 +44,7 @@ export type Chapter = {
 
 type PrototypeSection = {
     id: number,
-    text: string | null,
+    text?: string,
     created_at: string,
     updated_at: string,
     is_last_in_chapter: number,
@@ -56,7 +62,9 @@ export type Section = PrototypeSection & {
 export type Applicant = PrototypeSection & PrototypeSendBook & {
     id_section: number,
     id_user: number,
-    status: string
+    status: string,
+    number?: number,
+    id?: number,
 }
 
 export type LoginRequestType = {

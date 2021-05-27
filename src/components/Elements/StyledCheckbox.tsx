@@ -4,17 +4,16 @@ import CheckedIcon from "../../components/Icons/CheckedIcon";
 
 //region Type
 type CheckboxWrapperProps = {
-    mainMargin: string
+    mainMargin?: string
 }
 
 type LabelWrapperProps = {
-    label: string,
+    label?: string,
 }
 
 type Props = CheckboxWrapperProps & LabelWrapperProps & {
-    value?: boolean,
+    value: boolean,
     onChange: (x:boolean) => void,
-    isChecked: boolean,
     disabled?: boolean
 }
 //endregion
@@ -111,7 +110,7 @@ const IconWrapper = styled.div`
 //endregion
 
 export const StyledCheckbox: React.FC<Props> = (props:Props) => {
-    const {disabled, onChange, value, mainMargin, isChecked, label} = props;
+    const {disabled, onChange, value, mainMargin, label} = props;
 
     const toggleChecked = () => disabled ? null : onChange(!value);
 
@@ -121,13 +120,13 @@ export const StyledCheckbox: React.FC<Props> = (props:Props) => {
             <LabelWrapperHover/>
             <CheckboxInput
                 type="checkbox"
-                checked={isChecked}
+                checked={value}
                 disabled={disabled}/>
             <LabelWrapper label={label}>
                 {label}
             </LabelWrapper>
             {
-                isChecked &&
+                value &&
                 <IconWrapper>
                     <CheckedIcon/>
                 </IconWrapper>

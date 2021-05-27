@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import Button from "../Elements/Button";
 import {appActions} from "../../reducers/actions";
-import {API, LoginRequestType} from "../API";
+import {API} from "../API";
 import {toast} from "react-toastify";
 // @ts-ignore
 import VkAuth from 'react-vk-auth';
@@ -13,6 +13,7 @@ import auth_main_book from "../Images/auth_main_book.png"
 import {Auth} from "./Auth";
 import Registration from "../Auth/Registration";
 import {useAppDispatch} from "../../store/hooks";
+import {LoginRequestType} from "../../Types/Types";
 
 //region Styles
 const ContentWrapper = styled.div`

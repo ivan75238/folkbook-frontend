@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
 import {Page} from "../../CommonStyledComponents";
 import styled from "styled-components";
 import {
@@ -9,7 +8,6 @@ import {
     send_applicant, send_vote_result,
     update_draft_section
 } from "../../../functions/books";
-import _get from "lodash/get";
 import WysiwygInput from "../../Elements/WysiwygInput";
 import Button from "../../Elements/Button";
 import _orderBy from 'lodash/orderBy';
@@ -21,13 +19,13 @@ import Popup from "../../../components/Elements/Popup";
 import {booksActions} from "../../../reducers/actions";
 import Heart from "../../../components/Icons/Heart";
 import {create_like, remove_like} from "../../../functions/liked_books";
-import {Applicant, Book, Section} from "../../../Types/Types";
+import {Applicant, Book, DraftSectionType, Section, SendVoteResultType, User} from "../../../Types/Types";
 import { RouteComponentProps } from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 
 //region Types
 type OtherProps = {
-
+    id: string
 }
 
 type Props = RouteComponentProps<OtherProps>;
@@ -210,26 +208,26 @@ const getLastSection = (open_book: Book): Section => {
     return chapters[0].sections[0];
 };
 
-export const BookPage: React.FC<Props> = ({match}) => {
+export const BookPage: React.FC<Props> = ({match}: Props) => {
     const [error, setError] = useState<string>();
     const [value, setValue] = useState<string>("");
     const [draftSection, setDraftSection] = useState<Applicant>();
     const [disabled, setDisabled] = useState<boolean>();
-    const [nextIsLastInChapter, setNextIsLastInChapter] = useState<number>();
-    const [nextIsLastInBook, setNextIsLastInBook] = useState<number>();
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>();
+    const [nextIsLastInChapter, setNextIsLastInChapter] = useState<number>(0);
+    const [nextIsLastInBook, setNextIsLastInBook] = useState<number>(0);
+    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(0);
     const [applicants, setApplicants] = useState<Applicant[]>();
     const [isVoted, setIsVoted] = useState<boolean>();
-    const [nextIsLastInChapterVote, setNextIsLastInChapterVote] = useState<boolean>();
-    const [nextIsLastInBookVote, setNextIsLastInBookVote] = useState<boolean>();
+    const [nextIsLastInChapterVote, setNextIsLastInChapterVote] = useState<number>(0);
+    const [nextIsLastInBookVote, setNextIsLastInBookVote] = useState<number>(0);
     const [disabledVote, setDisabledVote] = useState<boolean>();
     const [applicantView, setApplicantView] = useState<Applicant>();
-    const user = useAppSelector(state => _get(state.app, "user"));
-    const openBook = useAppSelector(state => _get(state.books, "open_book"));
+    const user = useAppSelector<User>(state => state.app.user);
+    let openBook = useAppSelector<Book>(state => state.books.open_book);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const id = _get(match, "params.id");
+        const id = parseInt(match.params.id);
         if (id) {
             get_book(dispatch, id)
         }
@@ -241,24 +239,26 @@ export const BookPage: React.FC<Props> = ({match}) => {
     }, []);
 
     useEffect(() => {
-        if (openBook && openBook.status === "in_work" && openBook.participants.find((i: number) => i === user.id)) {
-            openBook.last_section = getLastSection(openBook);
-            const status = translateStatusSection(openBook);
-            if (status.status === "in_work") {
-                getDraftSection(openBook.last_section.id);
-            }
-            if (status.status === "vote") {
-                getApplicantsOnSection(openBook.last_section.id);
-                getExistUserVote(openBook.last_section.id);
-            }
-        }
+        if (openBook) {
+            if (openBook.participants && openBook.participants.find(i => i === user.id)) {
+                openBook.last_section = getLastSection(openBook);
+                const status = translateStatusSection(openBook);
 
-        if (openBook && openBook.participants.find((i: number) => i === user.id)) {
-            openBook.last_section = getLastSection(openBook);
-            const statusNew = translateStatusSection(openBook);
-            if (statusNew.status === "vote") {
-                getApplicantsOnSection(openBook.last_section.id);
-                getExistUserVote(openBook.last_section.id);
+                if (openBook.status === "in_work") {
+                    if (status.status === "in_work") {
+                        getDraftSection(openBook.last_section.id);
+                    }
+                    if (status.status === "vote") {
+                        getApplicantsOnSection(openBook.last_section.id);
+                        getExistUserVote(openBook.last_section.id);
+                    }
+                }
+                else {
+                    if (status.status === "vote") {
+                        getApplicantsOnSection(openBook.last_section.id);
+                        getExistUserVote(openBook.last_section.id);
+                    }
+                }
             }
         }
     }, [openBook]);
@@ -292,7 +292,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
     const saveDraft = async () => {
         const id_section = getLastSection(openBook).id;
         setDisabled(true);
-        const data = {
+        const data: DraftSectionType = {
             id_section,
             text: value,
             next_is_last_in_book: nextIsLastInBook,
@@ -306,7 +306,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
             }
             catch (error) {
                 if (error.response.data.msg === "vote start") {
-                    await get_book(dispatch, match.params.id);
+                    await get_book(dispatch, parseInt(match.params.id));
                 }
                 setDisabled(false);
                 return toast.error(error.response.data.msgUser);
@@ -320,7 +320,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
             }
             catch(error) {
                 if (error.response.data.msg === "vote start") {
-                    await get_book(dispatch, match.params.id);
+                    await get_book(dispatch, parseInt(match.params.id));
                 }
                 setDisabled(false);
                 return toast.error(error.response.data.msgUser);
@@ -340,13 +340,13 @@ export const BookPage: React.FC<Props> = ({match}) => {
         try {
             await send_applicant(data);
             toast.success("Ваш вариант отправлен на голосование");
-            await get_book(dispatch, match.params.id);
+            await get_book(dispatch, parseInt(match.params.id));
             await getDraftSection(id_section);
             setDisabled(false);
         }
         catch (error) {
             if (error.response.data.msg === "vote start") {
-                await get_book(dispatch, match.params.id);
+                await get_book(dispatch, parseInt(match.params.id));
             }
             setDisabled(false);
             return toast.error(error.response.data.msgUser);
@@ -360,28 +360,29 @@ export const BookPage: React.FC<Props> = ({match}) => {
                 <WysiwygInput onChange={onChangeValueText}
                               value={value}
                               disabled={disabled || disabledInputs}
-                              maxLenght={2000}
+                              maxLength={2000}
                               backgroundColor={"#fff"}
                               placeholder={"Введите текст секции"}/>
                 <ButtonWrapper>
                     <Container>
                         {
+                            openBook.last_section &&
                             !openBook.last_section.is_last_in_chapter &&
                             !openBook.last_section.is_last_in_book &&
                             <>
                                 <StyledCheckbox label={"Следующая секция последняя в главе"}
-                                                value={nextIsLastInChapter}
+                                                value={!!nextIsLastInChapter}
                                                 disabled={disabled || disabledInputs}
                                                 onChange={value =>  {
-                                                    setNextIsLastInChapter(value);
-                                                    setNextIsLastInBook(false);
+                                                    setNextIsLastInChapter(value ? 1 : 0);
+                                                    setNextIsLastInBook(0);
                                                 }}/>
                                 <StyledCheckbox label={"Следующая секция последняя в книге"}
-                                                value={nextIsLastInBook}
+                                                value={!!nextIsLastInBook}
                                                 disabled={disabled || disabledInputs}
                                                 onChange={value => {
-                                                    setNextIsLastInChapter(false);
-                                                    setNextIsLastInBook(value);
+                                                    setNextIsLastInChapter(0);
+                                                    setNextIsLastInBook(value ? 1 : 0);
                                                 }}/>
                             </>
                         }
@@ -409,7 +410,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
     const sendUserVote = async () => {
         setDisabledVote(true);
         const id_section = getLastSection(openBook).id;
-        const data = {
+        const data: SendVoteResultType = {
             id_applicant: selectedApplicantId,
             id_section,
             next_is_last_in_book: nextIsLastInBookVote,
@@ -418,13 +419,13 @@ export const BookPage: React.FC<Props> = ({match}) => {
         try {
             await send_vote_result(data);
             toast.success("Ваш голос принят, дождитесь окончания голосования");
-            await get_book(dispatch, match.params.id);
+            await get_book(dispatch, parseInt(match.params.id));
             await getExistUserVote(id_section);
             setDisabledVote(false);
         }
         catch(error) {
             if (error.response.data.msg === "vote start") {
-                await get_book(dispatch, this.props.match.params.id);
+                await get_book(dispatch, parseInt(match.params.id));
                 await getExistUserVote(id_section);
             }
             setDisabledVote(false);
@@ -458,7 +459,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
                         applicantsWithoutAuthUser.map((applicant, i) => {
                             return (
                                 <ApplicantVariant key={i}
-                                                  onClick={() => setApplicantView({applicantView: {applicant, number: i+1}})}>
+                                                  onClick={() => setApplicantView({...applicant, number: i+1})}>
                                     <ApplicantBox>
                                         {`№${i+1}`}
                                     </ApplicantBox>
@@ -474,6 +475,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
                     }
                 </ApplicantsWrapper>
                 {
+                    openBook.last_section &&
                     !openBook.last_section.is_last_in_book &&
                     !openBook.last_section.is_last_in_chapter &&
                     showQuestionLastInChapter &&
@@ -481,17 +483,18 @@ export const BookPage: React.FC<Props> = ({match}) => {
                         <p>Участники предлагают завершить главу следующей секцией, вы согласны?</p>
                         <OptionsWrapper>
                             <StyledCheckbox label={"Согласен"}
-                                            value={nextIsLastInChapterVote}
+                                            value={!!nextIsLastInChapterVote}
                                             disabled={disabledVote}
-                                            onChange={() => nextIsLastInChapterVote(true)}/>
+                                            onChange={() => setNextIsLastInChapterVote(1)}/>
                             <StyledCheckbox label={"Не согласен"}
                                             value={!nextIsLastInChapterVote}
                                             disabled={disabledVote}
-                                            onChange={() =>setNextIsLastInChapterVote(false)}/>
+                                            onChange={() => setNextIsLastInChapterVote(0)}/>
                         </OptionsWrapper>
                     </QuestionWrapper>
                 }
                 {
+                    openBook.last_section &&
                     !openBook.last_section.is_last_in_book &&
                     !openBook.last_section.is_last_in_chapter &&
                     showQuestionLastInBook &&
@@ -499,13 +502,13 @@ export const BookPage: React.FC<Props> = ({match}) => {
                         <p>Участники предлагают завершить книгу следующей секцией, вы согласны?</p>
                         <OptionsWrapper>
                             <StyledCheckbox label={"Согласен"}
-                                            value={nextIsLastInBookVote}
+                                            value={!!nextIsLastInBookVote}
                                             disabled={disabledVote}
-                                            onChange={() => setNextIsLastInBookVote(true)}/>
+                                            onChange={() => setNextIsLastInBookVote(1)}/>
                             <StyledCheckbox label={"Не согласен"}
                                             value={!nextIsLastInBookVote}
                                             disabled={disabledVote}
-                                            onChange={() => setNextIsLastInBookVote(false)}/>
+                                            onChange={() => setNextIsLastInBookVote(0)}/>
                         </OptionsWrapper>
                     </QuestionWrapper>
                 }
@@ -525,26 +528,26 @@ export const BookPage: React.FC<Props> = ({match}) => {
         );
     };
 
-    const getExistUserVote = async (id_section) => {
+    const getExistUserVote = async (id_section: number) => {
         const result = await get_user_vote_from_section(id_section);
         setIsVoted(result.isVoted);
     };
 
-    const user_is_participant = _get(openBook, "participants",[]).find(i => i === user.id);
+    const user_is_participant = openBook.participants ? openBook.participants.find(i => i === user.id) : undefined;
     openBook.last_section = getLastSection(openBook);
     const status = translateStatusSection(openBook);
-    const isLiked = openBook.likes.indexOf(user.id) > -1;
+    const isLiked = openBook.likes ? openBook.likes.indexOf(user.id) > -1 : false;
 
-    const setLiked = async isLiked => {
+    const setLiked = async (isLiked: boolean) => {
         if (disabled) return null;
         setDisabledVote(true);
         isLiked ? await remove_like(dispatch, openBook.id) : await create_like(dispatch, openBook.id);
         setDisabledVote(false);
     };
 
-    const onSelectApplicantView = id => {
-        setApplicantView(id);
-        setSelectedApplicantId(applicantView.applicant.id);
+    const onSelectApplicantView = (applicant: Applicant) => {
+        setApplicantView(applicant);
+        setSelectedApplicantId(applicant.id);
     };
 
     return (
@@ -560,7 +563,7 @@ export const BookPage: React.FC<Props> = ({match}) => {
                     <Text><span>Срок: </span>{status.timeout.format("DD.MM.YYYY HH:mm")}</Text>
                 </Column>
                 <LikedIconWrapper onClick={() => setLiked(isLiked)}>
-                    <CountLikesText>{openBook.likes.length}</CountLikesText>
+                    <CountLikesText>{openBook.likes ? openBook.likes.length : 0}</CountLikesText>
                     <Heart color={isLiked ? "red" : "black"}/>
                 </LikedIconWrapper>
             </BookInfo>
@@ -573,43 +576,39 @@ export const BookPage: React.FC<Props> = ({match}) => {
                 user_is_participant &&
                 openBook.status === "in_work" &&
                 status.status === "in_work" &&
-                renderTextEditor(openBook)
+                renderTextEditor()
             }
             {
                 user_is_participant &&
                 openBook.status === "in_work" &&
                 status.status === "vote" &&
-                renderVote(openBook)
+                renderVote()
             }
             {renderApplicantView(applicantView, onSelectApplicantView, setApplicantView)}
         </Page>
     )
 };
 
-BookPage.propTypes = {
-    match: PropTypes.any,
-};
-
-const renderApplicantView = (applicantView, onSelected, setApplicantView) => {
+const renderApplicantView = (applicantView: Applicant|undefined, onSelect: (applicant: Applicant) => void, setApplicantView: (applicant: Applicant|undefined) => void) => {
     if (!applicantView)
         return null;
 
     return (
         <Popup title={`Вариант №${applicantView.number}`}
-               onClose={() => setApplicantView(null)}
+               onClose={() => setApplicantView(undefined)}
                width={"600px"}
                listenEscForClose={true}
                buttons={<Button title={"Выбрать этот вариант"}
                                 height={"40px"}
-                                onClick={() => onSelected(applicantView.applicant.id)}/>}>
-            <WysiwygInput value={applicantView.applicant.text}
+                                onClick={() => onSelect(applicantView)}/>}>
+            <WysiwygInput value={applicantView.text}
                           height={"auto"}
                           viewer={true}/>
         </Popup>
     )
 };
 
-const generateBookHtml = (openBook) => {
+const generateBookHtml = (openBook: Book) => {
     const chapters = _orderBy(openBook.chapters, i => i.number);
     let bookText = '';
     chapters.map(chapter => {

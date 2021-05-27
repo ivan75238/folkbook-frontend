@@ -1,7 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "components/Elements/Button";
-import PropTypes from "prop-types";
+import Button from "../Elements/Button";
+
+//region Types
+type DotsProps = {
+    isActive?: boolean
+}
+
+type Props = {
+    countOnPage: number,
+    currentPage: number,
+    countItems: number,
+    onChangeCurrentPage: (page: number) => void
+}
+//endregion
 
 //region Styled
 const PaginatorWrapper = styled.div`
@@ -12,7 +24,7 @@ const PaginatorWrapper = styled.div`
     justify-content: center;
 `;
 
-const Dots = styled.div`
+const Dots = styled.div<DotsProps>`
   height: 40px;
   min-width: 40px;
   display: flex;
@@ -30,7 +42,8 @@ const Dots = styled.div`
   `;
 //endregion
 
-const Paginator = ({countOnPage, currentPage, onChangeCurrentPage, countItems}) => {
+const Paginator: React.FC<Props> = (props: Props) => {
+    const {countOnPage, currentPage, onChangeCurrentPage, countItems} = props;
     const countPage = Math.ceil(countItems/countOnPage);
     return (
         <PaginatorWrapper>
@@ -62,7 +75,7 @@ const Paginator = ({countOnPage, currentPage, onChangeCurrentPage, countItems}) 
                                     }
                                 }
                                 return (
-                                    <Button title={i+1}
+                                    <Button title={`${i+1}`}
                                             key={i}
                                             height="40px"
                                             background={currentPage === (i+1) ? "#51db51" : ""}
@@ -87,13 +100,6 @@ const Paginator = ({countOnPage, currentPage, onChangeCurrentPage, countItems}) 
             }
         </PaginatorWrapper>
     )
-};
-
-Paginator.propTypes = {
-    countOnPage: PropTypes.number,
-    currentPage: PropTypes.number,
-    countItems: PropTypes.number,
-    onChangeCurrentPage: PropTypes.func
 };
 
 export default Paginator;

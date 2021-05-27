@@ -17,7 +17,7 @@ type ContentWrapperProps = {
 type Props = ContentWrapperProps & {
     disabled?: boolean,
     placeholder?: string,
-    onChange: (x:string, y:boolean) => void,
+    onChange?: (x:string, y:boolean) => void,
     maxLength?: number,
     value?: string
 }
@@ -102,10 +102,12 @@ const WysiwygInput:React.FC<Props> = (props: Props) => {
             }
         }
         if (getOnlyText().trim() === "") {
-            onChange("", maxLength ? getLeft() < 0 : false);
+            if (onChange)
+                onChange("", maxLength ? getLeft() < 0 : false);
             return;
         }
-        onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLength ? getLeft() < 0 : false);
+        if (onChange)
+            onChange(draftToHtml(convertToRaw(e.getCurrentContent())), maxLength ? getLeft() < 0 : false);
     };
 
     return (

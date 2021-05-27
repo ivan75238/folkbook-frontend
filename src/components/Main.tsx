@@ -5,8 +5,8 @@ import {Paths} from "../Paths";
 import {MainPage} from "./Page/Main/MainPage";
 import {Header} from "./Header/Header";
 import {BookPage} from "./Page/Book/BookPage";
-import {AllBook} from "components/Page/AllBook/AllBook";
-import MyBooks from "components/Page/MyBooks/MyBooks";
+import {AllBook} from "./Page/AllBook/AllBook";
+import MyBooks from "./Page/MyBooks/MyBooks";
 
 //region Styled
 const MainWrapper = styled.div`
