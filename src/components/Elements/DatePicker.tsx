@@ -1,10 +1,29 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PropTypes from "prop-types";
 
-const DPInputWrapper = styled.div`
+//region Types
+type DPInputWrapperProps = {
+    inputHeight?: string,
+    inputWidth?: string,
+    margin?: string,
+}
+
+type Props = {
+    height?: string,
+    margin?: string,
+    title?: string,
+    width?: string,
+    hideTitle?: boolean,
+    selected?: Date|null,
+    onChange: ( date: Date | [Date, Date] | null, event?: React.SyntheticEvent<any>) => void,
+    format?: string,
+}
+//endregion
+
+//region Styled
+const DPInputWrapper = styled.div<DPInputWrapperProps>`
   height: ${props => props.inputHeight || "auto"};
   width: ${props => props.inputWidth || "auto"};
   margin: ${props => props.margin || "auto"};
@@ -58,37 +77,24 @@ const Label = styled.p`
     color: #cecece;
     background: #fff;
 `;
+//endregion
 
 //Стилизованный button
-class CustomDatePicker extends PureComponent {
-
-    render() {
-        const {height, selected, margin, onChange, width, hideTitle, title, format = "dd.MM.yyyy"} = this.props;
-        return (
-            <DPInputWrapper inputHeight={height}
-                            margin={margin}
-                            inputWidth={width}>
-                {
-                    hideTitle ? null :
-                        <Label>{title}</Label>
-                }
-                <DatePicker selected={selected}
-                            onChange={onChange}
-                            dateFormat={format}/>
-            </DPInputWrapper>
-        )
-    }
+const CustomDatePicker:React.FC<Props> = (props: Props) => {
+    const {height, selected, margin, onChange, width, hideTitle, title, format = "dd.MM.yyyy"} = props;
+    return (
+        <DPInputWrapper inputHeight={height}
+                        margin={margin}
+                        inputWidth={width}>
+            {
+                hideTitle ? null :
+                    <Label>{title}</Label>
+            }
+            <DatePicker selected={selected}
+                        onChange={onChange}
+                        dateFormat={format}/>
+        </DPInputWrapper>
+    )
 }
-
-CustomDatePicker.propTypes = {
-    height: PropTypes.string,
-    margin: PropTypes.string,
-    title: PropTypes.string,
-    width: PropTypes.string,
-    hideTitle: PropTypes.bool,
-    selected: PropTypes.object,
-    onChange: PropTypes.func,
-    format: PropTypes.string,
-};
 
 export default CustomDatePicker;
