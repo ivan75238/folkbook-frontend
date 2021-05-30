@@ -227,6 +227,8 @@ export const AuthPage = () => {
     const [popupTabIndex, setPopupTabIndex] = useState<number>(-1);
     const dispatch = useAppDispatch();
 
+    console.log("AuthPage", popupTabIndex);
+
     const responseGoogle = async (response: any) => {
         const errorMsg = "Произошла ошибка, повторите попытку или попробуйте позже";
         if (!response.error) {
