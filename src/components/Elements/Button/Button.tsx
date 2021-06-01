@@ -20,7 +20,7 @@ type labelProps = {
 
 type PropsComponent = defaultProps & labelProps & {
     title?: string,
-    onClick?: Function | null,
+    onClick?: () => void,
     type?: string
 }
 //endregion
@@ -68,7 +68,7 @@ const Button = (props: PropsComponent) => {
     if (type === "fill-white") {
         return (
             <ButtonWrapper width={width}
-                           className={"fill-white"}
+                           className={"btn fill-white"}
                            height={height}
                            background={"transparent"}
                            disabled={disabled}
@@ -85,6 +85,7 @@ const Button = (props: PropsComponent) => {
     } else {
         return (
             <ButtonWrapper width={width}
+                           className={"btn"}
                            height={height}
                            background={background}
                            disabled={disabled}

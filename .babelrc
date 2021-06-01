@@ -16,7 +16,9 @@
     [
       "babel-plugin-styled-components",
       {
-        "displayName": true
+        "displayName": true,
+        "ssr": true,
+        "namespace": "sc-"
       }
     ]
   ]
