@@ -9,7 +9,7 @@ import {
     update_draft_section
 } from "../../../functions/books";
 import WysiwygInput from "../../Elements/WysiwygInput";
-import Button from "../../Elements/Button";
+import Button from "../../Elements/Button/Button";
 import _orderBy from 'lodash/orderBy';
 import {translateStatusSection} from "../../utils";
 import {StyledCheckbox} from "../../Elements/StyledCheckbox";

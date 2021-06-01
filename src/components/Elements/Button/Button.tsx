@@ -68,6 +68,7 @@ const Button = (props: PropsComponent) => {
     if (type === "fill-white") {
         return (
             <ButtonWrapper width={width}
+                           className={"fill-white"}
                            height={height}
                            background={"transparent"}
                            disabled={disabled}

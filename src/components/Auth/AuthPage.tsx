@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import Button from "../Elements/Button";
+import Button from "../Elements/Button/Button";
 import {appActions} from "../../reducers/actions";
 import {API} from "../API";
 import {toast} from "react-toastify";

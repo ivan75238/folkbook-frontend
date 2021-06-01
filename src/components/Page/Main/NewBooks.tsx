@@ -3,7 +3,7 @@ import _get from "lodash/get";
 import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
 import {get_new_book, join_in_book} from "../../../functions/books";
 import {translateStatusBook} from "../../utils";
-import Button from "../../Elements/Button";
+import Button from "../../Elements/Button/Button";
 import moment from "moment";
 import Popup from "../../Elements/Popup";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
