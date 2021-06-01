@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Тесты компонента Button Тесты без пропсов Снапшот без пропсов 1`] = `
+<Button__ButtonWrapper
+  className="btn"
+  onClick={[Function]}
+>
+  <Button__Label />
+</Button__ButtonWrapper>
+`;
+
+exports[`Тесты компонента Button Тесты отрисовки Отрисовка компонента Button без type 1`] = `
+<Button__ButtonWrapper
+  className="btn"
+  onClick={[Function]}
+>
+  <Button__Label />
+</Button__ButtonWrapper>
+`;
+
+exports[`Тесты компонента Button Тесты с наличием пропсов Снапшот с пропсами 1`] = `
+<Button__ButtonWrapper
+  background="black"
+  className="btn"
+  disabled={false}
+  height="40px"
+  margin="10px"
+  onClick={[Function]}
+  padding="10px"
+  width="100px"
+>
+  <Button__Label
+    fontSize="14px"
+    textColor="white"
+  >
+    Test title
+  </Button__Label>
+</Button__ButtonWrapper>
+`;

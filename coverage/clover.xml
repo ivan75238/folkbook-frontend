@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1622520992496" clover="3.2.0">
+  <project timestamp="1622520992497" name="All files">
+    <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10" elements="46" coveredelements="46" complexity="0" loc="18" ncloc="18" packages="1" files="1" classes="1"/>
+    <file name="Button.tsx" path="D:\folkbook\frontend\src\components\Elements\Button\Button.tsx">
+      <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10"/>
+      <line num="29" count="1" type="stmt"/>
+      <line num="35" count="3" type="stmt"/>
+      <line num="36" count="3" type="cond" truecount="4" falsecount="0"/>
+      <line num="37" count="3" type="stmt"/>
+      <line num="38" count="3" type="stmt"/>
+      <line num="39" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="48" count="1" type="stmt"/>
+      <line num="50" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="51" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="55" count="1" type="stmt"/>
+      <line num="60" count="9" type="stmt"/>
+      <line num="62" count="9" type="stmt"/>
+      <line num="63" count="2" type="cond" truecount="4" falsecount="0"/>
+      <line num="64" count="1" type="stmt"/>
+      <line num="68" count="9" type="cond" truecount="2" falsecount="0"/>
+      <line num="69" count="3" type="stmt"/>
+      <line num="86" count="6" type="stmt"/>
+    </file>
+  </project>
+</coverage>
