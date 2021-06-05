@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {LoaderSvg} from "./LoaderSvg";
+import {LoaderSvg} from "../LoaderSvg";
 
 //region Styled
 const Wrapper = styled.div`

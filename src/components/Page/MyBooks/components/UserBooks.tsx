@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Column, Page, Row, Table, TableName} from "../../../CommonStyledComponents";
 import {translateStatusBook} from "../../../utils";
-import Paginator from "../../../Elements/Paginator";
+import Paginator from "../../../Elements/Paginator/Paginator";
 import _orderBy from 'lodash/orderBy';
 import moment from "moment";
 import {useHistory} from "react-router-dom";

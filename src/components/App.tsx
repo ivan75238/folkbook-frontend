@@ -13,7 +13,7 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {API} from "./API";
 import {appActions} from "../reducers/actions";
-import Loader from "./Elements/Loader";
+import Loader from "./Elements/Loader/Loader";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 registerLocale('ru', ru);
 

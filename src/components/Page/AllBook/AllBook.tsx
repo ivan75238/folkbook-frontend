@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {get_all_book_without_not_started} from "../../../functions/books";
 import {Column, Page, Row, Table, TableName} from "../../CommonStyledComponents";
 import {translateStatusBook} from "../../utils";
-import Paginator from "../../Elements/Paginator";
+import Paginator from "../../Elements/Paginator/Paginator";
 import _orderBy from 'lodash/orderBy';
 import moment from "moment";
 import {Paths} from "../../../Paths";

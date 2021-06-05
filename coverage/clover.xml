@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1622520992496" clover="3.2.0">
-  <project timestamp="1622520992497" name="All files">
-    <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10" elements="46" coveredelements="46" complexity="0" loc="18" ncloc="18" packages="1" files="1" classes="1"/>
-    <file name="Button.tsx" path="D:\folkbook\frontend\src\components\Elements\Button\Button.tsx">
+<coverage generated="1622899730508" clover="3.2.0">
+  <project timestamp="1622899730508" name="All files">
+    <metrics statements="25" coveredstatements="25" conditionals="18" coveredconditionals="18" methods="12" coveredmethods="12" elements="55" coveredelements="55" complexity="0" loc="25" ncloc="25" packages="3" files="3" classes="3"/>
+    <package name="Elements">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="LoaderSvg.tsx" path="C:\Work\folkbook-frontend\src\components\Elements\LoaderSvg.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="Elements.Button">
       <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10"/>
-      <line num="29" count="1" type="stmt"/>
-      <line num="35" count="3" type="stmt"/>
-      <line num="36" count="3" type="cond" truecount="4" falsecount="0"/>
-      <line num="37" count="3" type="stmt"/>
-      <line num="38" count="3" type="stmt"/>
-      <line num="39" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="48" count="1" type="stmt"/>
-      <line num="50" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="51" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="55" count="1" type="stmt"/>
-      <line num="60" count="9" type="stmt"/>
-      <line num="62" count="9" type="stmt"/>
-      <line num="63" count="2" type="cond" truecount="4" falsecount="0"/>
-      <line num="64" count="1" type="stmt"/>
-      <line num="68" count="9" type="cond" truecount="2" falsecount="0"/>
-      <line num="69" count="3" type="stmt"/>
-      <line num="86" count="6" type="stmt"/>
-    </file>
+      <file name="Button.tsx" path="C:\Work\folkbook-frontend\src\components\Elements\Button\Button.tsx">
+        <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="35" count="3" type="stmt"/>
+        <line num="36" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
+        <line num="39" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="50" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="60" count="9" type="stmt"/>
+        <line num="62" count="9" type="stmt"/>
+        <line num="63" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="68" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="69" count="3" type="stmt"/>
+        <line num="86" count="6" type="stmt"/>
+      </file>
+    </package>
+    <package name="Elements.Loader">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Loader.tsx" path="C:\Work\folkbook-frontend\src\components\Elements\Loader\Loader.tsx">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
