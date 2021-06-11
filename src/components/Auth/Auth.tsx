@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Input from "../Elements/Input";
+import Input from "../Elements/Input/Input";
 import Button from "../Elements/Button/Button";
 import {toast} from "react-toastify";
 import {API} from "../API";

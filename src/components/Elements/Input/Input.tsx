@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useState} from "react";
 import styled from "styled-components";
-import EyeIcon from "../Icons/EyeIcon";
+import EyeIcon from "../../Icons/EyeIcon";
 
 //region Types
 type Props = {
     value?: string,
-    onEnterPress?: Function,
+    onEnterPress?: (e: React.KeyboardEvent) => void,
     type?: string,
     title?: string,
     disabled?: boolean,
@@ -97,20 +97,23 @@ const Input = (props: PropsComponent) => {
 
     return (
         <InputWrapper width={width}
+                      className={"wrapper"}
                       onClick={() => onClick ? onClick() : null}
                       margin={margin}>
             {
                 hideTitle ? null :
-                    <Label>{title}</Label>
+                    <Label className={"label"}>{title}</Label>
             }
             {
                 type === "password" &&
-                <IconWrapper onClick={() => setVisiblePassword(!visiblePassword)}>
+                <IconWrapper onClick={() => setVisiblePassword(!visiblePassword)}
+                             className={"password-icon"}>
                     <EyeIcon/>
                 </IconWrapper>
             }
             <InputStyled onChange={onChangeHandler}
                          onKeyPress={onKeyPressHandler}
+                         className={"InputStyled"}
                          type={type === "password" ? visiblePassword ? "" : type : type}
                          height={height}
                          padding={padding}

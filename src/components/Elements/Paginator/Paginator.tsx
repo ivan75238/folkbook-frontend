@@ -32,8 +32,8 @@ const Dots = styled.div<DotsProps>`
   justify-content: center;
   padding: 8px;
   box-sizing: border-box;
-  color: ${props => props.isActive ? "#fff" : "#fff"};
-  background-color: ${props => props.isActive && '#00b700'};    
+  color: #fff;
+  background-color: #00b700;    
   box-sizing: border-box;
   color: #000;
   border: 1px solid #00b700;
@@ -52,10 +52,12 @@ const Paginator = (props: Props) => {
                     <>
                         <Button title={"<<"}
                                 height="40px"
+                                className={"arrBack2"}
                                 onClick={() => currentPage === 1 ? null : onChangeCurrentPage(1)}
                                 margin="0 8px 0 0"/>
                         <Button title={"<"}
                                 height="40px"
+                                className={"arrBack1"}
                                 onClick={() => currentPage === 1 ? null : onChangeCurrentPage(currentPage-1)}
                                 margin="0 8px 0 0"/>
                         {
@@ -78,6 +80,7 @@ const Paginator = (props: Props) => {
                                     <Button title={`${i+1}`}
                                             key={i}
                                             height="40px"
+                                            className={"btn"+(i+1)}
                                             background={currentPage === (i+1) ? "#51db51" : ""}
                                             onClick={() => currentPage === (i+1) ? null : onChangeCurrentPage(i+1)}
                                             margin="0 8px 0 0"/>
@@ -90,10 +93,12 @@ const Paginator = (props: Props) => {
                         }
                         <Button title={">"}
                                 height="40px"
+                                className={"arrNext1"}
                                 onClick={() => currentPage === countPage ? null : onChangeCurrentPage(currentPage+1)}
                                 margin="0 8px 0 0"/>
                         <Button title={">>"}
                                 height="40px"
+                                className={"arrNext2"}
                                 onClick={() => currentPage === countPage ? null : onChangeCurrentPage(countPage)}
                                 margin="0 0 0 0"/>
                     </>

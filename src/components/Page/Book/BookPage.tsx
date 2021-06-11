@@ -8,14 +8,14 @@ import {
     send_applicant, send_vote_result,
     update_draft_section
 } from "../../../functions/books";
-import WysiwygInput from "../../Elements/WysiwygInput";
+import WysiwygInput from "../../Elements/WysiwygInput/WysiwygInput";
 import Button from "../../Elements/Button/Button";
 import _orderBy from 'lodash/orderBy';
 import {translateStatusSection} from "../../utils";
-import {StyledCheckbox} from "../../Elements/StyledCheckbox";
+import {StyledCheckbox} from "../../Elements/StyledCheckbox/StyledCheckbox";
 import {toast} from "react-toastify";
 import CheckedApplicantIcon from "../../../components/Icons/CheckedApplicantIcon";
-import Popup from "../../../components/Elements/Popup";
+import Popup from "../../Elements/Popup/Popup";
 import {booksActions} from "../../../reducers/actions";
 import Heart from "../../../components/Icons/Heart";
 import {create_like, remove_like} from "../../../functions/liked_books";

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CheckedIcon from "../../components/Icons/CheckedIcon";
+import CheckedIcon from "../../Icons/CheckedIcon";
 
 //region Type
 type CheckboxWrapperProps = {
@@ -116,11 +116,12 @@ export const StyledCheckbox = (props:Props) => {
 
     return (
         <CheckboxWrapper mainMargin={mainMargin}
+                         className={"checkboxWrapper"}
                          onClick={toggleChecked}>
             <LabelWrapperHover/>
             <CheckboxInput
                 type="checkbox"
-                checked={value}
+                defaultChecked={value}
                 disabled={disabled}/>
             <LabelWrapper label={label}>
                 {label}

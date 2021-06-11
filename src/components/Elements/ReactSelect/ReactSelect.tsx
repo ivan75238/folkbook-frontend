@@ -6,7 +6,8 @@ import Select from "react-select";
 type InputWrapperProps = {
     inputHeight?: string,
     inputWidth?: string,
-    margin?: string
+    margin?: string,
+    className?: string
 }
 
 type Props = {
@@ -43,6 +44,7 @@ const ReactSelect = (props: Props) => {
     return (
         <InputWrapper inputHeight={height}
                       inputWidth={width}
+                      className={"inputWrapper"}
                       margin={margin}>
             <Select value={value}
                     className={"react-select"}

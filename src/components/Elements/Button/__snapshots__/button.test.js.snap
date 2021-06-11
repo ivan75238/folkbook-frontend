@@ -2,7 +2,7 @@
 
 exports[`Тесты компонента Button Тесты без пропсов Снапшот без пропсов 1`] = `
 <Button__ButtonWrapper
-  className="btn"
+  className="btn undefined"
   onClick={[Function]}
 >
   <Button__Label />
@@ -11,7 +11,7 @@ exports[`Тесты компонента Button Тесты без пропсов
 
 exports[`Тесты компонента Button Тесты отрисовки Отрисовка компонента Button без type 1`] = `
 <Button__ButtonWrapper
-  className="btn"
+  className="btn undefined"
   onClick={[Function]}
 >
   <Button__Label />
@@ -21,7 +21,7 @@ exports[`Тесты компонента Button Тесты отрисовки О
 exports[`Тесты компонента Button Тесты с наличием пропсов Снапшот с пропсами 1`] = `
 <Button__ButtonWrapper
   background="black"
-  className="btn"
+  className="btn undefined"
   disabled={false}
   height="40px"
   margin="10px"

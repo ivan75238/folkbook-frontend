@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import styled from "styled-components";
-import Close from "../../components/Icons/Close";
+import Close from "../../Icons/Close";
 
 //region Types
 type PopupContainerProps = {
@@ -114,16 +114,18 @@ const Popup = (props: PopupProps) => {
             };
         }
 
-        return () => {document.onkeydown =  null};
+        return () => {document.onkeydown = null};
     });
 
     return (
         <Wrapper>
-            <Background onClick={() => onClose ? onClose : null}/>
+            <Background onClick={() => onClose ? onClose() : null}
+                        className="background"/>
             <PopupContainer width={width}>
                 <Header>
                     {title}
-                    <IconContainer onClick={() => onClose ? onClose : null}>
+                    <IconContainer onClick={() => onClose ? onClose() : null}
+                                   className="close-icon">
                         <Close color={"#fff"}/>
                     </IconContainer>
                 </Header>

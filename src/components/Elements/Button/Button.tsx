@@ -21,7 +21,8 @@ type labelProps = {
 type PropsComponent = defaultProps & labelProps & {
     title?: string,
     onClick?: () => void,
-    type?: string
+    type?: string,
+    className?: string
 }
 //endregion
 
@@ -56,7 +57,7 @@ const Button = (props: PropsComponent) => {
     const {title, background,
         textColor, fontSize,
         onClick, disabled,
-        width, height,
+        width, height, className,
         margin, padding, type} = props;
 
     const onClickEvent = () => {
@@ -68,7 +69,7 @@ const Button = (props: PropsComponent) => {
     if (type === "fill-white") {
         return (
             <ButtonWrapper width={width}
-                           className={"btn fill-white"}
+                           className={"btn fill-white " + className}
                            height={height}
                            background={"transparent"}
                            disabled={disabled}
@@ -85,7 +86,7 @@ const Button = (props: PropsComponent) => {
     } else {
         return (
             <ButtonWrapper width={width}
-                           className={"btn"}
+                           className={"btn " + className}
                            height={height}
                            background={background}
                            disabled={disabled}

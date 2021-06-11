@@ -5,7 +5,7 @@ import {get_new_book, join_in_book} from "../../../functions/books";
 import {translateStatusBook} from "../../utils";
 import Button from "../../Elements/Button/Button";
 import moment from "moment";
-import Popup from "../../Elements/Popup";
+import Popup from "../../Elements/Popup/Popup";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import {Book, User} from "../../../Types/Types";
 
