@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import Input from "../Elements/Input/Input";
-import Button from "../Elements/Button/Button";
+import Input from "../../Elements/Input/Input";
+import Button from "../../Elements/Button/Button";
 import {toast} from "react-toastify";
-import {API} from "../API";
-import {appActions} from "../../reducers/actions";
+import {API} from "../../API";
+import {appActions} from "../../../reducers/actions";
 import _get from "lodash/get";
-import {useAppDispatch} from "../../store/hooks";
+import {useAppDispatch} from "../../../store/hooks";
 
 export const Auth = () => {
     const [username, setUsername] = useState<string>("");
