@@ -1,6 +1,6 @@
 import axios from "axios";
 import {URLS} from "../config/config";
-import {Applicant, Book, DraftSectionType, LoginRequestType, SendVoteResultType} from "../Types/Types";
+import {Applicant, Book, DraftSectionType, LoginRequestType, SendVoteResultType, User} from "../Types/Types";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
@@ -12,13 +12,13 @@ const API = {
 
     USER: {
         LOGIN(username: string, password: string)  {
-            return axios.post(URLS.USER.LOGIN, {username, password})
+            return axios.post<User>(URLS.USER.LOGIN, {username, password})
         },
         LOGIN_VK(data: LoginRequestType) {
-            return axios.post(URLS.USER.LOGIN_VK, data)
+            return axios.post<User>(URLS.USER.LOGIN_VK, data)
         },
         LOGIN_GOOGLE(data: LoginRequestType) {
-            return axios.post(URLS.USER.LOGIN_GOOGLE, data)
+            return axios.post<User>(URLS.USER.LOGIN_GOOGLE, data)
         },
         REGISTRATION(username: string, password: string)  {
             return axios.post(URLS.USER.REGISTRATION, {username, password})

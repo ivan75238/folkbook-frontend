@@ -20,6 +20,7 @@ type labelProps = {
 
 type PropsComponent = defaultProps & labelProps & {
     title?: string,
+    id?: string,
     onClick?: () => void,
     type?: string,
     className?: string

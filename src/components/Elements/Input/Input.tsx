@@ -23,6 +23,7 @@ type PropsStyled = Props & {
 
 type PropsComponent = Props & {
     onChange?: (e: string) => void | null,
+    id?: string,
 }
 //endregion
 

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1623501888919" clover="3.2.0">
-  <project timestamp="1623501888920" name="All files">
-    <metrics statements="170" coveredstatements="126" conditionals="104" coveredconditionals="92" methods="77" coveredmethods="49" elements="351" coveredelements="267" complexity="0" loc="170" ncloc="170" packages="14" files="16" classes="16"/>
+<coverage generated="1624604803062" clover="3.2.0">
+  <project timestamp="1624604803062" name="All files">
+    <metrics statements="199" coveredstatements="153" conditionals="117" coveredconditionals="100" methods="79" coveredmethods="55" elements="395" coveredelements="308" complexity="0" loc="199" ncloc="199" packages="14" files="20" classes="20"/>
     <package name="components">
-      <metrics statements="27" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="24" coveredmethods="0"/>
+      <metrics statements="27" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="24" coveredmethods="1"/>
       <file name="API.ts" path="D:\folkbook\frontend\src\components\API.ts">
-        <metrics statements="27" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="24" coveredmethods="0"/>
+        <metrics statements="27" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="24" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
@@ -36,34 +36,46 @@
       </file>
     </package>
     <package name="components.Auth.Auth">
-      <metrics statements="25" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="4" coveredmethods="1"/>
+      <metrics statements="37" coveredstatements="23" conditionals="6" coveredconditionals="4" methods="4" coveredmethods="4"/>
       <file name="Auth.tsx" path="D:\folkbook\frontend\src\components\Auth\Auth\Auth.tsx">
-        <metrics statements="25" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="4" coveredmethods="1"/>
+        <metrics statements="37" coveredstatements="23" conditionals="6" coveredconditionals="4" methods="4" coveredmethods="4"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="21" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+        <line num="17" count="9" type="stmt"/>
+        <line num="18" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="24" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="55" count="9" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
       </file>
     </package>
     <package name="components.Elements">
@@ -78,50 +90,50 @@
       <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10"/>
       <file name="Button.tsx" path="D:\folkbook\frontend\src\components\Elements\Button\Button.tsx">
         <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="10" coveredmethods="10"/>
-        <line num="30" count="3" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="cond" truecount="4" falsecount="0"/>
-        <line num="38" count="3" type="stmt"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="41" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="49" count="3" type="stmt"/>
-        <line num="51" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="52" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="56" count="3" type="stmt"/>
-        <line num="61" count="9" type="stmt"/>
-        <line num="63" count="9" type="stmt"/>
-        <line num="64" count="2" type="cond" truecount="4" falsecount="0"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="69" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="70" count="3" type="stmt"/>
-        <line num="87" count="6" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="37" count="12" type="stmt"/>
+        <line num="38" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="39" count="12" type="stmt"/>
+        <line num="40" count="12" type="stmt"/>
+        <line num="41" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="3" type="stmt"/>
+        <line num="52" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="62" count="18" type="stmt"/>
+        <line num="64" count="18" type="stmt"/>
+        <line num="65" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="66" count="4" type="stmt"/>
+        <line num="70" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="71" count="3" type="stmt"/>
+        <line num="88" count="15" type="stmt"/>
       </file>
     </package>
     <package name="components.Elements.Input">
       <metrics statements="20" coveredstatements="20" conditionals="18" coveredconditionals="16" methods="9" coveredmethods="9"/>
       <file name="Input.tsx" path="D:\folkbook\frontend\src\components\Elements\Input\Input.tsx">
         <metrics statements="20" coveredstatements="20" conditionals="18" coveredconditionals="16" methods="9" coveredmethods="9"/>
-        <line num="30" count="2" type="stmt"/>
-        <line num="32" count="2" type="stmt"/>
-        <line num="33" count="2" type="stmt"/>
-        <line num="48" count="2" type="stmt"/>
-        <line num="59" count="2" type="stmt"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
-        <line num="75" count="2" type="stmt"/>
-        <line num="82" count="2" type="stmt"/>
-        <line num="83" count="11" type="stmt"/>
-        <line num="84" count="11" type="stmt"/>
-        <line num="86" count="11" type="stmt"/>
-        <line num="87" count="1" type="cond" truecount="3" falsecount="1"/>
-        <line num="88" count="1" type="stmt"/>
-        <line num="92" count="11" type="stmt"/>
-        <line num="93" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="98" count="11" type="stmt"/>
-        <line num="101" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="109" count="1" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="33" count="20" type="stmt"/>
+        <line num="34" count="20" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="71" count="20" type="stmt"/>
+        <line num="76" count="20" type="stmt"/>
+        <line num="83" count="2" type="stmt"/>
+        <line num="84" count="29" type="stmt"/>
+        <line num="85" count="29" type="stmt"/>
+        <line num="87" count="29" type="stmt"/>
+        <line num="88" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="93" count="29" type="stmt"/>
+        <line num="94" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="99" count="29" type="stmt"/>
+        <line num="102" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="1" type="stmt"/>
       </file>
     </package>
     <package name="components.Elements.Loader">
@@ -232,7 +244,7 @@
       <file name="EyeIcon.tsx" path="D:\folkbook\frontend\src\components\Icons\EyeIcon.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="8" count="2" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="9" count="10" type="stmt"/>
       </file>
     </package>
     <package name="config">
@@ -247,18 +259,47 @@
       </file>
     </package>
     <package name="reducers">
-      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="18" coveredstatements="9" conditionals="13" coveredconditionals="4" methods="2" coveredmethods="2"/>
       <file name="actions.ts" path="D:\folkbook\frontend\src\reducers\actions.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="6" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
       </file>
+      <file name="app.ts" path="D:\folkbook\frontend\src\reducers\app.ts">
+        <metrics statements="6" coveredstatements="3" conditionals="5" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="1" falsecount="3"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+      </file>
+      <file name="books.ts" path="D:\folkbook\frontend\src\reducers\books.ts">
+        <metrics statements="9" coveredstatements="3" conditionals="8" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="14" count="3" type="cond" truecount="1" falsecount="6"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="58" count="3" type="stmt"/>
+      </file>
+      <file name="index.ts" path="D:\folkbook\frontend\src\reducers\index.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="7" count="1" type="stmt"/>
+      </file>
     </package>
     <package name="store">
-      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="hooks.ts" path="D:\folkbook\frontend\src\store\hooks.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
+        <line num="4" count="9" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+      </file>
+      <file name="index.ts" path="D:\folkbook\frontend\src\store\index.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
       </file>
     </package>
