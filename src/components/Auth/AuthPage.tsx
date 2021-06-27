@@ -11,7 +11,7 @@ import { GoogleLogin } from 'react-google-login';
 import LogoGoogle from "../Icons/LogoGoogle";
 import auth_main_book from "../Images/auth_main_book.png"
 import {Auth} from "./Auth/Auth";
-import Registration from "../Auth/Registration";
+import Registration from "./Registration/Registration";
 import {useAppDispatch} from "../../store/hooks";
 import {LoginRequestType} from "../../Types/Types";
 

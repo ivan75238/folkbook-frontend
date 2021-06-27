@@ -30,24 +30,20 @@ export const Auth = () => {
         setDisabled(true);
         try {
             const response = await API.USER.LOGIN(username, pass);
-            console.log("response", response);
             dispatch({type: appActions.SET_AUTH_DATA, user: response.data});
             dispatch({type: appActions.SET_AUTH_VALUE, auth: true});
-            setDisabled(false);
             setLoginReturnedValue(response.data.nickname);
-            return;
+            setDisabled(false);
         }
         catch(error) {
             setDisabled(false);
             if (_get(error, "response.data.msgUser", false)) {
                 toast.error(error.response.data.msgUser);
                 setLoginReturnedValue(error.response.data.msgUser.toString());
-                return;
             }
             else {
                 toast.error("Неправилный email или пароль");
                 setLoginReturnedValue("Неправилный email или пароль");
-                return;
             }
         }
     };

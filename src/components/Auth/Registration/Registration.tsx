@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import Input from "../Elements/Input/Input";
-import Button from "../Elements/Button/Button";
+import Input from "../../Elements/Input/Input";
+import Button from "../../Elements/Button/Button";
 import {toast} from "react-toastify";
-import {validateEmail} from "../utils";
-import {API} from "../API";
+import {validateEmail} from "../../utils";
+import {API} from "../../API";
 
 type Props = {
     openAuthTab: () => void,
